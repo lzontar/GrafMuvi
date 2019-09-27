@@ -10,7 +10,6 @@ python:
   - "nightly"  # nightly build
 # command to install dependencies
 install:
-  - pip install -r requirements.txt
   - pip install -q Django==2.2.5
   - python setup.py -q install
 # command to run tests
