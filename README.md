@@ -12,7 +12,7 @@ If you get an error with code 10013, try adding port number (port 8000 is defaul
 ```bash
 python manage.py runserver 8080
 ```
-*Coming soon*.
+*To be continued*.
 ## Technology
 ### Python and Django
 For the main development tools we will use [Python](https://www.python.org/) (as the main language) and *Django* (as a web framework). With its grand community Python appears to be one of the main back-end languages with [Django](https://www.djangoproject.com/) and [Flask](https://palletsprojects.com/p/flask/) as the most popular web frameworks to make development easier. In this project we will use *Django* because of its speed and security.
