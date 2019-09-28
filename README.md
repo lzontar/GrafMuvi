@@ -46,4 +46,4 @@ To store the data about criminal events we will use either [Firebase](https://fi
 4. Create a Pull Request to branch **contributions**
 
 ### Check out my other projects
-Check out my other projects at my GitHub Pages website [lzontar.github.io](https://lzontar.github.io).
+Check out my other projects at my GitHub Pages website [lzontar.github.io](https://lzontar.github.io):star:.
