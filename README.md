@@ -4,6 +4,14 @@
 ## Documentation
 Documentation of [*eGuarda*](https://eguarda.docs.apiary.io/#) web service (developed by *Apiary*).
 ## Usage
+In repository map run:
+```bash
+python manage.py runserver
+```
+If you get an error with code 10013, try adding port number (port 8000 is default) that is not occupied, for example:
+```bash
+python manage.py runserver 8080
+```
 *Coming soon*.
 ## Technology
 ### Python and Django
