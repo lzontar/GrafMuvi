@@ -1,80 +1,122 @@
 FORMAT: 1A
-HOST: http://polls.apiblueprint.org/
+HOST: http://grafmuvi.lzontar.com/api
 
 # GrafMuvi
+API usage documentation of *GrafMuvi*, a movie recommendation RESTful API. Project description available on [GitHub](https://github.com/lzontar/GrafMuvi).
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+# Allowed HTTPs requests:
+<pre>
+POST    : Update or create connection of similar movies
+GET     : Get an ordered list of movie recommendations
+</pre>
 
-## Questions Collection [/questions]
+# Description Of Usual Server Responses:
+- 200 `OK` - the request was successful (some API calls may return 201 instead).
+- 201 `Created` - the request was successful and a resource was created.
+- 204 `No Content` - the request was successful but there is no representation to return (i.e. the response is empty).
+- 400 `Bad Request` - the request could not be understood or was missing required parameters.
+- 401 `Unauthorized` - authentication failed or user doesn't have permissions for requested operation.
+- 403 `Forbidden` - access denied.
+- 404 `Not Found` - resource was not found.
+- 405 `Method Not Allowed` - requested method is not supported for resource.
 
-### List All Questions [GET]
+
+# Group Graph: Movie recommendations 
+Represents movies and connections between them. Each node represents a movie and each edge holds the number of requests of promoting similarity between the connected movies.
+
+All informations about movies will be acquired using [OMDb API](https://www.omdbapi.com/).
+
+---
+**Movie properties:**
+
+- imdbId `(Number)` : Unique IMDB identifier. 
+- name `(String)` : Movie name.
+- imdbRating `(Number)` :  Movie IMDB rating
+- year `(Number)` :  The year movie was made
+
+**Relationship: SIMILAR**
+
+`SIMILAR` is a relationship between two nodes that indicates similarity between movies.
+
+Properties:
+- promotions `(Number)` : Number of requests of promoting similarity between the connected movies. 
+
+
+## Http requests [/mov/conn]
+
+
+### Retrieve movie recommendation list by IMDB ID [GET /{imdbId}]
++ Parameters
+    + imdbId (Number) ... Unique IMDB movie identifier. 
 
 + Response 200 (application/json)
 
-        [
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
-                ]
-            }
-        ]
+    + Header
 
-### Create a New Question [POST]
-
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
-
-+ Request (application/json)
-
-        {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
-        }
-
-+ Response 201 (application/json)
-
-    + Headers
-
-            Location: /questions/2
+            X-My-Header: The Value
 
     + Body
 
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
-                    }
-                ]
+                "1": "Godfather"
+                "2": "Training day",
+                "3": "Black mass",
             }
+            
++ Response 401 (application/json)
+
+        {
+            "error": "error.unauthorized"
+        }
+### Retrieve movie recommendation list by movie name [GET /{name}/{year}]
++ Parameters
+    + name (String) ... Movie name
+    + year (Number) ... The year movie was made
+
++ Response 200 (application/json)
+
+    + Header
+
+            X-My-Header: The Value
+
+    + Body
+
+            {
+                "1": "Godfather"
+                "2": "Training day",
+                "3": "Black mass",
+            }
+            
++ Response 401 (application/json)
+
+        {
+            "error": "error.unauthorized"
+        }
+### Update a movie recommendation [POST /{imdbId}/{imdbIdSim}/{?downgrade}]
++ Parameters
+    + imdbId (String) ... Unique IMDB movie identifier. 
+    + imdbIdSim (String) ... Unique IMDB movie identifier of a movie similar to the one with IMDB ID imdbId. 
+    + downgrade (optional, Boolean) ... Timestamp in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ` Only users updated at or after this time are returned.
+
++ Request (application/json)
+
+        {
+            "imdbId" : "tt0765429"
+            "imdbIdSim" : "tt0353496"
+            "downgrade": False,
+        }
+
++ Response 200 (application/json)
+
+         {
+            "name" : "American gangster"
+            "nameSim" : "Godfather"
+            "promotions": 0,
+        }
+
+
++ Response 401 (application/json)
+
+        {
+            "error": "error.unauthorized"
+        }
