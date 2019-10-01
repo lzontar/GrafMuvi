@@ -37,17 +37,9 @@ We want this project to have a cloud infrastructure and we will use [Google Clou
 ```
 ### Make changes
 1. Pull the latest version of repository
-2. Make changes
- - Use test-driven development
- - Test your code manually:
-  In repository map run:
-  ```bash
-  python manage.py runserver
-  ```
-  If you get an error with code 10013, try adding port number (port 8000 is default) that is not occupied, for example:
-  ```bash
-  python manage.py runserver 8080
-  ```
+2. Make changes:
+   - Use test-driven development
+   - Test your code manually 
 3. After testing, commit to your forked repository
 4. Create a Pull Request to branch **contributions**
 
