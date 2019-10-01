@@ -1,38 +1,34 @@
-# eGuarda
-## Description
-**eGuarda** is a web service, a statistic-oriented API, with which users will be able to post a report about a (possible) criminal event or suspicious occurrence. This data will be stored in [mongoDB](https://www.mongodb.com/) database and will be accessible to users. Besides gathering the data about criminal events, *eGuarda* will support visualization (charts and maps) of that data. Developers will be able to add the visualization template to their site from which the users will be able to see statistics about criminal events nearby. This may be useful for people who don't know their surroundings (E.g. travelers). For example, imagine yourself at 3 A.M. in the night walking from a party in an unknown country. How will you come home, which path to take? Here eGuarda can help you choose the safest path home in order to prevent danger.
-## Documentation
-Documentation of [*eGuarda*](https://eguarda.docs.apiary.io/#) web service (developed by *Apiary*).
-## Usage
-In repository map run:
-```bash
-python manage.py runserver
-```
-If you get an error with code 10013, try adding port number (port 8000 is default) that is not occupied, for example:
-```bash
-python manage.py runserver 8080
-```
-*To be continued*.
-## Technology
-### Python and Django
-For the main development tools we will use [Python](https://www.python.org/) (as the main language) and *Django* (as a web framework). With its grand community Python appears to be one of the main back-end languages with [Django](https://www.djangoproject.com/) and [Flask](https://palletsprojects.com/p/flask/) as the most popular web frameworks to make development easier. In this project we will use *Django* because of its speed and security.
+# :movie_camera: GrafMuvi
+## :bulb: What's the idea?
+With more and more movies available the answer to "What movie should I watch :interrobang:" isn't getting any simpler. That is why I decided to develop **GrafMuvi**, a web service or more precisely a movie recommendation *RESTful API*, which will support posting, deleting and retrieving movie recommendations. But where will we get the data? Service will store data about movie recommendations using graph structures, because the recommendation system will be based on associations. *GrafMuvi* will support the ability to create and post a promotion of a connection between two movies and store the number of these promotions. The main objective is retrieving a list of similar movies to the one we already watched, which will be ordered from the most possible candidate to the least possible. Sort will be based on the distance between two nodes in our graph database and the number of associations/promotions. Service will also support downgrading and eventually deleting a connection between movies if enough requests of downgrading will be made.
+Check out the [example](https://github.com/lzontar/GrafMuvi/blob/master/Example.pdf) of how service can be used.
+## :page_with_curl: How can I use it?
+Documentation of [GrafMuvi](https://grafmuvi.docs.apiary.io/#) web service (developed using *Apiary*).
+## :blue_book: What development techniques will be used?
+- RESTful API design
+- Test-driven development
+- Continuous integration
+- Logging services
+- NoSQL, graph database
+## :hammer_and_wrench: What tools will be used for development?
+### Python
+As the main programming language we will use [Python](https://www.python.org/). With its grand community Python appears to be one of the main web development languages. It's a high level programming language, which allows developers to focus on core functionality of the application.
+### Flask
+It will be a lot easier developing a RESTful API with a web framework. Besides *Django*, [Flask]() is one of the most popular Python web frameworks. Due to the fact that it is much more minimal in design, *Flask* can achieve faster performance. It is also compatible with NoSQL databases, which we will use.
 ### Travis CI
-[Continuous integration](https://en.wikipedia.org/wiki/Continuous_integration) is a development practice which requires developers to commit their code to a shared repository very often (several times a day). We will use [Travis CI](https://travis-ci.com/) as our continuous integration system.
+[Continuous integration](https://en.wikipedia.org/wiki/Continuous_integration) is a development practice which requires developers to commit their code to a shared repository very often (even several times a day). We will use [Travis CI](https://travis-ci.com/) as our continuous integration system.
 ### pytest
-Test-driven development([TDD](https://en.wikipedia.org/wiki/Test-driven_development)) is software development process which encourages developers to first write tests and then the code. This has proven to fasten and improve the development cycle. We will use TDD in our project as well and [pytest](https://docs.pytest.org/en/latest/) is a framework, which makes it easy to write unit (or other kinds of) tests in Python.
+Test-driven development([TDD](https://en.wikipedia.org/wiki/Test-driven_development)) is software development process which encourages developers to first write tests and then the code. This has proven to fasten and improve the development cycle. We will use TDD in our project as well and [pytest](https://docs.pytest.org/en/latest/) is a framework, which makes writing tests in Python easy.
 ### Apiary
-Every service has to have a good documentation, where developers will be able to see how to use the service. For this we will use [Apiary](https://apiary.io/), which is a platform for API design, development and documentation. We will use only the last part.
-### logging (Python)
-Logging is a very useful tool, because it can develop a better understanding of how program works. Python offers an integrated module [logging](https://docs.python.org/3/library/logging.html), which we will use in our project.
+Every service has to have a good documentation, where developers will be able to see how to use the service. For this we will use [Apiary](https://apiary.io/), which is a platform for API design, development and documentation. We will use it for documentation.
+### Logstash
+Logging is a very useful tool, because it can develop a better understanding of how a program works. In our project we will use [Logstash](https://www.elastic.co/products/logstash), which is an open source tool for collecting, parsing and storing logs for future.
+### Neo4j
+One of the most fundamental parts of our RESTful API is our database. [Neo4j](https://neo4j.com/) is a graph, NoSQL database management system, which we will use in our project. Graph databases are databases that use graph structures to represent and store data.
 ### Google Cloud
-We want this project to have a cloud infrastructure and therefore we will use [Google Cloud](https://cloud.google.com/) computing services.
-### Database
-To store the data about criminal events we will use either [Firebase](https://firebase.google.com/) (database produced by Google, which is part of *Google Cloud* services) or [MongoDB](https://www.mongodb.com/) (one of the most popular databases for modern databases).
-### FusionCharts
-[FusionCharts](https://www.fusioncharts.com/) is a Python-supported API, which we will use to create responsive charts which will be included in our template.
-### GeoDjango
-[GeoDjango](https://docs.djangoproject.com/en/2.2/ref/contrib/gis/) is a Python-supported API, which we will use to create responsive maps which will be included in our template.
-## Wish to contribute?
+We want this project to have a cloud infrastructure and we will use [Google Cloud](https://cloud.google.com/) computing services.
+
+## :sos: Wish to contribute?
 ### Environment setup
 1. Fork repository and pull the content
 2. Execute:
@@ -42,8 +38,18 @@ To store the data about criminal events we will use either [Firebase](https://fi
 ### Make changes
 1. Pull the latest version of repository
 2. Make changes
-3. Commit to your forked repository
+ - Use test-driven development
+ - Test your code manually:
+  In repository map run:
+  ```bash
+  python manage.py runserver
+  ```
+  If you get an error with code 10013, try adding port number (port 8000 is default) that is not occupied, for example:
+  ```bash
+  python manage.py runserver 8080
+  ```
+3. After testing, commit to your forked repository
 4. Create a Pull Request to branch **contributions**
 
-### Check out my other projects
+### :link: Check out my other projects
 Check out my other projects at my GitHub Pages website [lzontar.github.io](https://lzontar.github.io):star:.
