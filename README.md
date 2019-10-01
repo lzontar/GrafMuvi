@@ -9,7 +9,7 @@ Documentation of [GrafMuvi](https://grafmuvi.docs.apiary.io/#) web service (deve
 - Test-driven development
 - Continuous integration
 - Logging services
-- NoSQL, graph database
+- Storing data with NoSQL, graph database
 ## :hammer_and_wrench: What tools will be used for development?
 ### Python
 As the main programming language we will use [Python](https://www.python.org/). With its grand community Python appears to be one of the main web development languages. It's a high level programming language, which allows developers to focus on core functionality of the application.
@@ -39,7 +39,7 @@ We want this project to have a cloud infrastructure and we will use [Google Clou
 1. Pull the latest version of repository
 2. Make changes:
    - Use test-driven development
-   - Test your code manually 
+   - Test your code manually
 3. After testing, commit to your forked repository
 4. Create a Pull Request to branch **contributions**
 
