@@ -1,0 +1,29 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "RESTful API for movie recommendations",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lzontar/GrafMuvi.git"
+  },
+  "keywords": [
+    "movie"
+  ],
+  "author": "lzontar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lzontar/GrafMuvi/issues"
+  },
+  "homepage": "https://github.com/lzontar/GrafMuvi#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mocha": "^6.2.1"
+  }
+}
