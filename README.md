@@ -27,8 +27,8 @@ Every service has to have a good documentation, where developers will be able to
 Logging is a very useful tool, because it can develop a better understanding of how a program works. In our project we will use [Logstash](https://www.elastic.co/products/logstash), which is an open source tool for collecting, parsing and storing logs for future.
 ### Neo4j
 One of the most fundamental parts of our RESTful API is our database. [Neo4j](https://neo4j.com/) is a graph, NoSQL database management system, which we will use in our project. Graph databases are databases that use graph structures to represent and store data.
-### Google Cloud
-We want this project to have a cloud infrastructure and we will use [Google Cloud](https://cloud.google.com/) computing services.
+### Microsoft Azure
+We want this project to have a cloud infrastructure and we will use [Microsoft Azure](https://azure.microsoft.com/en-us/) to implement it.
 
 ## :sos: Wish to contribute?
 ### Environment setup
