@@ -11,14 +11,18 @@ Documentation of [GrafMuvi](https://grafmuvi.docs.apiary.io/#) web service (deve
 - Logging services
 - Storing data with NoSQL, graph database
 ## :hammer_and_wrench: What tools will be used for development?
-### Python
-As the main programming language we will use [Python](https://www.python.org/). With its grand community Python appears to be one of the main web development languages. It's a high level programming language, which allows developers to focus on core functionality of the application.
+### JavaScript
+As the main programming language we will use [JavaScript](https://www.javascript.com/). With its grand community *JavaScript* appears to be one of the main (if not the main) web development languages.
+### Node.js
+[Nodej.js](https://nodejs.org/en/) is an open-source JavaScript run-time environment, that executes *JavaScript* outside of a browser. It runs server-side, which is convenient for developing RESTful APIs like our own.  
+### Express
+[Express](http://expressjs.com/) is a web framework for *Node.js*. It provides several HTTP utility methods and middleware and therefore makes creating an API easier.
 ### Flask
 It will be a lot easier developing a RESTful API with a web framework. Besides *Django*, [Flask]() is one of the most popular Python web frameworks. Due to the fact that it is much more minimal in design, *Flask* can achieve faster performance. It is also compatible with NoSQL databases, which we will use.
 ### Travis CI
 [Continuous integration](https://en.wikipedia.org/wiki/Continuous_integration) is a development practice which requires developers to commit their code to a shared repository very often (even several times a day). We will use [Travis CI](https://travis-ci.com/) as our continuous integration system.
-### pytest
-Test-driven development([TDD](https://en.wikipedia.org/wiki/Test-driven_development)) is software development process which encourages developers to first write tests and then the code. This has proven to fasten and improve the development cycle. We will use TDD in our project as well and [pytest](https://docs.pytest.org/en/latest/) is a framework, which makes writing tests in Python easy.
+### MochaJS
+Test-driven development([TDD](https://en.wikipedia.org/wiki/Test-driven_development)) is software development process which encourages developers to first write tests and then the code. This has proven to fasten and improve the development cycle. We will use TDD in our project as well and [MochaJS](https://mochajs.org/) is a framework, which makes writing tests in *JavaScript* easier.
 ### Apiary
 Every service has to have a good documentation, where developers will be able to see how to use the service. For this we will use [Apiary](https://apiary.io/), which is a platform for API design, development and documentation. We will use it for documentation.
 ### Logstash
@@ -31,10 +35,10 @@ We want this project to have a cloud infrastructure and we will use [Google Clou
 ## :sos: Wish to contribute?
 ### Environment setup
 1. Fork repository and pull the content
-2. Execute:
-```bash
-  pip install -r requirements.txt
-```
+2. Execute
+   ```
+   npm install
+   ```
 ### Make changes
 1. Pull the latest version of repository
 2. Make changes:
