@@ -19,8 +19,8 @@ As the main programming language we will use [JavaScript](https://www.javascript
 [Express](http://expressjs.com/) is a web framework for *Node.js*. It provides several HTTP utility methods and middleware and therefore makes creating an API easier.
 ### Travis CI
 [Continuous integration](https://en.wikipedia.org/wiki/Continuous_integration) is a development practice which requires developers to commit their code to a shared repository very often (even several times a day). We will use [Travis CI](https://travis-ci.com/) as our continuous integration system.
-### MochaJS
-Test-driven development([TDD](https://en.wikipedia.org/wiki/Test-driven_development)) is software development process which encourages developers to first write tests and then the code. This has proven to fasten and improve the development cycle. We will use TDD in our project as well and [MochaJS](https://mochajs.org/) is a framework, which makes writing tests in *JavaScript* easier.
+### Jest
+Test-driven development([TDD](https://en.wikipedia.org/wiki/Test-driven_development)) is software development process which encourages developers to first write tests and then the code. This has proven to fasten and improve the development cycle. We will use TDD in our project as well using [Jest](https://jestjs.io/) which is a JavaScript testing framework.
 ### Apiary
 Every service has to have a good documentation, where developers will be able to see how to use the service. For this we will use [Apiary](https://apiary.io/), which is a platform for API design, development and documentation. We will use it for documentation.
 ### Logstash
