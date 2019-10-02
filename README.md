@@ -24,7 +24,7 @@ Test-driven development([TDD](https://en.wikipedia.org/wiki/Test-driven_developm
 ### Apiary
 Every service has to have a good documentation, where developers will be able to see how to use the service. For this we will use [Apiary](https://apiary.io/), which is a platform for API design, development and documentation. We will use it for documentation.
 ### Logstash
-Logging is a very useful tool, because it can develop a better understanding of how a program works. In our project we will use [Logstash](https://www.elastic.co/products/logstash), which is an open source tool for collecting, parsing and storing logs for future.
+Logging is a very useful tool, because it can develop a better understanding of how a program works. In our project we will use [Logstash](https://www.elastic.co/products/logstash), which is an open source tool for collecting, parsing and storing logs for future and [Winston](https://www.npmjs.com/package/winston) as the logging library.
 ### Neo4j
 One of the most fundamental parts of our RESTful API is our database. [Neo4j](https://neo4j.com/) is a graph, NoSQL database management system, which we will use in our project. Graph databases are databases that use graph structures to represent and store data.
 ### Microsoft Azure
