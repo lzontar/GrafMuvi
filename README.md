@@ -17,8 +17,6 @@ As the main programming language we will use [JavaScript](https://www.javascript
 [Nodej.js](https://nodejs.org/en/) is an open-source JavaScript run-time environment, that executes *JavaScript* outside of a browser. It runs server-side, which is convenient for developing RESTful APIs like our own.  
 ### Express
 [Express](http://expressjs.com/) is a web framework for *Node.js*. It provides several HTTP utility methods and middleware and therefore makes creating an API easier.
-### Flask
-It will be a lot easier developing a RESTful API with a web framework. Besides *Django*, [Flask]() is one of the most popular Python web frameworks. Due to the fact that it is much more minimal in design, *Flask* can achieve faster performance. It is also compatible with NoSQL databases, which we will use.
 ### Travis CI
 [Continuous integration](https://en.wikipedia.org/wiki/Continuous_integration) is a development practice which requires developers to commit their code to a shared repository very often (even several times a day). We will use [Travis CI](https://travis-ci.com/) as our continuous integration system.
 ### MochaJS
