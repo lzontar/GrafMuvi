@@ -6,7 +6,8 @@ branches:
 
 node_js:
   - 5.12.0
-build:
-  ci:
-    - npm install
+
+before_script:
+  - npm install
+script:
     - npm test
