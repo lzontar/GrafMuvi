@@ -10,7 +10,7 @@
     "dev": "nodemon src/api/server.js localhost 3000",
     "build": "babel src --out-dir dist",
     "start": "node src/api/server.js",
-    "pretest": "npx eslint *.js",
+    "pretest": "npx eslint ./src/structure/*.js ./__test__/*.js ./src/api/*.js",
     "test": "jest"
   },
   "repository": {
@@ -38,6 +38,7 @@
     "jest": "^24.9.0",
     "logstash": "^3.0.0",
     "nodemon": "^1.19.3",
+    "npx": "^10.2.0",
     "supertest": "^4.0.2",
     "winston": "^3.2.1"
   }
