@@ -6,10 +6,10 @@ branches:
 
 node_js:
   - 5.12.0
-  build:
-    ci:
-      - npm install
-      - npm test
-    cache: true
-    cache_dir_list:
-      - ./node_modules
+build:
+  ci:
+    - npm install
+    - npm test
+  cache: true
+  cache_dir_list:
+    - ./node_modules
