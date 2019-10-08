@@ -10,7 +10,6 @@
     "dev": "nodemon src/api/server.js localhost 3000",
     "build": "babel src --out-dir dist",
     "start": "node src/api/server.js",
-    "pretest": "npx eslint ./src/structure/*.js ./__test__/*.js ./src/api/*.js",
     "test": "jest"
   },
   "repository": {
