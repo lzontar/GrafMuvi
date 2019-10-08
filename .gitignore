@@ -80,7 +80,7 @@ typings/
 # nuxt.js build output
 .nuxt
 
-# react / gatsby 
+# react / gatsby
 public/
 
 # vuepress build output
@@ -94,5 +94,8 @@ public/
 
 # DynamoDB Local files
 .dynamodb/
+
+# Dist folders
+dist/
 
 # End of https://www.gitignore.io/api/node
