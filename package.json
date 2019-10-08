@@ -10,6 +10,7 @@
     "dev": "nodemon src/api/server.js localhost 3000",
     "build": "babel src --out-dir dist",
     "start": "node src/api/server.js",
+    "pretest": "npx eslint ./src/structure/*.js ./src/api/*.js",
     "test": "jest"
   },
   "repository": {
@@ -34,6 +35,7 @@
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
     "eslint": "^6.5.1",
+    "eslint-plugin-jasmine": "^2.10.1",
     "jest": "^24.9.0",
     "logstash": "^3.0.0",
     "nodemon": "^1.19.3",

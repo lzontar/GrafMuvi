@@ -8,36 +8,24 @@ exports.connectDB = function(uri) {
 }
 
 exports.matchMovieRecommendationsById = function(session, id) {
-  if(session && id) {
-
-  }
-  return example;
+  return session && id ? example : undefined;
 }
 
 exports.matchMovieRecommendationsByTitle = function(session, title, year) {
-  if(session && title && year) {
-
-  }
-  return example;
+  return session && title && year ? example : undefined;
 }
 
 exports.postPromotionById = function(session, id1,id2, downgrade) {
-  if(session && id1 && id2) {
-
-  }
-  return {
+  return session && id1 && id2 && downgrade !== undefined ? {
     "id1" : "tt0765429",
     "id2" : "tt0353496",
     "promotions": 101,
-  };
+  } : undefined;
 }
 exports.postPromotionByTitle = function(session, title1, released1, title2, released2, downgrade) {
-  if(session && title1 && released1 && title2 && released2) {
-
-  }
-  return {
+  return session && title1 && released1 && title2 && released2 && downgrade !== undefined ? {
     "id1" : "tt0765429",
     "id2" : "tt0353496",
     "promotions": 99,
-  };
+  } : undefined;
 }

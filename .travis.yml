@@ -6,6 +6,3 @@ install:
 # command to run tests
 script:
   - npm test
-# environment
-env:
-  - DJANGO_VERSION=2.2.5

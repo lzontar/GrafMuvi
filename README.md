@@ -17,13 +17,16 @@ As the main programming language we will use [JavaScript](https://www.javascript
 [Nodej.js](https://nodejs.org/en/) is an open-source JavaScript run-time environment, that executes *JavaScript* outside of a browser. It runs server-side, which is convenient for developing RESTful APIs like our own.  
 ### Express
 [Express](http://expressjs.com/) is a web framework for *Node.js*. It provides several HTTP utility methods and middleware and therefore makes creating an API easier.
-### Travis CI
-[Continuous integration](https://en.wikipedia.org/wiki/Continuous_integration) is a development practice which requires developers to commit their code to a shared repository very often (even several times a day). We will use [Travis CI](https://travis-ci.com/) as our continuous integration system.
-### Jest
-Test-driven development([TDD](https://en.wikipedia.org/wiki/Test-driven_development)) is software development process which encourages developers to first write tests and then the code. This has proven to fasten and improve the development cycle. We will use TDD in our project as well using [Jest](https://jestjs.io/) which is a JavaScript testing framework.
+### Continuous integration
+[Continuous integration](https://en.wikipedia.org/wiki/Continuous_integration)(CI) is a development practice that is based on a frequent integration of code into a shared repository. Each commit to this repository is checked by an automated build. We will use [Travis CI](https://travis-ci.com/) and [Shippable](https://docs.gitlab.com/ee/ci/) as our continuous integration systems. *Travis CI* is a continuous integration service which provides easy GitHub integration using YAML configuration file. We will also use  *Shippable* because of its 
+### Test-driven development
+Test-driven development([TDD](https://en.wikipedia.org/wiki/Test-driven_development)) is software development process which encourages developers to first write tests and then the code. This has proven to fasten and improve the development cycle. We will use TDD in our project as well, using [Jest](https://jestjs.io/) which is a JavaScript testing framework. *Jest* will be used as the main TDD tool and we will use it for most unit tests and integration tests. Furthermore we will also use [supertest](https://www.npmjs.com/package/supertest) for E2E(END-To-END) testing of HTTP requests.
+### Building
+#### Babel
+#### Nodemon
 ### Apiary
 Every service has to have a good documentation, where developers will be able to see how to use the service. For this we will use [Apiary](https://apiary.io/), which is a platform for API design, development and documentation. We will use it for documentation.
-### Logstash
+### Logging
 Logging is a very useful tool, because it can develop a better understanding of how a program works. In our project we will use [Logstash](https://www.elastic.co/products/logstash), which is an open source tool for collecting, parsing and storing logs for future and [Winston](https://www.npmjs.com/package/winston) as the logging library.
 ### Neo4j
 One of the most fundamental parts of our RESTful API is our database. [Neo4j](https://neo4j.com/) is a graph, NoSQL database management system, which we will use in our project. Graph databases are databases that use graph structures to represent and store data.
@@ -41,7 +44,23 @@ We want this project to have a cloud infrastructure and we will use [Microsoft A
 1. Pull the latest version of repository
 2. Make changes:
    - Use test-driven development
+   - To run tests execute:
+     ```
+     npm test
+     ```
    - Test your code manually
+     - Run the server using *node*:
+       ```
+       npm start
+       ```
+     - Run the server in *dev* mode using [nodemon](https://nodemon.io/):
+       ```
+       npm run dev
+       ```
+   - Build project using [Babel](https://babeljs.io/):
+     ```
+     npm run build
+     ```
 3. After testing, commit to your forked repository
 4. Create a Pull Request to branch **contributions**
 

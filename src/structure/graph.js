@@ -5,11 +5,7 @@ var example = require('../../__test__/test_files/example.json');
 export class Graph {
 
   constructor(json) {
-    if(json) {
-
-    } else {
-
-    }
+    this.json = json;
     this.nodes = [];
   }
 
@@ -44,6 +40,6 @@ export class Graph {
   }
 
   equals(graph) {
-    return true;
+    return graph ? true : false;
   }
 }

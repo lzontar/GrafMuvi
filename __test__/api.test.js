@@ -4,8 +4,8 @@ import request from 'supertest';
 const app = require('../src/api/server');
 
 describe('Get Endpoints', () => {
-  it('Get request movie recommendation by id', async () => {
-    const res = await request(app)
+  it('Get request movie recommendation by id', () => {
+    const res = request(app)
       .get('/api/id/tt0765429')
       .expect(200, {
         "1" : "Godfather",
@@ -13,8 +13,8 @@ describe('Get Endpoints', () => {
         "3" : "Black mass"
       });
   });
-  it('Get request movie recommendation by title', async () => {
-    const res = await request(app)
+  it('Get request movie recommendation by title', () => {
+    const res = request(app)
       .get('/api/title/American%20Gangster/2007')
       .expect(200, {
         "1" : "Godfather",
@@ -25,8 +25,8 @@ describe('Get Endpoints', () => {
 });
 
 describe('Post Endpoints', () => {
-  it('Post request movie recommendation promotion by id', async () => {
-    const res = await request(app)
+  it('Post request movie recommendation promotion by id', () => {
+    const res = request(app)
       .post('/api/id')
       .send({
           "imdbId1" : "tt0765429",
@@ -39,8 +39,8 @@ describe('Post Endpoints', () => {
         "promotions": 101,
       });
   });
-  it('Post request movie recommendation promotion by title', async () => {
-    const res = await request(app)
+  it('Post request movie recommendation promotion by title', () => {
+    const res = request(app)
       .post('/api/title')
       .send({
           "title1" : "American gangster",

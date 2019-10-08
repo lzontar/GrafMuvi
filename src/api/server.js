@@ -3,7 +3,6 @@
 const express = require('express');
 
 const server = express();
-const port = 3000;
 server.use(express.json());
 
 server.get('/api/id/:imdbId', function(req, res) {
@@ -34,7 +33,4 @@ server.post('/api/title', (req, res) => {
     "promotions": 99,
   });
 });
-
-server.listen(port, () => console.log(`Server listening at port ${port}`));
-
 module.exports = server;

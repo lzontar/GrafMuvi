@@ -6,18 +6,18 @@ var example = require('./test_files/example.json');
 const database = require('../src/api/database');
 
 describe('MATCH', () => {
-  it('MATCH movie recommendations by id', async () => {
+  it('MATCH movie recommendations by id', () => {
     const session = database.connectDB("bolt://localhost:7687");
     expect(database.matchMovieRecommendationsById(session, "tt0765429")).toStrictEqual(example);
   });
-  it('MATCH movie recommendations by title', async () => {
+  it('MATCH movie recommendations by title', () => {
     const session = database.connectDB("bolt://localhost:7687");
     expect(database.matchMovieRecommendationsByTitle(session, "American gangster", 2007)).toStrictEqual(example);
   });
 });
 
 describe('UPDATE', () => {
-  it('UPDATE movie recommendation promotions by id', async () => {
+  it('UPDATE movie recommendation promotions by id', () => {
     const session = database.connectDB("bolt://localhost:7687");
     const expectedJson = {
       "id1" : "tt0765429",
@@ -25,8 +25,9 @@ describe('UPDATE', () => {
       "promotions": 101,
     };
     expect(database.postPromotionById(session, "tt0765429", "tt0353496", false)).toStrictEqual(expectedJson);
+    session.close();
   });
-  it('UPDATE movie recommendation promotions by title', async () => {
+  it('UPDATE movie recommendation promotions by title', () => {
     const session = database.connectDB("bolt://localhost:7687");
     const expectedJson = {
       "id1" : "tt0765429",
