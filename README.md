@@ -18,12 +18,9 @@ As the main programming language we will use [JavaScript](https://www.javascript
 ### Express
 [Express](http://expressjs.com/) is a web framework for *Node.js*. It provides several HTTP utility methods and middleware and therefore makes creating an API easier.
 ### Continuous integration
-[Continuous integration](https://en.wikipedia.org/wiki/Continuous_integration)(CI) is a development practice that is based on a frequent integration of code into a shared repository. Each commit to this repository is checked by an automated build. We will use [Travis CI](https://travis-ci.com/) and [Shippable](https://docs.gitlab.com/ee/ci/) as our continuous integration systems. *Travis CI* is a continuous integration service which provides easy GitHub integration using YAML configuration file. We will also use  *Shippable* because of its 
+[Continuous integration](https://en.wikipedia.org/wiki/Continuous_integration)(CI) is a development practice that is based on a frequent integration of code into a shared repository. Each commit to this repository is checked by an automated build. We will use [Travis CI](https://travis-ci.com/) and [Shippable](https://app.shippable.com/) as our continuous integration systems. *Travis CI* is a continuous integration service which provides easy GitHub integration using YAML configuration file. We will also use  *Shippable* because of its fast build executions and easy integration of *Docker Containers*. It is also defined with YAML configuration file just as *Travis CI*. Both systems also execute build after each commit and support connection with *Neo4j* database which we are using.
 ### Test-driven development
 Test-driven development([TDD](https://en.wikipedia.org/wiki/Test-driven_development)) is software development process which encourages developers to first write tests and then the code. This has proven to fasten and improve the development cycle. We will use TDD in our project as well, using [Jest](https://jestjs.io/) which is a JavaScript testing framework. *Jest* will be used as the main TDD tool and we will use it for most unit tests and integration tests. Furthermore we will also use [supertest](https://www.npmjs.com/package/supertest) for E2E(END-To-END) testing of HTTP requests.
-### Building
-#### Babel
-#### Nodemon
 ### Apiary
 Every service has to have a good documentation, where developers will be able to see how to use the service. For this we will use [Apiary](https://apiary.io/), which is a platform for API design, development and documentation. We will use it for documentation.
 ### Logging
@@ -44,25 +41,32 @@ We want this project to have a cloud infrastructure and we will use [Microsoft A
 1. Pull the latest version of repository
 2. Make changes:
    - Use test-driven development
-   - To run tests execute:
-     ```
-     npm test
-     ```
-   - Test your code manually
-     - Run the server using *node*:
-       ```
-       npm start
-       ```
-     - Run the server in *dev* mode using [nodemon](https://nodemon.io/):
-       ```
-       npm run dev
-       ```
-   - Build project using [Babel](https://babeljs.io/):
-     ```
-     npm run build
-     ```
+   - Use scripts that are described below
+   - Test code manually
 3. After testing, commit to your forked repository
 4. Create a Pull Request to branch **contributions**
+#### Scripts
+To run tests using *Jest* run:
+```
+npm test
+```
+It also executes *pretest* script, which checks coding style using [StandardJS](https://standardjs.com/).
 
+[Babel](https://babeljs.io/) is JavaScript tool for compiling code into a backwards compatible version of JavaScript. We will use it for building project. To build project run:
+```
+npm run build
+```
+It executes ```babel src --out-dir dist``` -> builds /src folder to /dist folder.
+
+[nodemon](https://nodemon.io/) is a tool that improves developing speed by automatically restarting node application every time file or directory changes are detected. To run project in *dev* mode run:
+```
+npm run dev
+```
+It executes ```nodemon src/api/server.js localhost 3000``` -> starts *nodemon* localhost server using port 3000.
+
+We will be using simple *NodeJS* for normal start of the server (```node src/api/server.js```):
+```
+npm start
+```
 ### :link: Check out my other projects
 Check out my other projects at my GitHub Pages website [lzontar.github.io](https://lzontar.github.io):star:.
