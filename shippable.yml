@@ -10,6 +10,3 @@ build:
   ci:
     - npm install
     - npm test
-  cache: true
-  cache_dir_list:
-    - ./node_modules
