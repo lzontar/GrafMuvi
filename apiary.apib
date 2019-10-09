@@ -30,7 +30,7 @@ All informations about movies will be acquired using [OMDb API](https://www.omdb
 **Movie properties:**
 
 - imdbId `(Number)` : Unique IMDB identifier. 
-- name `(String)` : Movie name.
+- title `(String)` : Movie title.
 - imdbRating `(Number)` :  Movie IMDB rating
 - year `(Number)` :  The year movie was made
 
@@ -42,10 +42,10 @@ Properties:
 - promotions `(Number)` : Number of requests of promoting similarity between the connected movies. 
 
 
-## Http requests [/mov/conn]
+## Http requests [/]
 
 
-### Retrieve movie recommendation list by IMDB ID [GET /{imdbId}]
+### Retrieve movie recommendation list by IMDB ID [GET /id/{imdbId}]
 + Parameters
     + imdbId (Number) ... Unique IMDB movie identifier. 
 
@@ -68,9 +68,9 @@ Properties:
         {
             "error": "error.unauthorized"
         }
-### Retrieve movie recommendation list by movie name [GET /{name}/{year}]
+### Retrieve movie recommendation list by movie title [GET /title/{title}/{year}]
 + Parameters
-    + name (String) ... Movie name
+    + title (String) ... Movie title
     + year (Number) ... The year movie was made
 
 + Response 200 (application/json)
@@ -92,27 +92,50 @@ Properties:
         {
             "error": "error.unauthorized"
         }
-### Update a movie recommendation [POST /{imdbId}/{imdbIdSim}/{?downgrade}]
-+ Parameters
-    + imdbId (String) ... Unique IMDB movie identifier. 
-    + imdbIdSim (String) ... Unique IMDB movie identifier of a movie similar to the one with IMDB ID imdbId. 
-    + downgrade (optional, Boolean) ... Timestamp in ISO 8601 format: `YYYY-MM-DDTHH:MM:SSZ` Only users updated at or after this time are returned.
+### Update a movie recommendation by IMDB ID [POST /id]
 
 + Request (application/json)
 
         {
-            "imdbId" : "tt0765429"
-            "imdbIdSim" : "tt0353496"
-            "downgrade": False,
+            "imdbId1" : "tt0765429"
+            "imdbId2" : "tt0353496"
+            "downgrade": false,
         }
 
 + Response 200 (application/json)
 
          {
-            "name" : "American gangster"
-            "nameSim" : "Godfather"
-            "promotions": 0,
+            "title1" : "American gangster"
+            "title2" : "Godfather"
+            "promotions": 101,
         }
+
+
++ Response 401 (application/json)
+
+        {
+            "error": "error.unauthorized"
+        }
+### Update a movie recommendation by title [POST /title]
+
++ Request (application/json)
+
+        {
+            "title1" : "American gangster"
+            "released1" : 2007
+            "title2" : "Godfather"
+            "released2" : 1991
+            "downgrade": true,
+        }
+
++ Response 200 (application/json)
+
+         {
+            "title1" : "American gangster"
+            "title2" : "Godfather"
+            "promotions": 99,
+        }
+
 
 
 + Response 401 (application/json)
