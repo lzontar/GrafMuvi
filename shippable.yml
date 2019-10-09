@@ -8,6 +8,9 @@ node_js:
   - 10.16.2
 
 build:
+  cache: true
+  cache_dir_list:
+    - /node_modules
   ci:
     - npm install
     - npm test
