@@ -1,6 +1,7 @@
 # :movie_camera: GrafMuvi
 ## :bulb: What's the idea?
 With more and more movies available the answer to "What movie should I watch :interrobang:" isn't getting any simpler. That is why I decided to develop **GrafMuvi**, a web service or more precisely a movie recommendation *RESTful API*, which will support creating, posting, deleting and retrieving movie recommendations. But where will we get the data? Service will store data about movie recommendations using graph structures, because the recommendation system will be based on associations. *GrafMuvi* will support the ability to create and post a promotion of a connection between two movies and store the number of these promotions. The main objective is retrieving a list of similar movies to the one we already watched, which will be ordered from the most possible candidate to the least possible. Sort will be based on the distance between two nodes in our graph database and the number of associations/promotions. Service will also support downgrading and eventually deleting a connection between movies if enough requests of downgrading will be made.
+
 Check out the [example](https://github.com/lzontar/GrafMuvi/blob/master/Example.pdf) of how service can be used.
 ## :page_with_curl: How can I use it?
 Documentation of [GrafMuvi](https://grafmuvi.docs.apiary.io/#) web service (developed using *Apiary*).
@@ -45,26 +46,32 @@ We want this project to have a cloud infrastructure and we will use [Microsoft A
    - Test code manually
 3. After testing, commit to your forked repository
 4. Create a Pull Request to branch **contributions**
-#### Scripts
+### Scripts
+For repetitive tasks like testing, building and starting a server we can define scripts to automate these tasks. NPM uses *package.json* to recognize and run the scripts. As it seems appropriate to automate the development process as much as possible, we will include some scripts in our project as well.
+
+#### Running tests
 To run tests using *Jest* run:
 ```
 npm test
 ```
 It also executes *pretest* script, which checks coding style using [StandardJS](https://standardjs.com/).
 
-[Babel](https://babeljs.io/) is JavaScript tool for compiling code into a backwards compatible version of JavaScript. We will use it for building project. To build project run:
+#### Running build
+[Babel](https://babeljs.io/) is JavaScript tool for compiling code into a backwards compatible version of JavaScript. We will use it in build to compile our ES6 code. To build project run:
 ```
 npm run build
 ```
 It executes ```babel src --out-dir dist``` -> builds /src folder to /dist folder.
 
+#### Running server in development mode
 [nodemon](https://nodemon.io/) is a tool that improves developing speed by automatically restarting node application every time file or directory changes are detected. To run project in *dev* mode run:
 ```
 npm run dev
 ```
 It executes ```nodemon src/api/server.js localhost 3000``` -> starts *nodemon* localhost server using port 3000.
 
-We will be using simple *NodeJS* for normal start of the server (```node src/api/server.js```):
+#### Running server
+We will be using simple *NodeJS* for normal start of the server (```node src/api/server.js```). Start server by executing:
 ```
 npm start
 ```
