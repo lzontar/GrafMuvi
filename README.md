@@ -1,8 +1,8 @@
 # :movie_camera: GrafMuvi
-License: [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-Version: ![version](https://img.shields.io/badge/version-0.4.0-blue)
-Travis Build: [![Build Status](https://travis-ci.com/lzontar/GrafMuvi.svg?branch=master)](https://travis-ci.com/lzontar/GrafMuvi)
-Shippable: [![Run Status](https://api.shippable.com/projects/5d950376945f6b00077d2707/badge?branch=master)](https://app.shippable.com/github/lzontar/GrafMuvi/dashboard)
+- License: [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+- Version: ![version](https://img.shields.io/badge/version-0.4.1-blue)
+- Travis Build: [![Build Status](https://travis-ci.com/lzontar/GrafMuvi.svg?branch=master)](https://travis-ci.com/lzontar/GrafMuvi)
+- Shippable: [![Run Status](https://api.shippable.com/projects/5d950376945f6b00077d2707/badge?branch=master)](https://app.shippable.com/github/lzontar/GrafMuvi/dashboard)
 ## :bulb: What's the idea?
 With more and more movies available the answer to "What movie should I watch :interrobang:" isn't getting any simpler. That is why I decided to develop **GrafMuvi**, a web service or more precisely a movie recommendation *RESTful API*, which will support creating, posting, deleting and retrieving movie recommendations. But where will we get the data? Service will store data about movie recommendations using graph structures, because the recommendation system will be based on associations. *GrafMuvi* will support the ability to create and post a promotion of a connection between two movies and store the number of these promotions. The main objective is retrieving a list of similar movies to the one we already watched, which will be ordered from the most possible candidate to the least possible. Sort will be based on the distance between two nodes in our graph database and the number of associations/promotions. Service will also support downgrading and eventually deleting a connection between movies if enough requests of downgrading will be made.
 
