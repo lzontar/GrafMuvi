@@ -39,5 +39,8 @@
     "npx": "^10.2.0",
     "standard": "^14.3.1",
     "supertest": "^4.0.2"
+  },
+  "standard": {
+    "env": [ "jest" ]
   }
 }
