@@ -11,3 +11,8 @@ cache: npm
 # command to run tests
 script:
   - npm test
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: "155046e8-2f0c-41d3-8483-8ca4265ce610"
