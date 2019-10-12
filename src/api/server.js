@@ -1,10 +1,14 @@
 // Author: @lzontar
-
 const express = require('express')
 
-const server = express()
-server.use(express.json())
+const server = express();
+server.use(express.json());
 
+server.get('/', function (req, res) {
+  res.status(200).json({
+    "status":"OK"
+  })
+});
 server.get('/api/id/:imdbId', function (req, res) {
   res.status(200).json({
     1: 'Godfather',
