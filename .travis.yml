@@ -1,18 +1,13 @@
 language: node_js
-
 node_js:
-  - 10.16.2
-
+- 10.16.2
 install:
-    - npm install
-
+- npm install
 cache: npm
-
-# command to run tests
 script:
-  - npm test
-
+- npm test
 deploy:
   provider: heroku
   api_key:
-    secure: "155046e8-2f0c-41d3-8483-8ca4265ce610"
+    secure: yu5mFXNn+u4yYEVImFRpS2mLf76XyFKViUtu2czyaKs0/Fep0fCP0tN5SO7Nx759qwrAbVfctb5GJ666UA5WDOxe6GY9y076r56MOa2fPgucWYBGKT5sE3Eb72/zzpDIePGYXCuaaa9U/ZsNviM9WY1/XN07iV++3S5ktKwW1qRWJZaLbS8E1wa2oeLylrd3FPGZFYPiqAsMtQVhJEg2TRCwXrmB+nn/FAdNKQcSpzPdug+0lXnw24jQ3X4MeQ6oc98nQD9OpIxG7eBB+TgCQaF2YDcIe6FEegwcNkoGsV+8i4t2Eo08U8yeqVuTYPFj6UoMotKBsgO9KeNk9B6Rn6YQShp4IpZk311Vz7QM6zIzUiHMhKlEbaByIiHe43gdIX1kFlG2jtZpzkW5cW5Oeo/9tIGG5xmjyq36cR9J6RcVn2hiz8jZUjmUxCtklD9IpE+qS4j12spuICMh+q6D0y0NWCVyq/qW+Pb6FNdIWhVCK5nrNtXDrHID9Ot76teuWVZE04ryI7xfuCBIQN9Csg9+9B46u7F2N/p0BpVroLINpUlPHIfbtnd87ezuY6znfXaGXbdZuAnrjo2UoJQGD/n9Jas9hzK9j1nEPs+uUOaAUPZmRefwBNY68O2OJBaoVJ/W9zJQtNHbglFiKIqTegLu3qUOOQu3W3Wy3tklUmY=
+  strategy: git
