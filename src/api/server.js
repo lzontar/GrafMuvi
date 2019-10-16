@@ -13,12 +13,13 @@ server.get('/', function (req, res) {
   })
 })
 
-server.get('/api/id/:imdbId', function (req, res) {
-  res.status(200).json({
-    1: 'Godfather',
-    2: 'Training day',
-    3: 'Black mass'
-  })
+server.get('/api/id/:imdbId', async function (req, res) {
+  logger.info('Request parameters: ' + req.params['imdbId']);
+
+  dbResult = database.matchMovieRecommendationsById(neoSession, req.params['imdbId'], function(dbResult, status) {
+    logger.info(JSON.stringify(dbResult));
+    res.status(status).json(dbResult)
+  });
 })
 server.get('/api/title/:title/:year', (req, res) => {
   return res.status(200).json({
