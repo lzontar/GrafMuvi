@@ -16,7 +16,7 @@ exports.matchMovieRecommendationsById = function (session, id, callback) {
       // On result, get count from first record
       const count = result.records.length;
       // Log response
-      // logger.info(result.records);
+       logger.info(result.records);
       callback(result.records, 200);
   })
   .catch(e => {
@@ -26,9 +26,25 @@ exports.matchMovieRecommendationsById = function (session, id, callback) {
   })
 }
 
-exports.matchMovieRecommendationsByTitle = function (session, title, year) {
-  return session && title && year ? example : undefined
+exports.matchMovieRecommendationsByTitle = function (session, title, released, callback) {
+  params = { title: title, released: released };
+  console.log(params['released']);
+  const cypher = 'MATCH path = (x:Movie {title: {title}, released: toInt({released})})-[:SIMILAR*]->(y:Movie) WHERE size(nodes(path)) = size(apoc.coll.toSet(nodes(path))) UNWIND relationships(path) AS  similar RETURN {path: path, length: length(path), sum_promotions: sum(similar.promotions)} as n ORDER BY n.length, n.sum_promotions'
+  session.run(cypher, params)
+  .then(result => {
+      // On result, get count from first record
+      const count = result.records.length;
+      // Log response
+       logger.info(result.records);
+      callback(result.records, 200);
+  })
+  .catch(e => {
+      // Output the error
+      logger.error(e);
+      callback({error: e}, 404);
+  })
 }
+
 
 exports.postPromotionById = function (session, id1, id2, downgrade) {
   return session && id1 && id2 && downgrade !== undefined ? {
