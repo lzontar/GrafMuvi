@@ -1,14 +1,29 @@
 // Author: @lzontar
 const neo4j = require('neo4j-driver').v1
 var example = require('../../__test__/test_files/example.json')
+const logger = require('../logging/logger')
 
 exports.connectDB = function (uri) {
   const driver = neo4j.driver(uri, neo4j.auth.basic('neo4j', 'TEST-Movie'))
   return driver
 }
 
-exports.matchMovieRecommendationsById = function (session, id) {
-  return session && id ? example : undefined
+exports.matchMovieRecommendationsById = function (session, id, callback) {
+  params = { imdbId: id };
+  const cypher = 'MATCH path = (x:Movie {imdbId: {imdbId}})-[:SIMILAR*]->(y:Movie) WHERE size(nodes(path)) = size(apoc.coll.toSet(nodes(path))) UNWIND relationships(path) AS  similar RETURN {path: path, length: length(path), sum_promotions: sum(similar.promotions)} as n ORDER BY n.length, n.sum_promotions'
+  session.run(cypher, params)
+  .then(result => {
+      // On result, get count from first record
+      const count = result.records.length;
+      // Log response
+      // logger.info(result.records);
+      callback(result.records, 200);
+  })
+  .catch(e => {
+      // Output the error
+      logger.error(e);
+      callback({error: e}, 404);
+  })
 }
 
 exports.matchMovieRecommendationsByTitle = function (session, title, year) {
