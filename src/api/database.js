@@ -3,7 +3,7 @@ const neo4j = require('neo4j-driver').v1
 var example = require('../../__test__/test_files/example.json')
 
 exports.connectDB = function (uri) {
-  const driver = neo4j.driver(uri, neo4j.auth.basic('neo4j', 'neo4j'))
+  const driver = neo4j.driver(uri, neo4j.auth.basic('neo4j', 'TEST-Movie'))
   return driver
 }
 
