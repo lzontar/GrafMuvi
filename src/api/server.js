@@ -1,8 +1,11 @@
 // Author: @lzontar
 const express = require('express')
-
+const database = require('./database')
+const logger = require('../logging/logger')
 const server = express()
 server.use(express.json())
+
+let neoSession = null;
 
 server.get('/', function (req, res) {
   res.status(200).json({
@@ -38,4 +41,12 @@ server.post('/api/title', (req, res) => {
     promotions: 99
   })
 })
+
+server.listen(3000, () =>
+  {
+    const neoDriver = database.connectDB('bolt://localhost:7687');
+    neoSession = neoDriver.session();
+  }
+);
+
 module.exports = server
