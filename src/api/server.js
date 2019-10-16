@@ -13,14 +13,24 @@ server.get('/', function (req, res) {
   })
 })
 
-server.get('/api/id/:imdbId', async function (req, res) {
-  logger.info('Request parameters: ' + req.params['imdbId']);
+server.get('/api/id/:imdbId', (req, res) => {
+  logger.info('Request parameters: ' + req.params['imdbId'])
 
   dbResult = database.matchMovieRecommendationsById(neoSession, req.params['imdbId'], function(dbResult, status) {
     logger.info(JSON.stringify(dbResult));
     res.status(status).json(dbResult)
   });
 })
+
+server.get('/api/title/:title/:released', (req, res) => {
+  logger.info('Request parameters: ' + req.params['title'] + ', ' + req.params['released'])
+  console.log("Soy aqui")
+  dbResult = database.matchMovieRecommendationsByTitle(neoSession, req.params['title'], req.params['released'],function(dbResult, status) {
+    logger.info(JSON.stringify(dbResult));
+    res.status(status).json(dbResult)
+  });
+})
+
 server.get('/api/title/:title/:year', (req, res) => {
   return res.status(200).json({
     1: 'Godfather',
