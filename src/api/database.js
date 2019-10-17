@@ -28,7 +28,7 @@ exports.matchMovieRecommendationsById = function (session, id, callback) {
 exports.matchMovieRecommendationsByTitle = function (session, title, released, callback) {
   const params = { title: title, released: released }
 
-  const cypher = 'MATCH path = (x:Movie {title: released: toInt({released})})-[:SIMILAR*]->(y:Movie) WHERE size(nodes(path)) = size(apoc.coll.toSet(nodes(path))) UNWIND relationships(path) AS  similar RETURN {path: path, length: length(path), sum_promotions: sum(similar.promotions)} as n ORDER BY n.length, n.sum_promotions'
+  const cypher = 'MATCH path = (x:Movie {title: {title}, released: toInt({released})})-[:SIMILAR*]->(y:Movie) WHERE size(nodes(path)) = size(apoc.coll.toSet(nodes(path))) UNWIND relationships(path) AS  similar RETURN {path: path, length: length(path), sum_promotions: sum(similar.promotions)} as n ORDER BY n.length, n.sum_promotions'
   session.run(cypher, params)
     .then(result => {
       // Log response
@@ -129,4 +129,31 @@ exports.postPromotionByTitle = function (session, request, callback) {
     const error = { error: 'error.unauthorized' }
     callback(error, 401)
   })
+}
+
+exports.initTestData = function (session) {
+  const cypher = 'MERGE (m1:Movie{title:\'test1\', released: 2019, imdbId: \'123\'}) MERGE (m2:Movie{title:\'test2\', released: 2019, imdbId: \'456\'}) MERGE (m3:Movie{title:\'test3\', released: 2019, imdbId: \'789\'}) MERGE (m4:Movie{title:\'test4\', released: 2019, imdbId: \'101112\'}) MERGE (m1)-[s1:SIMILAR]->(m2)-[s2:SIMILAR]->(m1) MERGE (m1)-[s3:SIMILAR]->(m3)-[s4:SIMILAR]->(m1) MERGE (m1)-[s5:SIMILAR]->(m4)-[s6:SIMILAR]->(m1) SET s1.promotions = 100, s2.promotions = 100, s3.promotions = 50, s4.promotions = 50, s5.promotions = 25, s6.promotions = 25'
+  session.run(cypher)
+    .then(result => {
+      // Log response
+      logger.info(JSON.stringify(result.records))
+    })
+    .catch(e => {
+      // Output the error
+      logger.error(e)
+    })
+}
+exports.clearTestData = function (session, driver, callback) {
+  const cypher = 'MATCH (x:Movie)-[s:SIMILAR]->(y:Movie) WHERE x.imdbId=\'123\' OR x.imdbId=\'456\' OR x.imdbId=\'789\' OR x.imdbId=\'101112\' DELETE s DELETE x'
+  session.run(cypher)
+    .then(result => {
+      // Log response
+      logger.info(JSON.stringify(result))
+      callback(session, driver)
+    })
+    .catch(e => {
+      // Output the error
+      logger.error(e)
+      callback(session, driver)
+    })
 }
