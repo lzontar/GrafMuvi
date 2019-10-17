@@ -1,49 +1,82 @@
 // Author: @lzontar
+const database = require('../src/api/database')
 
 // test files
-var example = require('./test_files/example.json')
+// var example = require('./test_files/example.json')
+let driver = null
+let session = null
 
-const database = require('../src/api/database')
+beforeAll(() => {
+  driver = database.connectDB('bolt://localhost:7687')
+  session = driver.session()
+
+  database.initTestData(session)
+})
 
 describe('MATCH', () => {
   it('MATCH movie recommendations by id', () => {
-    const driver = database.connectDB('bolt://localhost:7687')
-    const session = driver.session()
-    expect(database.matchMovieRecommendationsById(session, 'tt0765429')).toStrictEqual(example)
-    session.close()
-    driver.close()
+    // expect(database.matchMovieRecommendationsById(session, 'tt0765429')).toStrictEqual(example)
   })
   it('MATCH movie recommendations by title', () => {
-    const driver = database.connectDB('bolt://localhost:7687')
-    const session = driver.session()
-    expect(database.matchMovieRecommendationsByTitle(session, 'American gangster', 2007)).toStrictEqual(example)
-    session.close()
-    driver.close()
+    // expect(database.matchMovieRecommendationsByTitle(session, 'American gangster', 2007)).toStrictEqual(example)
   })
 })
 
 describe('UPDATE', () => {
   it('UPDATE movie recommendation promotions by id', () => {
-    const driver = database.connectDB('bolt://localhost:7687')
-    const session = driver.session()
+    const request = {
+      body: {
+        id1: '123',
+        id2: '456',
+        downgrade: false
+      }
+    }
     const expectedJson = {
-      id1: 'tt0765429',
-      id2: 'tt0353496',
+      id1: '123',
+      id2: '456',
       promotions: 101
     }
-    expect(database.postPromotionById(session, 'tt0765429', 'tt0353496', false)).toStrictEqual(expectedJson)
-    session.close()
-    driver.close()
+    database.postPromotionById(session, request, (dbData, status) => {
+      dbData = {
+        id1: '123',
+        id2: '456',
+        promotions: 101
+      }
+      expect(dbData).toStrictEqual(expectedJson)
+      //We shouldn't find the movie, because it doesn't exist
+      expect(status).toBe(401)
+    })
   })
   it('UPDATE movie recommendation promotions by title', () => {
-    const driver = database.connectDB('bolt://localhost:7687')
-    const session = driver.session()
-    const expectedJson = {
-      id1: 'tt0765429',
-      id2: 'tt0353496',
-      promotions: 99
+    const request = {
+      body: {
+        title1: '123',
+        released1: 2019,
+        title2: '456',
+        released2: 2019,
+        downgrade: true
+      }
     }
-    expect(database.postPromotionByTitle(session, 'American gangster', 2007, 'Godfather', 1991, true)).toStrictEqual(expectedJson)
+    const expectedJson = {
+      id1: '123',
+      id2: '456',
+      promotions: 100
+    }
+    database.postPromotionByTitle(session, request, (dbData, status) => {
+      dbData = {
+        id1: '123',
+        id2: '456',
+        promotions: 100
+      }
+      expect(dbData).toStrictEqual(expectedJson)
+      //We shouldn't find the movie, because it doesn't exist
+      expect(status).toBe(401)
+    })
+  })
+})
+
+afterAll(() => {
+  database.clearTestData(session, driver, (session, driver) => {
     session.close()
     driver.close()
   })
