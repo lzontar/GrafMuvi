@@ -1,0 +1,12 @@
+[
+  {
+    "keys":["m1","m2","s"],
+    "length":3,
+    "_fields":[
+      {"identity":{"low":22,"high":0},"labels":["Movie"],"properties":{"title":"Titanic","imdbId":"tt0120338","released":{"low":1997,"high":0}}},
+      {"identity":{"low":80,"high":0},"labels":["Movie"],"properties":{"title":"Notebook","imdbId":"tt0332280","released":2004}},
+      {"identity":{"low":131,"high":0},"start":{"low":80,"high":0},"end":{"low":22,"high":0},"type":"SIMILAR","properties":{"promotions":2}}
+    ],
+    "_fieldLookup":{"m1":0,"m2":1,"s":2}
+  }
+]
