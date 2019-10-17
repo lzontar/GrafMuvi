@@ -42,11 +42,12 @@ server.post('/api/post/id', (req, res) => {
 })
 
 server.post('/api/post/title/year', (req, res) => {
-  return res.status(200).json({
-    id1: 'tt0765429',
-    id2: 'tt0353496',
-    promotions: 99
-  })
+  logger.info('Request body: ' + JSON.stringify(req.body))
+
+  dbResult = database.postPromotionByTitle(neoSession, req, function(dbResult, status) {
+    logger.info(JSON.stringify(dbResult));
+    res.status(status).json(dbResult)
+  });
 })
 
 server.listen(3000, () =>
