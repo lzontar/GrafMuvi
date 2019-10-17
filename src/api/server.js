@@ -1,7 +1,11 @@
 // Author: @lzontar
 const express = require('express')
 const database = require('./database')
+
 const logger = require('../logging/logger')
+
+const graph = require('../structure/graph')
+
 const app = express()
 
 app.use(express.json())
@@ -20,11 +24,7 @@ app.get('/api/id/:imdbId', (req, res) => {
 
   database.matchMovieRecommendationsById(neoSession, req.params.imdbId, function (dbResult, status) {
     logger.info(JSON.stringify(dbResult))
-    res.status(200).json({
-      1: 'test2',
-      2: 'test3',
-      3: 'test4'
-    })
+    res.status(200).json(graph.toMovieRecommendationList(dbResult))
   })
 })
 
@@ -33,11 +33,7 @@ app.get('/api/title/:title/:released', (req, res) => {
 
   database.matchMovieRecommendationsByTitle(neoSession, req.params.title, req.params.released, function (dbResult, status) {
     logger.info(JSON.stringify(dbResult))
-    res.status(200).json({
-      1: 'test2',
-      2: 'test3',
-      3: 'test4'
-    })
+    res.status(200).json(graph.toMovieRecommendationList(dbResult))
   })
 })
 
@@ -46,11 +42,7 @@ app.post('/api/post/id', (req, res) => {
 
   database.postPromotionById(neoSession, req, function (dbResult, status) {
     logger.info(JSON.stringify(dbResult))
-    res.status(200).json({
-      id1: '123',
-      id2: '456',
-      promotions: 101
-    })
+    res.status(200).json(graph.toRelationship(dbResult))
   })
 })
 
@@ -59,16 +51,11 @@ app.post('/api/post/title/year', (req, res) => {
 
   database.postPromotionByTitle(neoSession, req, function (dbResult, status) {
     logger.info(JSON.stringify(dbResult))
-    res.status(200).json({
-      id1: '123',
-      id2: '456',
-      promotions: 99
-    })
+    res.status(200).json(graph.toRelationship(dbResult))
   })
 })
 
-const server = app.listen(3000, () => {
-}
+const server = app.listen(3000, () => {}
 )
 var exportObj = {
   app: app,
