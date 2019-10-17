@@ -3,6 +3,7 @@ const express = require('express')
 const database = require('./database')
 const logger = require('../logging/logger')
 const server = express()
+
 server.use(express.json())
 
 let neoSession = null;
@@ -24,28 +25,23 @@ server.get('/api/id/:imdbId', (req, res) => {
 
 server.get('/api/title/:title/:released', (req, res) => {
   logger.info('Request parameters: ' + req.params['title'] + ', ' + req.params['released'])
-  console.log("Soy aqui")
+
   dbResult = database.matchMovieRecommendationsByTitle(neoSession, req.params['title'], req.params['released'],function(dbResult, status) {
     logger.info(JSON.stringify(dbResult));
     res.status(status).json(dbResult)
   });
 })
 
-server.get('/api/title/:title/:year', (req, res) => {
-  return res.status(200).json({
-    1: 'Godfather',
-    2: 'Training day',
-    3: 'Black mass'
-  })
+server.post('/api/post/id', (req, res) => {
+  logger.info('Request body: ' + JSON.stringify(req.body))
+
+  dbResult = database.postPromotionById(neoSession, req, function(dbResult, status) {
+    logger.info(JSON.stringify(dbResult));
+    res.status(status).json(dbResult)
+  });
 })
-server.post('/api/id', (req, res) => {
-  return res.status(200).json({
-    id1: 'tt0765429',
-    id2: 'tt0353496',
-    promotions: 101
-  })
-})
-server.post('/api/title', (req, res) => {
+
+server.post('/api/post/title/year', (req, res) => {
   return res.status(200).json({
     id1: 'tt0765429',
     id2: 'tt0353496',
