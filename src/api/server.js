@@ -2,59 +2,67 @@
 const express = require('express')
 const database = require('./database')
 const logger = require('../logging/logger')
-const server = express()
+const app = express()
 
-server.use(express.json())
+app.use(express.json())
 
-let neoSession = null;
+const neoDriver = null
+const neoSession = null
 
-server.get('/', function (req, res) {
+app.get('/', function (req, res) {
   res.status(200).json({
     status: 'OK'
   })
 })
 
-server.get('/api/id/:imdbId', (req, res) => {
-  logger.info('Request parameters: ' + req.params['imdbId'])
+app.get('/api/id/:imdbId', (req, res) => {
+  logger.info('Request parameters: ' + req.params.imdbId)
 
-  dbResult = database.matchMovieRecommendationsById(neoSession, req.params['imdbId'], function(dbResult, status) {
-    logger.info(JSON.stringify(dbResult));
+  database.matchMovieRecommendationsById(neoSession, req.params.imdbId, function (dbResult, status) {
+    logger.info(JSON.stringify(dbResult))
     res.status(status).json(dbResult)
-  });
+  })
 })
 
-server.get('/api/title/:title/:released', (req, res) => {
-  logger.info('Request parameters: ' + req.params['title'] + ', ' + req.params['released'])
+app.get('/api/title/:title/:released', (req, res) => {
+  logger.info('Request parameters: ' + req.params.title + ', ' + req.params.released)
 
-  dbResult = database.matchMovieRecommendationsByTitle(neoSession, req.params['title'], req.params['released'],function(dbResult, status) {
-    logger.info(JSON.stringify(dbResult));
+  database.matchMovieRecommendationsByTitle(neoSession, req.params.title, req.params.released, function (dbResult, status) {
+    logger.info(JSON.stringify(dbResult))
     res.status(status).json(dbResult)
-  });
+  })
 })
 
-server.post('/api/post/id', (req, res) => {
+app.post('/api/post/id', (req, res) => {
   logger.info('Request body: ' + JSON.stringify(req.body))
 
-  dbResult = database.postPromotionById(neoSession, req, function(dbResult, status) {
-    logger.info(JSON.stringify(dbResult));
+  database.postPromotionById(neoSession, req, function (dbResult, status) {
+    logger.info(JSON.stringify(dbResult))
     res.status(status).json(dbResult)
-  });
+  })
 })
 
-server.post('/api/post/title/year', (req, res) => {
+app.post('/api/post/title/year', (req, res) => {
   logger.info('Request body: ' + JSON.stringify(req.body))
 
-  dbResult = database.postPromotionByTitle(neoSession, req, function(dbResult, status) {
-    logger.info(JSON.stringify(dbResult));
+  database.postPromotionByTitle(neoSession, req, function (dbResult, status) {
+    logger.info(JSON.stringify(dbResult))
     res.status(status).json(dbResult)
-  });
+  })
 })
 
-server.listen(3000, () =>
-  {
-    const neoDriver = database.connectDB('bolt://localhost:7687');
-    neoSession = neoDriver.session();
+const server = app.listen(3000, () => {
+
+}
+)
+
+var exportObj = {
+  app: app,
+  server: server,
+  database: {
+    driver: neoDriver,
+    session: neoSession
   }
-);
+}
 
-module.exports = server
+module.exports = exportObj
