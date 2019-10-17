@@ -1,46 +1,21 @@
 // Author: @lzontar
 
-var example = require('../../__test__/test_files/example.json')
-
-export class Graph {
-  constructor (json) {
-    this.json = json
-    this.nodes = []
+exports.toRelationship = function (json) {
+  const promotions = json[0]._fields[2].properties.promotions
+  const movieId1 = json[0]._fields[0].properties.imdbId
+  const movieId2 = json[0]._fields[1].properties.imdbId
+  return {
+    id1: movieId1,
+    id2: movieId2,
+    promotions: promotions
   }
-
-  toJson () {
-    return example
+}
+exports.toMovieRecommendationList = function (json) {
+  const recommendationList = {}
+  let i = 0
+  while (json[i] !== undefined) {
+    recommendationList[i + 1] = json[i]._fields[0].path.end.properties.title
+    i++
   }
-
-  fromJson (json) {
-    return new Graph(json)
-  }
-
-  sortByDistance () {
-    return {
-      1: 'Godfather',
-      2: 'Training day',
-      3: 'Black mass'
-    }
-  }
-
-  sortByPromotions () {
-    return {
-      1: 'Godfather',
-      2: 'Black mass',
-      3: 'Training day'
-    }
-  }
-
-  sort () {
-    return {
-      1: 'Godfather',
-      2: 'Training day',
-      3: 'Black mass'
-    }
-  }
-
-  equals (graph) {
-    return !!graph
-  }
+  return recommendationList
 }
