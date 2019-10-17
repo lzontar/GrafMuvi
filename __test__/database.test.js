@@ -1,8 +1,7 @@
 // Author: @lzontar
 const database = require('../src/api/database')
+const logger = require('../src/logging/logger')
 
-// test files
-// var example = require('./test_files/example.json')
 let driver = null
 let session = null
 
@@ -13,17 +12,91 @@ beforeAll(() => {
   database.initTestData(session)
 })
 
+jest.setTimeout(10000)
+
 describe('MATCH', () => {
-  it('MATCH movie recommendations by id', () => {
-    // expect(database.matchMovieRecommendationsById(session, 'tt0765429')).toStrictEqual(example)
+  it('MATCH movie recommendations by id - lengths', () => {
+    database.matchMovieRecommendationsById(session, '123', (dbData, status) => {
+
+      const len1 = dbData[0].get('n').length.toNumber()
+      const len2 = dbData[0].get('n').length.toNumber()
+      const len3 = dbData[0].get('n').length.toNumber()
+
+      expect(len1).toStrictEqual(1)
+      expect(len2).toStrictEqual(1)
+      expect(len3).toStrictEqual(1)
+
+      expect(status).toBe(200)
+    })
   })
-  it('MATCH movie recommendations by title', () => {
-    // expect(database.matchMovieRecommendationsByTitle(session, 'American gangster', 2007)).toStrictEqual(example)
+  it('MATCH movie recommendations by id - promotions', () => {
+    database.matchMovieRecommendationsById(session, '123', (dbData, status) => {
+      const promotions1 = dbData[0].get('n').sum_promotions.toNumber()
+      const promotions2 = dbData[1].get('n').sum_promotions.toNumber()
+      const promotions3 = dbData[2].get('n').sum_promotions.toNumber()
+
+      expect(promotions1).toStrictEqual(100)
+      expect(promotions2).toStrictEqual(50)
+      expect(promotions3).toStrictEqual(25)
+
+      expect(status).toBe(200)
+    })
+  })
+  it('MATCH movie recommendations by id - end nodes', () => {
+    database.matchMovieRecommendationsById(session, '123', (dbData, status) => {
+      const title1 = dbData[0].get('n').path.end.properties.title
+      const title2 = dbData[1].get('n').path.end.properties.title
+      const title3 = dbData[2].get('n').path.end.properties.title
+
+      expect(title1).toStrictEqual('test2')
+      expect(title2).toStrictEqual('test3')
+      expect(title3).toStrictEqual('test4')
+
+      expect(status).toBe(200)
+    })
+  })
+  it('MATCH movie recommendations by title - lengths', () => {
+    database.matchMovieRecommendationsByTitle(session, 'test1', 2019, (dbData, status) => {
+      const len1 = dbData[0].get('n').length.toNumber()
+      const len2 = dbData[0].get('n').length.toNumber()
+      const len3 = dbData[0].get('n').length.toNumber()
+
+      expect(len1).toStrictEqual(1)
+      expect(len2).toStrictEqual(1)
+      expect(len3).toStrictEqual(1)
+
+      expect(status).toBe(200)
+    })
+  })
+  it('MATCH movie recommendations by title - promotions', () => {
+    database.matchMovieRecommendationsByTitle(session, 'test1', 2019, (dbData, status) => {
+      const promotions1 = dbData[0].get('n').sum_promotions.toNumber()
+      const promotions2 = dbData[1].get('n').sum_promotions.toNumber()
+      const promotions3 = dbData[2].get('n').sum_promotions.toNumber()
+
+      expect(promotions1).toStrictEqual(100)
+      expect(promotions2).toStrictEqual(50)
+      expect(promotions3).toStrictEqual(25)
+      expect(status).toBe(200)
+    })
+  })
+  it('MATCH movie recommendations by title - end nodes', () => {
+    database.matchMovieRecommendationsByTitle(session, 'test1', 2019, (dbData, status) => {
+      const title1 = dbData[0].get('n').path.end.properties.title
+      const title2 = dbData[1].get('n').path.end.properties.title
+      const title3 = dbData[2].get('n').path.end.properties.title
+
+      expect(title1).toStrictEqual('test2')
+      expect(title2).toStrictEqual('test3')
+      expect(title3).toStrictEqual('test4')
+
+      expect(status).toBe(200)
+    })
   })
 })
 
 describe('UPDATE', () => {
-  it('UPDATE movie recommendation promotions by id', () => {
+  it('UPDATE movie recommendation promotions by id - FAIL because of unexisting movie', () => {
     const request = {
       body: {
         id1: '123',
@@ -31,23 +104,56 @@ describe('UPDATE', () => {
         downgrade: false
       }
     }
-    const expectedJson = {
-      id1: '123',
-      id2: '456',
-      promotions: 101
-    }
+    const expectedJson = { error: 'error.unauthorized' }
     database.postPromotionById(session, request, (dbData, status) => {
-      dbData = {
-        id1: '123',
-        id2: '456',
-        promotions: 101
-      }
       expect(dbData).toStrictEqual(expectedJson)
-      //We shouldn't find the movie, because it doesn't exist
+      // We shouldn't find the movie in OmdbAPI, because it doesn't exist
       expect(status).toBe(401)
     })
   })
+  it('UPDATE movie recommendation promotions by id', () => {
+    const request = {
+      body: {
+        id1: 'tt0765429',
+        id2: 'tt0353496',
+        downgrade: false
+      }
+    }
+    const expected = 101
+    return new Promise((resolve, reject) => {
+      database.postPromotionById(session, request, (dbData, status) => {
+        resolve(dbData, status)
+      })
+    }).then((data, status) => {
+      expect(data[0].get('s').properties.promotions).toBe(expected)
+      expect(status).toBe(200)
+    }).catch((e) => {
+      logger.error(e)
+    })
+  })
   it('UPDATE movie recommendation promotions by title', () => {
+    const request = {
+      body: {
+        title1: 'American gangster',
+        released1: 2007,
+        title2: 'Godfather',
+        released2: 1991,
+        downgrade: true
+      }
+    }
+    const expected = 100
+    return new Promise((resolve, reject) => {
+      database.postPromotionByTitle(session, request, (dbData, status) => {
+        resolve(dbData, status)
+      })
+    }).then((data, status) => {
+      expect(data[0].get('s').properties.promotions).toBe(expected)
+      expect(status).toBe(200)
+    }).catch((e) => {
+      logger.error(e)
+    })
+  })
+  it('UPDATE movie recommendation promotions by title - FAIL because of unexisting movie', () => {
     const request = {
       body: {
         title1: '123',
@@ -57,25 +163,16 @@ describe('UPDATE', () => {
         downgrade: true
       }
     }
-    const expectedJson = {
-      id1: '123',
-      id2: '456',
-      promotions: 100
-    }
+    const expectedJson = { error: 'error.unauthorized' }
     database.postPromotionByTitle(session, request, (dbData, status) => {
-      dbData = {
-        id1: '123',
-        id2: '456',
-        promotions: 100
-      }
       expect(dbData).toStrictEqual(expectedJson)
-      //We shouldn't find the movie, because it doesn't exist
+      // We shouldn't find the movie in OmdbAPI, because it doesn't exist
       expect(status).toBe(401)
     })
   })
 })
 
-afterAll(() => {
+afterAll(async () => {
   database.clearTestData(session, driver, (session, driver) => {
     session.close()
     driver.close()
