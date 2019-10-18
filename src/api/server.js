@@ -58,7 +58,7 @@ app.post('/api/post/title/year', (req, res) => {
   })
 })
 
-const server = app.listen(3000, () => {}
+const server = app.listen(process.env.PORT || 5000, () => {}
 )
 var exportObj = {
   app: app,
