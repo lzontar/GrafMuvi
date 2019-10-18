@@ -3,8 +3,12 @@ const neo4j = require('neo4j-driver').v1
 const logger = require('../logging/logger')
 const omdb = new (require('omdbapi'))('99d69c21')
 
-exports.connectDB = function (uri) {
-  const driver = neo4j.driver(uri, neo4j.auth.basic('neo4j', 'TEST-Movie'))
+exports.connectDB = function () {
+  const graphenedbURL = 'bolt://hobby-opoodnimkkgogbkeelldpadl.dbs.graphenedb.com:24787' // ? process.env.GRAPHENEDB_BOLT_URL : 'bolt://localhost:7687';
+  const graphenedbUser = 'app149042785-7w3PaA' // ? process.env.GRAPHENEDB_BOLT_USER : 'neo4j';
+  const graphenedbPass = 'b.SDGFhDPxK7kf.WUfwSEc3OOBlnvV3' // ? process.env.GRAPHENEDB_BOLT_PASSWORD : 'TEST-Movie';
+
+  const driver = neo4j.driver(graphenedbURL, neo4j.auth.basic(graphenedbUser, graphenedbPass))
   return driver
 }
 
@@ -32,6 +36,7 @@ exports.matchMovieRecommendationsByTitle = function (session, title, released, c
   session.run(cypher, params)
     .then(result => {
       // Log response
+
       logger.info(JSON.stringify(result.records))
       callback(result.records, 200)
     })
