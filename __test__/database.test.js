@@ -17,6 +17,7 @@ jest.setTimeout(10000)
 describe('MATCH', () => {
   it('MATCH movie recommendations by id - lengths', () => {
     database.matchMovieRecommendationsById(session, '123', (dbData, status) => {
+
       const len1 = dbData[0].get('n').length.toNumber()
       const len2 = dbData[0].get('n').length.toNumber()
       const len3 = dbData[0].get('n').length.toNumber()
@@ -143,11 +144,10 @@ describe('UPDATE', () => {
     const expected = 100
     return new Promise((resolve, reject) => {
       database.postPromotionByTitle(session, request, (dbData, status) => {
-        resolve(dbData, status)
+        resolve(dbData)
       })
-    }).then((data, status) => {
+    }).then((data) => {
       expect(data[0].get('s').properties.promotions).toBe(expected)
-      expect(status).toBe(200)
     }).catch((e) => {
       logger.error(e)
     })
