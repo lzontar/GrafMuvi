@@ -1,13 +1,22 @@
 language: node_js
+
 node_js:
 - 10.16.2
+
 install:
 - npm install
+
 cache: npm
+
 script:
 - npm test
+
 services:
   - neo4j
+
+env:
+  - NEO_VERSION="2.1.2"
+
 deploy:
   provider: heroku
   api_key:
