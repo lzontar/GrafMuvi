@@ -30,11 +30,12 @@
   "dependencies": {
     "express": "^4.17.1",
     "neo4j-driver": "^1.7.6",
-    "omdbapi": "^3.0.0"
+    "omdbapi": "^3.0.0",
+    "winston": "^3.2.1"
+    "app-root-path": "^2.2.1",
   },
   "devDependencies": {
     "@babel/preset-env": "^7.6.2",
-    "app-root-path": "^2.2.1",
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
     "jest": "^24.9.0",
@@ -42,7 +43,6 @@
     "npx": "^10.2.0",
     "standard": "^14.3.1",
     "supertest": "^4.0.2",
-    "winston": "^3.2.1"
   },
   "standard": {
     "env": [
