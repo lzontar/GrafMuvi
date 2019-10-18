@@ -10,12 +10,15 @@ const app = express()
 
 app.use(express.json())
 
-const neoDriver = database.connectDB('bolt://localhost:7687')
+const neoDriver = database.connectDB()
 const neoSession = neoDriver.session()
-
 app.get('/', function (req, res) {
   res.status(200).json({
-    status: 'OK'
+    status: 'OK',
+    example: {
+      path: 'http://localhost:3000/api/title/Godfather/1991',
+      returnValue: { 1: 'American gangster', 2: 'Black mass', 3: 'Training day' }
+    }
   })
 })
 
