@@ -11,7 +11,8 @@
     "build": "babel src --out-dir dist",
     "start": "node ./src/api/server.js",
     "pretest": "npx standard \"./src/structure/*.js\" \"./src/api/*.js\"",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles",
+    "fix": "npx standard --fix"
   },
   "repository": {
     "type": "git",
