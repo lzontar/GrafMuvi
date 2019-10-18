@@ -6,7 +6,7 @@ let driver = null
 let session = null
 
 beforeAll(() => {
-  driver = database.connectDB('bolt://localhost:7687')
+  driver = database.connectDB()
   session = driver.session()
 
   database.initTestData(session)
@@ -17,7 +17,6 @@ jest.setTimeout(10000)
 describe('MATCH', () => {
   it('MATCH movie recommendations by id - lengths', () => {
     database.matchMovieRecommendationsById(session, '123', (dbData, status) => {
-
       const len1 = dbData[0].get('n').length.toNumber()
       const len2 = dbData[0].get('n').length.toNumber()
       const len3 = dbData[0].get('n').length.toNumber()
@@ -55,44 +54,44 @@ describe('MATCH', () => {
       expect(status).toBe(200)
     })
   })
-  // it('MATCH movie recommendations by title - lengths', () => {
-  //   database.matchMovieRecommendationsByTitle(session, 'test1', 2019, (dbData, status) => {
-  //     const len1 = dbData[0].get('n').length.toNumber()
-  //     const len2 = dbData[0].get('n').length.toNumber()
-  //     const len3 = dbData[0].get('n').length.toNumber()
-  //
-  //     expect(len1).toStrictEqual(1)
-  //     expect(len2).toStrictEqual(1)
-  //     expect(len3).toStrictEqual(1)
-  //
-  //     expect(status).toBe(200)
-  //   })
-  // })
-  // it('MATCH movie recommendations by title - promotions', () => {
-  //   database.matchMovieRecommendationsByTitle(session, 'test1', 2019, (dbData, status) => {
-  //     const promotions1 = dbData[0].get('n').sum_promotions.toNumber()
-  //     const promotions2 = dbData[1].get('n').sum_promotions.toNumber()
-  //     const promotions3 = dbData[2].get('n').sum_promotions.toNumber()
-  //
-  //     expect(promotions1).toStrictEqual(100)
-  //     expect(promotions2).toStrictEqual(50)
-  //     expect(promotions3).toStrictEqual(25)
-  //     expect(status).toBe(200)
-  //   })
-  // })
-  // it('MATCH movie recommendations by title - end nodes', () => {
-  //   database.matchMovieRecommendationsByTitle(session, 'test1', 2019, (dbData, status) => {
-  //     const title1 = dbData[0].get('n').path.end.properties.title
-  //     const title2 = dbData[1].get('n').path.end.properties.title
-  //     const title3 = dbData[2].get('n').path.end.properties.title
-  //
-  //     expect(title1).toStrictEqual('test2')
-  //     expect(title2).toStrictEqual('test3')
-  //     expect(title3).toStrictEqual('test4')
-  //
-  //     expect(status).toBe(200)
-  //   })
-  // })
+  it('MATCH movie recommendations by title - lengths', () => {
+    database.matchMovieRecommendationsByTitle(session, 'test1', 2019, (dbData, status) => {
+      const len1 = dbData[0].get('n').length.toNumber()
+      const len2 = dbData[0].get('n').length.toNumber()
+      const len3 = dbData[0].get('n').length.toNumber()
+
+      expect(len1).toStrictEqual(1)
+      expect(len2).toStrictEqual(1)
+      expect(len3).toStrictEqual(1)
+
+      expect(status).toBe(200)
+    })
+  })
+  it('MATCH movie recommendations by title - promotions', () => {
+    database.matchMovieRecommendationsByTitle(session, 'test1', 2019, (dbData, status) => {
+      const promotions1 = dbData[0].get('n').sum_promotions.toNumber()
+      const promotions2 = dbData[1].get('n').sum_promotions.toNumber()
+      const promotions3 = dbData[2].get('n').sum_promotions.toNumber()
+
+      expect(promotions1).toStrictEqual(100)
+      expect(promotions2).toStrictEqual(50)
+      expect(promotions3).toStrictEqual(25)
+      expect(status).toBe(200)
+    })
+  })
+  it('MATCH movie recommendations by title - end nodes', () => {
+    database.matchMovieRecommendationsByTitle(session, 'test1', 2019, (dbData, status) => {
+      const title1 = dbData[0].get('n').path.end.properties.title
+      const title2 = dbData[1].get('n').path.end.properties.title
+      const title3 = dbData[2].get('n').path.end.properties.title
+
+      expect(title1).toStrictEqual('test2')
+      expect(title2).toStrictEqual('test3')
+      expect(title3).toStrictEqual('test4')
+
+      expect(status).toBe(200)
+    })
+  })
 })
 
 describe('UPDATE', () => {
