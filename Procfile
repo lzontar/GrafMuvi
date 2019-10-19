@@ -1,2 +1,2 @@
-release: npm run build
+release: ./release.sh
 web: node ./src/api/server.js
