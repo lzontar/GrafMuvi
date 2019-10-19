@@ -50,7 +50,7 @@ One of the most fundamental parts of our RESTful API is our database. [Neo4j](ht
 ### Heroku
 [Heroku](https://www.heroku.com/) is a cloud PaaS (platform as a service). PaaS is one of cloud computing services, that provides a platform, where customers can develop, run and manage applications. In our project we will use for deployment. Using [GrapheneDB](https://www.graphenedb.com/) Heroku Add-on we will also deploy our Neo4j database.
 *Heroku* is configured with ```Procfile```, where we can specify commands executed during deployment. In our case it executes:
-- *On release - release*: ```npm run build``` -> Executed before deployment
+- *On release - release*: ```npm build .``` -> Executed before deployment
 - *On start - web*: ```node ./src/api/server.js``` -> Executed on application startup
 ### Microsoft Azure
 We want this project to have a cloud infrastructure and we will use [Microsoft Azure](https://azure.microsoft.com/en-us/) to implement it.
