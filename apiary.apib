@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: http://grafmuvi.lzontar.com/api
+HOST: https://grafmuvi.herokuapp.com/api
 
 # GrafMuvi
 API usage documentation of *GrafMuvi*, a movie recommendation RESTful API. Project description available on [GitHub](https://github.com/lzontar/GrafMuvi).
@@ -96,12 +96,6 @@ Properties:
         {
             "error": "error.not_found"
         }
-            
-+ Response 401 (application/json)
-
-        {
-            "error": "error.unauthorized"
-        }
 ### Update a movie recommendation by IMDB ID [POST /id]
 
 + Request (application/json)
@@ -124,12 +118,6 @@ Properties:
 
         {
             "error": "error.not_found"
-        }
-
-+ Response 401 (application/json)
-
-        {
-            "error": "error.unauthorized"
         }
 ### Update a movie recommendation by title [POST /title]
 
@@ -155,10 +143,4 @@ Properties:
 
         {
             "error": "error.not_found"
-        }
-
-+ Response 401 (application/json)
-
-        {
-            "error": "error.unauthorized"
         }
