@@ -27,7 +27,7 @@ app.get('/api/id/:imdbId', (req, res) => {
 
   database.matchMovieRecommendationsById(neoSession, req.params.imdbId, function (dbResult, status) {
     logger.info(JSON.stringify(dbResult))
-    res.status(200).json(graph.toMovieRecommendationList(dbResult))
+    res.status(status).json(graph.toMovieRecommendationList(dbResult))
   })
 })
 
@@ -36,7 +36,7 @@ app.get('/api/title/:title/:released', (req, res) => {
 
   database.matchMovieRecommendationsByTitle(neoSession, req.params.title, req.params.released, function (dbResult, status) {
     logger.info(JSON.stringify(dbResult))
-    res.status(200).json(graph.toMovieRecommendationList(dbResult))
+    res.status(status).json(graph.toMovieRecommendationList(dbResult))
   })
 })
 
@@ -45,7 +45,7 @@ app.post('/api/post/id', (req, res) => {
 
   database.postPromotionById(neoSession, req, function (dbResult, status) {
     logger.info(JSON.stringify(dbResult))
-    res.status(200).json(graph.toRelationship(dbResult))
+    res.status(status).json(graph.toRelationship(dbResult))
   })
 })
 
@@ -54,7 +54,7 @@ app.post('/api/post/title/year', (req, res) => {
 
   database.postPromotionByTitle(neoSession, req, function (dbResult, status) {
     logger.info(JSON.stringify(dbResult))
-    res.status(200).json(graph.toRelationship(dbResult))
+    res.status(status).json(graph.toRelationship(dbResult))
   })
 })
 

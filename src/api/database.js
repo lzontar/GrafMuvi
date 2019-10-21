@@ -4,9 +4,9 @@ const logger = require('../logging/logger')
 const omdb = new (require('omdbapi'))('99d69c21')
 
 exports.connectDB = function () {
-  const graphenedbURL = 'bolt://hobby-opoodnimkkgogbkeelldpadl.dbs.graphenedb.com:24787' // ? process.env.GRAPHENEDB_BOLT_URL : 'bolt://localhost:7687';
-  const graphenedbUser = 'app149042785-7w3PaA' // ? process.env.GRAPHENEDB_BOLT_USER : 'neo4j';
-  const graphenedbPass = 'b.SDGFhDPxK7kf.WUfwSEc3OOBlnvV3' // ? process.env.GRAPHENEDB_BOLT_PASSWORD : 'TEST-Movie';
+  const graphenedbURL = 'bolt://hobby-opoodnimkkgogbkeelldpadl.dbs.graphenedb.com:24787'
+  const graphenedbUser = 'app149042785-7w3PaA'
+  const graphenedbPass = 'b.SDGFhDPxK7kf.WUfwSEc3OOBlnvV3'
 
   const driver = neo4j.driver(graphenedbURL, neo4j.auth.basic(graphenedbUser, graphenedbPass))
   return driver
@@ -43,7 +43,7 @@ exports.matchMovieRecommendationsByTitle = function (session, title, released, c
     .catch(e => {
       // Output the error
       logger.error(e)
-      const error = { error: 'error.not_found' }
+      const error = { error: 'error.not_found', source: 'Neo4j database' }
       callback(error, 404)
     })
 }
@@ -74,20 +74,20 @@ exports.postPromotionById = function (session, request, callback) {
         .catch(e => {
           // Output the error
           logger.error(e)
-          const error = { error: 'error.not_found' }
+          const error = { error: 'error.not_found', source: 'Neo4j database' }
           callback(error, 404)
         })
     }).catch(e => {
       // Output the error
       logger.error(e)
-      const error = { error: 'error.unauthorized' }
-      callback(error, 401)
+      const error = { error: 'error.not_found', source: 'OmdbAPI' }
+      callback(error, 404)
     })
   }).catch(e => {
     // Output the error
     logger.error(e)
-    const error = { error: 'error.unauthorized' }
-    callback(error, 401)
+    const error = { error: 'error.not_found', source: 'OmdbAPI' }
+    callback(error, 404)
   })
 }
 
@@ -119,20 +119,20 @@ exports.postPromotionByTitle = function (session, request, callback) {
         .catch(e => {
           // Output the error
           logger.error(e)
-          const error = { error: 'error.not_found' }
+          const error = { error: 'error.not_found', source: 'Neo4j database' }
           callback(error, 404)
         })
     }).catch(e => {
       // Output the error
       logger.error(e)
-      const error = { error: 'error.unauthorized' }
-      callback(error, 401)
+      const error = { error: 'error.not_found', source: 'OmdbAPI' }
+      callback(error, 404)
     })
   }).catch(e => {
     // Output the error
     logger.error(e)
-    const error = { error: 'error.unauthorized' }
-    callback(error, 401)
+    const error = { error: 'error.not_found', source: 'OmdbAPI' }
+    callback(error, 404)
   })
 }
 

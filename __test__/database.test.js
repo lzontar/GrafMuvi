@@ -104,11 +104,11 @@ describe('UPDATE', () => {
         downgrade: false
       }
     }
-    const expectedJson = { error: 'error.unauthorized' }
+    const expectedJson = { error: 'error.not_found', source: 'OmdbAPI' }
     database.postPromotionById(session, request, (dbData, status) => {
       expect(dbData).toStrictEqual(expectedJson)
       // We shouldn't find the movie in OmdbAPI, because it doesn't exist
-      expect(status).toBe(401)
+      expect(status).toBe(404)
     })
   })
   it('UPDATE movie recommendation promotions by id', () => {
@@ -144,10 +144,11 @@ describe('UPDATE', () => {
     const expected = 100
     return new Promise((resolve, reject) => {
       database.postPromotionByTitle(session, request, (dbData, status) => {
-        resolve(dbData)
+        resolve(dbData, status)
       })
-    }).then((data) => {
+    }).then((data, status) => {
       expect(data[0].get('s').properties.promotions).toBe(expected)
+      expect(status).toBe(200)
     }).catch((e) => {
       logger.error(e)
     })
@@ -162,11 +163,11 @@ describe('UPDATE', () => {
         downgrade: true
       }
     }
-    const expectedJson = { error: 'error.unauthorized' }
+    const expectedJson = { error: 'error.not_found', source: 'OmdbAPI' }
     database.postPromotionByTitle(session, request, (dbData, status) => {
       expect(dbData).toStrictEqual(expectedJson)
       // We shouldn't find the movie in OmdbAPI, because it doesn't exist
-      expect(status).toBe(401)
+      expect(status).toBe(404)
     })
   })
 })
