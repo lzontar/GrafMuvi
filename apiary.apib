@@ -63,14 +63,10 @@ Properties:
                 "3": "Black mass",
             }
 + Response 404 (application/json)
-    
-        {
-            "error": "error.not_found"
-        }
-+ Response 401 (application/json)
 
         {
-            "error": "error.unauthorized"
+            "error": "error.not_found",
+            "source": "Neo4j database"
         }
 ### Retrieve movie recommendation list by movie title [GET /title/{title}/{year}]
 + Parameters
@@ -92,9 +88,10 @@ Properties:
             }
             
 + Response 404 (application/json)
-    
+
         {
-            "error": "error.not_found"
+            "error": "error.not_found",
+            "source": "Neo4j database"
         }
 ### Update a movie recommendation by IMDB ID [POST /id]
 
@@ -117,7 +114,14 @@ Properties:
 + Response 404 (application/json)
 
         {
-            "error": "error.not_found"
+            "error": "error.not_found",
+            "source": "OmdbAPI"
+        }
++ Response 404 (application/json)
+
+        {
+            "error": "error.not_found",
+            "source": "Neo4j database"
         }
 ### Update a movie recommendation by title [POST /title]
 
@@ -142,5 +146,12 @@ Properties:
 + Response 404 (application/json)
 
         {
-            "error": "error.not_found"
+            "error": "error.not_found",
+            "source": "OmdbAPI"
+        }
++ Response 404 (application/json)
+
+        {
+            "error": "error.not_found",
+            "source": "Neo4j database"
         }
