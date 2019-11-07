@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: http://grafmuvi.lzontar.com/api
+HOST: https://grafmuvi.herokuapp.com/api
 
 # GrafMuvi
 API usage documentation of *GrafMuvi*, a movie recommendation RESTful API. Project description available on [GitHub](https://github.com/lzontar/GrafMuvi).
@@ -31,8 +31,7 @@ All informations about movies will be acquired using [OMDb API](https://www.omdb
 
 - imdbId `(Number)` : Unique IMDB identifier. 
 - title `(String)` : Movie title.
-- imdbRating `(Number)` :  Movie IMDB rating
-- year `(Number)` :  The year movie was made
+- released `(Number)` :  The year movie was made
 
 **Relationship: SIMILAR**
 
@@ -63,14 +62,10 @@ Properties:
                 "3": "Black mass",
             }
 + Response 404 (application/json)
-    
-        {
-            "error": "error.not_found"
-        }
-+ Response 401 (application/json)
 
         {
-            "error": "error.unauthorized"
+            "error": "error.not_found",
+            "source": "Neo4j database"
         }
 ### Retrieve movie recommendation list by movie title [GET /title/{title}/{year}]
 + Parameters
@@ -92,15 +87,10 @@ Properties:
             }
             
 + Response 404 (application/json)
-    
-        {
-            "error": "error.not_found"
-        }
-            
-+ Response 401 (application/json)
 
         {
-            "error": "error.unauthorized"
+            "error": "error.not_found",
+            "source": "Neo4j database"
         }
 ### Update a movie recommendation by IMDB ID [POST /id]
 
@@ -123,13 +113,14 @@ Properties:
 + Response 404 (application/json)
 
         {
-            "error": "error.not_found"
+            "error": "error.not_found",
+            "source": "OmdbAPI"
         }
-
-+ Response 401 (application/json)
++ Response 404 (application/json)
 
         {
-            "error": "error.unauthorized"
+            "error": "error.not_found",
+            "source": "Neo4j database"
         }
 ### Update a movie recommendation by title [POST /title]
 
@@ -154,11 +145,12 @@ Properties:
 + Response 404 (application/json)
 
         {
-            "error": "error.not_found"
+            "error": "error.not_found",
+            "source": "OmdbAPI"
         }
-
-+ Response 401 (application/json)
++ Response 404 (application/json)
 
         {
-            "error": "error.unauthorized"
+            "error": "error.not_found",
+            "source": "Neo4j database"
         }
