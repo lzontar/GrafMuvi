@@ -5,19 +5,22 @@ const logger = require('../src/logging/logger')
 let driver = null
 let session = null
 
+const GrafMuvi = require('../src/api.js')
+const api = new GrafMuvi()
+
 beforeAll(() => {
+  jest.setTimeout(10000)
+
   driver = database.connectDB()
   session = driver.session()
 
   database.initTestData(session)
 })
 
-jest.setTimeout(10000)
-
 describe('MATCH', () => {
   it('MATCH movie recommendations by id - lengths', () => {
-    database.matchMovieRecommendationsById(session, '123', (dbData, status) => {
 
+    database.matchMovieRecommendationsById(session, '123', api, (dbData, status) => {
       const len1 = dbData[0].get('n').length.toNumber()
       const len2 = dbData[0].get('n').length.toNumber()
       const len3 = dbData[0].get('n').length.toNumber()
@@ -30,7 +33,7 @@ describe('MATCH', () => {
     })
   })
   it('MATCH movie recommendations by id - promotions', () => {
-    database.matchMovieRecommendationsById(session, '123', (dbData, status) => {
+    database.matchMovieRecommendationsById(session, '123', api, (dbData, status) => {
       const promotions1 = dbData[0].get('n').sum_promotions.toNumber()
       const promotions2 = dbData[1].get('n').sum_promotions.toNumber()
       const promotions3 = dbData[2].get('n').sum_promotions.toNumber()
@@ -43,7 +46,7 @@ describe('MATCH', () => {
     })
   })
   it('MATCH movie recommendations by id - end nodes', () => {
-    database.matchMovieRecommendationsById(session, '123', (dbData, status) => {
+    database.matchMovieRecommendationsById(session, '123', api, (dbData, status) => {
       const title1 = dbData[0].get('n').path.end.properties.title
       const title2 = dbData[1].get('n').path.end.properties.title
       const title3 = dbData[2].get('n').path.end.properties.title
@@ -56,7 +59,7 @@ describe('MATCH', () => {
     })
   })
   it('MATCH movie recommendations by title - lengths', () => {
-    database.matchMovieRecommendationsByTitle(session, 'test1', 2019, (dbData, status) => {
+    database.matchMovieRecommendationsByTitle(session, 'test1', 2019, api, (dbData, status) => {
       const len1 = dbData[0].get('n').length.toNumber()
       const len2 = dbData[0].get('n').length.toNumber()
       const len3 = dbData[0].get('n').length.toNumber()
@@ -69,7 +72,7 @@ describe('MATCH', () => {
     })
   })
   it('MATCH movie recommendations by title - promotions', () => {
-    database.matchMovieRecommendationsByTitle(session, 'test1', 2019, (dbData, status) => {
+    database.matchMovieRecommendationsByTitle(session, 'test1', 2019, api, (dbData, status) => {
       const promotions1 = dbData[0].get('n').sum_promotions.toNumber()
       const promotions2 = dbData[1].get('n').sum_promotions.toNumber()
       const promotions3 = dbData[2].get('n').sum_promotions.toNumber()
@@ -81,7 +84,7 @@ describe('MATCH', () => {
     })
   })
   it('MATCH movie recommendations by title - end nodes', () => {
-    database.matchMovieRecommendationsByTitle(session, 'test1', 2019, (dbData, status) => {
+    database.matchMovieRecommendationsByTitle(session, 'test1', 2019, api, (dbData, status) => {
       const title1 = dbData[0].get('n').path.end.properties.title
       const title2 = dbData[1].get('n').path.end.properties.title
       const title3 = dbData[2].get('n').path.end.properties.title
@@ -105,7 +108,7 @@ describe('UPDATE', () => {
       }
     }
     const expectedJson = { error: 'error.not_found', source: 'OmdbAPI' }
-    database.postPromotionById(session, request, (dbData, status) => {
+    database.postPromotionById(session, request, api, (dbData, status) => {
       expect(dbData).toStrictEqual(expectedJson)
       // We shouldn't find the movie in OmdbAPI, because it doesn't exist
       expect(status).toBe(404)
@@ -121,7 +124,7 @@ describe('UPDATE', () => {
     }
     const expected = 101
     return new Promise((resolve, reject) => {
-      database.postPromotionById(session, request, (dbData, status) => {
+      database.postPromotionById(session, request, api, (dbData, status) => {
         resolve(dbData, status)
       })
     }).then((data, status) => {
@@ -143,7 +146,7 @@ describe('UPDATE', () => {
     }
     const expected = 100
     return new Promise((resolve, reject) => {
-      database.postPromotionByTitle(session, request, (dbData, status) => {
+      database.postPromotionByTitle(session, request, api, (dbData, status) => {
         resolve(dbData, status)
       })
     }).then((data, status) => {
@@ -164,7 +167,7 @@ describe('UPDATE', () => {
       }
     }
     const expectedJson = { error: 'error.not_found', source: 'OmdbAPI' }
-    database.postPromotionByTitle(session, request, (dbData, status) => {
+    database.postPromotionByTitle(session, request, api, (dbData, status) => {
       expect(dbData).toStrictEqual(expectedJson)
       // We shouldn't find the movie in OmdbAPI, because it doesn't exist
       expect(status).toBe(404)

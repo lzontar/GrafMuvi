@@ -1,18 +1,20 @@
 // Author: @lzontar
+require('dotenv').config()
+
 const neo4j = require('neo4j-driver').v1
 const logger = require('../logging/logger')
-const omdb = new (require('omdbapi'))('99d69c21')
+const omdb = new (require('omdbapi'))(process.env.OMDB_KEY)
 
 exports.connectDB = function () {
-  const graphenedbURL = 'bolt://hobby-opoodnimkkgogbkeelldpadl.dbs.graphenedb.com:24787'
-  const graphenedbUser = 'app149042785-7w3PaA'
-  const graphenedbPass = 'b.SDGFhDPxK7kf.WUfwSEc3OOBlnvV3'
+  const graphenedbURL = process.env.GRAPHENEDB_URL
+  const graphenedbUser = process.env.GRAPHENEDB_USER
+  const graphenedbPass = process.env.GRAPHENEDB_PASSWD
 
   const driver = neo4j.driver(graphenedbURL, neo4j.auth.basic(graphenedbUser, graphenedbPass))
   return driver
 }
 
-exports.matchMovieRecommendationsById = function (session, id, callback) {
+exports.matchMovieRecommendationsById = function (session, id, api, callback) {
   const params = { imdbId: id }
   const cypher = 'MATCH path = (x:Movie {imdbId: {imdbId}})-[:SIMILAR*]->(y:Movie) WHERE size(nodes(path)) = size(apoc.coll.toSet(nodes(path))) UNWIND relationships(path) AS  similar RETURN {path: path, length: length(path), sum_promotions: sum(similar.promotions)} as n ORDER BY n.length, n.sum_promotions DESC'
   session.run(cypher, params)
@@ -29,7 +31,7 @@ exports.matchMovieRecommendationsById = function (session, id, callback) {
     })
 }
 
-exports.matchMovieRecommendationsByTitle = function (session, title, released, callback) {
+exports.matchMovieRecommendationsByTitle = function (session, title, released, api, callback) {
   const params = { title: title, released: released }
 
   const cypher = 'MATCH path = (x:Movie {title: {title}, released: toInt({released})})-[:SIMILAR*]->(y:Movie) WHERE size(nodes(path)) = size(apoc.coll.toSet(nodes(path))) UNWIND relationships(path) AS  similar RETURN {path: path, length: length(path), sum_promotions: sum(similar.promotions)} as n ORDER BY n.length, n.sum_promotions DESC'
@@ -48,7 +50,7 @@ exports.matchMovieRecommendationsByTitle = function (session, title, released, c
     })
 }
 
-exports.postPromotionById = function (session, request, callback) {
+exports.postPromotionById = function (session, request, api, callback) {
   omdb.get({
     id: request.body.id1
   }).then(resId1 => {
@@ -91,7 +93,7 @@ exports.postPromotionById = function (session, request, callback) {
   })
 }
 
-exports.postPromotionByTitle = function (session, request, callback) {
+exports.postPromotionByTitle = function (session, request, api, callback) {
   omdb.get({
     title: request.body.title1,
     year: request.body.released1
@@ -109,6 +111,9 @@ exports.postPromotionByTitle = function (session, request, callback) {
         released1: request.body.released1,
         released2: request.body.released2
       }
+      logger.info('Request call IP: ' + request.connection.remoteAddress)
+      logger.info(api.removeStopWordsAndPunctuations(resId1.plot))
+
       const cypher = 'MERGE (m1:Movie {imdbId: {id1}}) ON CREATE SET m1.imdbId = {id1}, m1.released = {released1}, m1.title = {title1} MERGE (m2:Movie{imdbId:{id2}}) ON CREATE SET m2.imdbId = {id2}, m2.released = {released2}, m2.title = {title2} MERGE (m1)<-[s:SIMILAR]-(m2) ON CREATE SET s.promotions = {downgrade} ON MATCH SET s.promotions = s.promotions + {downgrade} MERGE (m1)-[r:SIMILAR]->(m2) ON CREATE SET r.promotions = {downgrade} ON MATCH SET r.promotions = r.promotions + {downgrade} RETURN m1, m2, s'
       session.run(cypher, params)
         .then(result => {

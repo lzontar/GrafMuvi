@@ -1,85 +1,35 @@
 // Author: @lzontar
+const GrafMuvi = require('../src/api')
+const examplePromotions = require('./test_files/examplePromotions')
+const exampleRecommendationList = require('./test_files/exampleRecommendationList')
 
-import request from 'supertest'
-const app = require('../src/api/server').app
-const server = require('../src/api/server').server
-const database = require('../src/api/database')
-const neo4jConnection = require('../src/api/server').database
-
-beforeAll(() => {
-  database.initTestData(neo4jConnection.session)
-})
-
-describe('Get Endpoints', () => {
-  it('Get request movie recommendation by id', (done) => {
-    request(app)
-      .get('/api/id/123')
-      .expect(200, {
-        1: 'test2',
-        2: 'test3',
-        3: 'test4'
-      })
-      .end(() => {
-        done()
-      })
+// -------------------------------------UNIT TESTS -------------------------------------//
+describe('Relationship promotion/downgrade', () => {
+  const api = new GrafMuvi()
+  test('Returns json, that conatains updated relationship, from data returned from database', () => {
+    const sortedJson = {
+      id1: 'tt0120338',
+      id2: 'tt0332280',
+      promotions: 2
+    }
+    expect(api.toRelationship(examplePromotions)).toStrictEqual(sortedJson)
   })
-  it('Get request movie recommendation by title', (done) => {
-    request(app)
-      .get('/api/title/test1/2019')
-      .expect(200, {
-        1: 'test2',
-        2: 'test3',
-        3: 'test4'
-      })
-      .end(() => {
-        done()
-      })
+})
+describe('Movie recommendation list', () => {
+  const api = new GrafMuvi()
+  test('Returns json, that contains a movie recommenadtion list, from data returned from database', () => {
+    const recommendationList = {
+      1: 'test2',
+      2: 'test3',
+      3: 'test4'
+    }
+    expect(api.toMovieRecommendationList(exampleRecommendationList)).toStrictEqual(recommendationList)
   })
 })
 
-describe('Post Endpoints', () => {
-  it('Post request movie recommendation promotion by id', (done) => {
-    request(app)
-      .post('/api/id')
-      .send({
-        imdbId1: '123',
-        imdbId2: '456',
-        downgrade: false
-      })
-      .expect(200, {
-        id1: '123',
-        id2: '456',
-        promotions: 101
-      })
-      .end(() => {
-        done()
-      })
+describe('Movie recommendation list', () => {
+  const api = new GrafMuvi()
+  test('Returns json, that contains a movie recommenadtion list, from data returned from database', () => {
+    const plot = 'The true story of Whitey Bulger, the brother of a state senator and the most infamous violent criminal in the history of South Boston, who became an FBI informant to take down a Mafia family invading his turf.'
   })
-  it('Post request movie recommendation promotion by title', (done) => {
-    request(app)
-      .post('/api/title')
-      .send({
-        title1: 'test1',
-        released1: 2019,
-        title2: 'test2',
-        released2: 2019,
-        downgrade: true
-      })
-      .expect(200, {
-        id1: '123',
-        id2: '456',
-        promotions: 99
-      })
-      .end(() => {
-        done()
-      })
-  })
-})
-
-afterAll(() => {
-  database.clearTestData(neo4jConnection.session, neo4jConnection.driver, function (driver, session) {
-    driver.close()
-    session.close()
-  })
-  server.close()
 })
