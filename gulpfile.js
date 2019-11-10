@@ -1,5 +1,6 @@
 // logger
 const logger = require('./src/logging/logger')
+var exec = require('child_process').exec;
 
 // gulp dependencies
 const gulp = require('gulp')
@@ -28,6 +29,22 @@ gulp.task('start', () => {
     })
   })
   pm2.disconnect()
+})
+
+//start in development mode
+gulp.task('dev', () => {
+  return exec('pm2 start ./src/api/server.js --watch', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+  });
+})
+
+//pm2 Status
+gulp.task('status', () => {
+  return exec('pm2 status', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+  });
 })
 
 gulp.task('restart', () => {
@@ -76,12 +93,27 @@ gulp.task('test', () => {
 })
 
 function pretest () {
-  return gulp.src(['./src/structure/*.js', './src/api/*.js'])
+  return gulp.src(['./src'])
     .pipe(standard())
     .pipe(standard.reporter('default', {
       breakOnError: true,
       quiet: true
     }))
 }
+//standard lint fix
+gulp.task('fix-lint', () => {
+  return exec('standard --fix ./src', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+  });
+})
+
+//babel build
+gulp.task('fix-lint', () => {
+  return exec('babel src --out-dir dist', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+  });
+})
 
 gulp.task('pretest', pretest)
