@@ -8,6 +8,7 @@ With more and more movies available the answer to "What movie should I watch :in
 Additionally when posting a promotion it checks:
 - Whether plots are similar enough (based on pre-trained word embedding method and cosine vector similarity),
 - Whether movie genres do not exclude each others (f.e. promoting a connection between a family movie and horror movie would be Irreasonable).
+
 Because the same person cannot finish watching a lot of movies in a short period of time (like 30 minutes) and since associations are best if memory of a movie plot is still fresh we do not allow the same IP remote address more than 20 consecutive requests with less than 30 minutes between each other.
 
 Check out the [example](https://github.com/lzontar/GrafMuvi/blob/master/Example.pdf) of how service can be used.
@@ -106,13 +107,16 @@ gulp dev
 It executes ```pm2 start ./src/api/server.js --watch``` which executes pm2 start while watching for changes in filesystem and reloading when changes are applied.
 
 ### Running server
-We will be using simple *pm2* for start of the server (```pm2 start ./src/api/server.js```). Start server by executing:
+We will be using *pm2* for start of the server(```pm2 start ./src/api/server.js```). Start server by executing:
 ```
-gulp status
+gulp start
 ```
 
 ### Server status
-We can also check the status of our server using *pm2* (automated with *gulp*)
+We can also check the status of our server using *pm2* (automated with *gulp*):
+```
+gulp status
+```
 ## :sos: Wish to contribute?
 ### Environment setup
 1. Fork repository and pull the content

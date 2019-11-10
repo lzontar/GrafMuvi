@@ -14,7 +14,7 @@
     "restart": "pm2 restart server",
     "status": "pm2 ls",
     "pretest": "standard ./src",
-    "test": "jest --coverage --detectOpenHandles",
+    "test": "jest --detectOpenHandles",
     "fix": "standard --fix ./src"
   },
   "repository": {
