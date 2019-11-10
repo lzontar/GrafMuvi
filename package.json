@@ -13,9 +13,9 @@
     "stop": "pm2 stop server",
     "restart": "pm2 restart server",
     "status": "pm2 ls",
-    "pretest": "standard \"./src/structure/*.js\" \"./src/api/*.js\"",
-    "test": "jest --detectOpenHandles",
-    "fix": "standard --fix"
+    "pretest": "standard ./src",
+    "test": "jest --coverage --detectOpenHandles",
+    "fix": "standard --fix ./src"
   },
   "repository": {
     "type": "git",
@@ -37,6 +37,7 @@
     "app-root-path": "^2.2.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "fs": "0.0.1-security",
     "gulp-cli": "^2.2.0",
     "neo4j-driver": "^1.7.6",
     "omdbapi": "^3.0.0",

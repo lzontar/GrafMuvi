@@ -66,19 +66,26 @@ exports.postPromotionById = function (session, request, api, callback) {
         released1: parseInt(resId1.released.split(' ')[2]),
         released2: parseInt(resId2.released.split(' ')[2])
       }
-      const cypher = 'MERGE (m1:Movie {imdbId: {id1}}) ON CREATE SET m1.imdbId = {id1}, m1.released = {released1}, m1.title = {title1} MERGE (m2:Movie{imdbId:{id2}}) ON CREATE SET m2.imdbId = {id2}, m2.released = {released2}, m2.title = {title2} MERGE (m1)<-[s:SIMILAR]-(m2) ON CREATE SET s.promotions = {downgrade} ON MATCH SET s.promotions = s.promotions + {downgrade} MERGE (m1)-[r:SIMILAR]->(m2) ON CREATE SET r.promotions = {downgrade} ON MATCH SET r.promotions = r.promotions + {downgrade} RETURN m1, m2, s'
-      session.run(cypher, params)
-        .then(result => {
-          // Log response
-          logger.info(JSON.stringify(result.records))
-          callback(result.records, 200)
-        })
-        .catch(e => {
-          // Output the error
-          logger.error(e)
-          const error = { error: 'error.not_found', source: 'Neo4j database' }
-          callback(error, 404)
-        })
+
+      //Check if user can promote/downgrade this promotion (is it reasonable, are genres similar, are there too many requests from this IP)
+      if((plotsAreSimilar || (!plotsAreSimilar && request.body.downgrade) || api.areGenresSimilar(resId1.genre, resId2.genre)) && api.checkIP(request.connection.remoteAddress)) {
+        const cypher = 'MERGE (m1:Movie {imdbId: {id1}}) ON CREATE SET m1.imdbId = {id1}, m1.released = {released1}, m1.title = {title1} MERGE (m2:Movie{imdbId:{id2}}) ON CREATE SET m2.imdbId = {id2}, m2.released = {released2}, m2.title = {title2} MERGE (m1)<-[s:SIMILAR]-(m2) ON CREATE SET s.promotions = {downgrade} ON MATCH SET s.promotions = s.promotions + {downgrade} MERGE (m1)-[r:SIMILAR]->(m2) ON CREATE SET r.promotions = {downgrade} ON MATCH SET r.promotions = r.promotions + {downgrade} RETURN m1, m2, s'
+        session.run(cypher, params)
+          .then(result => {
+            // Log response
+            logger.info(JSON.stringify(result.records))
+            callback(result.records, 200)
+          })
+          .catch(e => {
+            // Output the error
+            logger.error(e)
+            const error = { error: 'error.not_found', source: 'Neo4j database' }
+            callback(error, 404)
+          })
+      } else {
+        const error = { error: 'error.bad_request', source: 'GrafMuviAPI' }
+        callback(error, 400)
+      }
     }).catch(e => {
       // Output the error
       logger.error(e)
@@ -112,21 +119,27 @@ exports.postPromotionByTitle = function (session, request, api, callback) {
         released2: request.body.released2
       }
       logger.info('Request call IP: ' + request.connection.remoteAddress)
-      logger.info(api.removeStopWordsAndPunctuations(resId1.plot))
 
-      const cypher = 'MERGE (m1:Movie {imdbId: {id1}}) ON CREATE SET m1.imdbId = {id1}, m1.released = {released1}, m1.title = {title1} MERGE (m2:Movie{imdbId:{id2}}) ON CREATE SET m2.imdbId = {id2}, m2.released = {released2}, m2.title = {title2} MERGE (m1)<-[s:SIMILAR]-(m2) ON CREATE SET s.promotions = {downgrade} ON MATCH SET s.promotions = s.promotions + {downgrade} MERGE (m1)-[r:SIMILAR]->(m2) ON CREATE SET r.promotions = {downgrade} ON MATCH SET r.promotions = r.promotions + {downgrade} RETURN m1, m2, s'
-      session.run(cypher, params)
-        .then(result => {
-          // Log response
-          logger.info(JSON.stringify(result.records))
-          callback(result.records, 200)
-        })
-        .catch(e => {
-          // Output the error
-          logger.error(e)
-          const error = { error: 'error.not_found', source: 'Neo4j database' }
-          callback(error, 404)
-        })
+      const plotsAreSimilar = api.arePlotsSimilar(resId1.plot, resId2.plot)
+      //Check if user can promote/downgrade this promotion (is it reasonable, are genres similar, are there too many requests from this IP)
+       if((plotsAreSimilar || (!plotsAreSimilar && request.body.downgrade) || api.areGenresSimilar(resId1.genre, resId2.genre)) && api.checkIP(request.connection.remoteAddress)) {
+       const cypher = 'MERGE (m1:Movie {imdbId: {id1}}) ON CREATE SET m1.imdbId = {id1}, m1.released = {released1}, m1.title = {title1} MERGE (m2:Movie{imdbId:{id2}}) ON CREATE SET m2.imdbId = {id2}, m2.released = {released2}, m2.title = {title2} MERGE (m1)<-[s:SIMILAR]-(m2) ON CREATE SET s.promotions = {downgrade} ON MATCH SET s.promotions = s.promotions + {downgrade} MERGE (m1)-[r:SIMILAR]->(m2) ON CREATE SET r.promotions = {downgrade} ON MATCH SET r.promotions = r.promotions + {downgrade} RETURN m1, m2, s'
+        session.run(cypher, params)
+          .then(result => {
+            // Log response
+            logger.info(JSON.stringify(result.records))
+            callback(result.records, 200)
+          })
+          .catch(e => {
+            // Output the error
+            logger.error(e)
+            const error = { error: 'error.not_found', source: 'Neo4j database' }
+            callback(error, 404)
+          })
+      } else {
+        const error = { error: 'error.bad_request', source: 'GrafMuviAPI' }
+        callback(error, 400)
+      }
     }).catch(e => {
       // Output the error
       logger.error(e)

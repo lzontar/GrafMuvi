@@ -1,3 +1,4 @@
+
 class Graph {
   constructor () {
     this.dict = []
@@ -8,17 +9,19 @@ class Graph {
   }
 
   compareGenres (genres1, genres2) {
-    genres1 = new Set(genres1)
-    genres2 = new Set(genres2)
+    let genreSet1 = new Set(genres1)
+    let genreSet2 = new Set(genres2)
 
-    const extendedGenres1 = new Set()
-    const extendedGenres2 = new Set()
+    let extendedGenres1 = new Set()
+    let extendedGenres2 = new Set()
+
+    let result = false;
 
     // direct comparison
-    genres1.forEach((x) => {
-      genres2.forEach((y) => {
-        if (x.equals(y)) {
-          return true
+    Array.from(genreSet1).forEach((x) => {
+      Array.from(genreSet2).forEach((y) => {
+        if (x == y) {
+          result = true
         } else {
           // build extended set
           this.dict[x].forEach(item => extendedGenres1.add(item))
@@ -29,15 +32,16 @@ class Graph {
       })
     })
 
-    // Extended genres
-    extendedGenres1.forEach((x) => {
-      extendedGenres2.forEach((y) => {
-        if (x.equals(y)) {
-          return true
+    //Extended genres
+    Array.from(extendedGenres1).forEach((x) => {
+      Array.from(extendedGenres2).forEach((y) => {
+        if (x == y) {
+          result = true
         }
       })
     })
-    return false
+
+    return result
   }
 }
 
