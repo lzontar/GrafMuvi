@@ -76,7 +76,67 @@ describe('Post Endpoints', () => {
         done()
       })
   })
+  it('Irreasonable promotion of horror movie(It) and animation family movie(Cars)', (done) => {
+    const expectedJson = {
+      errorCode: 400,
+      description: "Rules listed under key 'rules' are not considered in your request. Check your request!",
+      rules: {
+        1:"Plots shouldn't be too different from each other (checked with word embedding method and cosine similarity function)",
+        2:"Genres are connected to each other. Using these connections genres should be connected through at most 1 node (distance(node1, node2) <= 2).",
+        3:"Since we need some time to watch an actual movie and only after that we can promote/downgrade a connection, we will limit the number of consecutive API request with less than 30 minutes between each other."
+      }
+    }
+    request(app)
+      .post('/api/title')
+      .send({
+      	title1: "It",
+      	released1: 2017,
+      	title2: "Cars",
+      	released2: 2006,
+      	downgrade: false
+      })
+      .expect(400, expectedJson)
+      .end(() => {
+        done()
+      })
+  })
 })
+
+describe('Post Endpoints - Check IP', () => {
+  it('Post 21 times -> fails last time', (done) => {
+    for(let i = 0; i < 20; i++) {
+      request(app)
+        .post('/api/id')
+        .send({
+          imdbId1: '123',
+          imdbId2: '456',
+          downgrade: false
+        })
+    }
+    const expectedJson = {
+      errorCode: 400,
+      description: "Rules listed under key 'rules' are not considered in your request. Check your request!",
+      rules: {
+        1:"Plots shouldn't be too different from each other (checked with word embedding method and cosine similarity function)",
+        2:"Genres are connected to each other. Using these connections genres should be connected through at most 1 node (distance(node1, node2) <= 2).",
+        3:"Since we need some time to watch an actual movie and only after that we can promote/downgrade a connection, we will limit the number of consecutive API request with less than 30 minutes between each other."
+      }
+    }
+    request(app)
+      .post('/api/id')
+      .send({
+        imdbId1: '123',
+        imdbId2: '456',
+        downgrade: false
+      })
+      .expect(400, expectedJson)
+      .end(() => {
+        done()
+      })
+  })
+})
+
+
 
 afterAll(() => {
   database.clearTestData(neo4jConnection.session, neo4jConnection.driver, function (driver, session) {
