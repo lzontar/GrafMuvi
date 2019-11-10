@@ -5,14 +5,18 @@
 - Shippable: [![Run Status](https://api.shippable.com/projects/5d950376945f6b00077d2707/badge?branch=master)](https://app.shippable.com/github/lzontar/GrafMuvi/dashboard)
 ## :bulb: What's the idea?
 With more and more movies available the answer to "What movie should I watch :interrobang:" isn't getting any simpler. That is why I decided to develop **GrafMuvi**, a web service or more precisely a movie recommendation *RESTful API*, which will support creating, posting, deleting and retrieving movie recommendations. But where will we get the data? Service will store data about movie recommendations using graph structures, because the recommendation system will be based on associations. *GrafMuvi* will support the ability to create and post a promotion of a connection between two movies and store the number of these promotions. The main objective is retrieving a list of similar movies to the one we already watched, which will be ordered from the most possible candidate to the least possible. Sort will be based on the distance between two nodes in our graph database and the number of associations/promotions. Service will also support downgrading and eventually deleting a connection between movies if enough requests of downgrading will be made.
+Additionally when posting a promotion it checks:
+- Whether plots are similar enough (based on pre-trained word embedding method and cosine vector similarity),
+- Whether movie genres do not exclude each others (f.e. promoting a connection between a family movie and horror movie would be Irreasonable).
+Because the same person cannot finish watching a lot of movies in a short period of time (like 30 minutes) and since associations are best if memory of a movie plot is still fresh we do not allow the same IP remote address more than 20 consecutive requests with less than 30 minutes between each other.
 
 Check out the [example](https://github.com/lzontar/GrafMuvi/blob/master/Example.pdf) of how service can be used.
 ## :page_with_curl: How can I use it?
-Documentation of [GrafMuvi](https://grafmuvi.docs.apiary.io/#) web service (developed using *Apiary*).
+[Documentation of GrafMuvi web service](https://grafmuvi.docs.apiary.io/#) (developed using *Apiary*).
 ## :blue_book: What development techniques will be used?
 - RESTful API design
 - Test-driven development
-- Continuous integration
+- Continuous integration and deployment
 - Logging services
 - Storing data with NoSQL, graph database
 ## :hammer_and_wrench: What tools will be used for development?
@@ -47,6 +51,10 @@ Logging is a very useful tool, because it can develop a better understanding of 
 On errors with level ```fatal``` and ```error``` logged by *winston*, our service will transport issues to Sentry using [winston-sentry](https://github.com/synapsestudios/winston-sentry).
 ### Neo4j
 One of the most fundamental parts of our RESTful API is our database. [Neo4j](https://neo4j.com/) is a graph, NoSQL database management system, which we will use in our project. Graph databases are databases that use graph structures to represent and store data. We will use a graph database to support our graph data structure, where nodes will store the information about movies and relationships between the nodes (edges) will store the information about number of promotions. Existing relationships will be used for movie recommendation.
+### Gulp
+[Gulp](https://gulpjs.com/) is a tool for automating repetitive tasks during development. It is 'The streaming build system'. Just as *npm* it uses Node streams to read files and pipes the data to output files. It relies heavily on streams, pipes and asynchronous code. We will use it for automating simple tasks like starting the server, restarting/stopping it, testing etc.
+### PM2
+[pm2](https://pm2.keymetrics.io/) is an advanced, production daemon process manager for Node.js. It ensures to keep our application online and it can do it forever. It provides monitorization over all the processes that are open using *pm2* and easy reloading of applications in production phase.
 ### Heroku
 [Heroku](https://www.heroku.com/) is a cloud PaaS (platform as a service). PaaS is one of cloud computing services, that provides a platform, where customers can develop, run and manage applications. In our project we will use for deployment. Using [GrapheneDB](https://www.graphenedb.com/) Heroku Add-on we will also deploy our Neo4j database.
 *Heroku* is configured with ```Procfile```, where we can specify commands executed during deployment. In our case it executes:
@@ -56,53 +64,65 @@ One of the most fundamental parts of our RESTful API is our database. [Neo4j](ht
 We want this project to have a cloud infrastructure and we will use [Microsoft Azure](https://azure.microsoft.com/en-us/) to implement it.
 
 ## :santa: Scripts
-For repetitive tasks like testing, building and starting a server we can define scripts to automate these tasks. NPM uses *package.json* to recognize and run the scripts. As it seems appropriate to automate the development process as much as possible, we will include some scripts in our project as well.
+For repetitive tasks like testing, building and starting a server we can define scripts to automate these tasks. *Gulp* uses *gulfile.js* to recognize and run the scripts. As it seems appropriate to automate the development process as much as possible, we will include some scripts in our project as well.
 ```
-buildtool: package.json
+buildtool: gulpfile.js
+```
+To run scripts through  we first have to install Gulp:
+```
+npm -g install gulp
 ```
 ### Running tests
 To run tests using *Jest* run:
 ```
-npm test
+gulp test
 ```
 It also executes *pretest* script, which checks coding style using [StandardJS](https://standardjs.com/). *StandardJS* applies multiple rules to our code. Check them out on the [Rules section of StandardJS website](https://standardjs.com/rules.html). Using *StandardJS* it is very simple to fix our code according to the rules. To apply the rules automatically, you can execute:
 ```
-npm run fix
+gulp fix-lint
 ```
-It executes ```npx standard --fix```.
+It executes ```standard --fix ./src```.
 #### API testing
-Tests are located in file */__test_/api.test.js*. Checks file: */src/api/server.js*. Before the execution of tests, it fills the database with "fake" data and after the tests the "fake" data is erased. It includes end-to-end tests for API requests.
+Tests are located in file */__test_/api.test.js*. Checks file: */src/api.js*. It checks the functionality of API (generating output data form, check functions for requests).
+#### Server testing
+Tests are located in file */__test_/server.test.js*. Checks file: */src/api/server.js*. Before the execution of tests, it fills the database with "fake" data and after the tests the "fake" data is erased. It includes end-to-end tests for API requests (including checks if request is appropriate).
 #### Database testing
 Tests are located in file */__test_/database.test.js*. Checks file: */src/api/database.js*. It also fills the database with data before the tests. It includes checking database connection and query testing with generated data.
 #### Structure testing
-Tests are located in file */__test_/graph.test.js*. Checks file: */src/api/graph.js*. Tests functionality of processing the data returned from the database to JSON human-readable format that is returned to the user by our service. It uses example files (located in folder */__test__/test_files*).
+Tests are located in file */__test_/graph.test.js*. Checks file: */src/api/graph.js*. Tests functionality of working with graphs which is used in checking if request is appropriate with genre connections. It uses example files (located in folder */__test__/test_files*).
 
 ### Running build
 [Babel](https://babeljs.io/) is JavaScript tool for compiling code into a backwards compatible version of JavaScript. We will use it in build to compile our ES6 code. To build project run:
 ```
-npm run build
+gulp build
 ```
 It executes ```babel src --out-dir dist``` -> builds /src folder to /dist folder. *Babel* is configured using ```babel.config.js```, where we enable the presets.
 
 ### Running server in development mode
 [nodemon](https://nodemon.io/) is a tool that improves developing speed by automatically restarting node application every time file or directory changes are detected. To run project in *dev* mode run:
 ```
-npm run dev
+gulp dev
 ```
-It executes ```nodemon src/api/server.js localhost 3000``` -> starts *nodemon* localhost server at port 3000.
+It executes ```pm2 start ./src/api/server.js --watch``` which executes pm2 start while watching for changes in filesystem and reloading when changes are applied.
 
 ### Running server
-We will be using simple *node* for start of the server (```node src/api/server.js```). Start server by executing:
+We will be using simple *pm2* for start of the server (```pm2 start ./src/api/server.js```). Start server by executing:
 ```
-npm start
+gulp status
 ```
 
+### Server status
+We can also check the status of our server using *pm2* (automated with *gulp*)
 ## :sos: Wish to contribute?
 ### Environment setup
 1. Fork repository and pull the content
 2. Execute
    ```
    npm install
+   ```
+3. Install Gulp:
+   ```
+   npm install -g gulp
    ```
 ### Make changes
 1. Pull the latest version of repository
