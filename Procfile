@@ -1,2 +1,1 @@
-release: npm build .
-web: node ./src/api/server.js
+web: pm2 start ./src/api/server.js
