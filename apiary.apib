@@ -2,15 +2,26 @@ FORMAT: 1A
 HOST: https://grafmuvi.herokuapp.com/api
 
 # GrafMuvi
-API usage documentation of *GrafMuvi*, a movie recommendation RESTful API. Project description available on [GitHub](https://github.com/lzontar/GrafMuvi).
+*GrafMuvi* is a RESTful API that can support movie recommendation systems. The principal idea is to make movie recommendations public, i.e. to allow anyone to promote a movie recommendation by posting a request, if the person finds movies similar too each other. Because different people notice different things and therefore make different associations, anyone can also downgrade a promotion if he/she doesn't agree with it. But to be honest do we really need an API to do all this? Although it makes the process easier, we could also just make a public accesible database with which anyone could communicate. 
 
-# Allowed HTTPs requests:
+A public database could be problematic, since some people could take advantage of it and promote irreasonable requests (e.g. promoting a horror like [It](https://www.imdb.com/title/tt1396484/) and a family movie like [Cars](https://www.imdb.com/title/tt0317219/)). This is where *GrafMuvi* API really becomes useful. There are three ways how this API protects the *Neo4J* from human error and exploitation.
+#### 1. Checking plot similarity 
+Using a [pre-trained Word Embedding model](https://github.com/turbomaze/word2vecjson/tree/master/data) we will try to figure out whether plots are similar. Word Embedding is a language modelling and feature learning technique in Natural Language Processing (*NLP*), where words and phrases are mapped into vectors of real numbers. The more similar are the vectors the more similar are the words that determine these vectors. How will we calculate the similarity of two plots?
+
+Firstly we will exclude stopwords from the process, since they don't tell us anything about the plot. Then we will calculate the mean of all the remaining words of the plot and thus getting only one vector for each plot. In the end, we calculate the vector similarity using [Cosine Similarity function](https://en.wikipedia.org/wiki/Cosine_similarity).
+#### 2. Checking whether genres are compatible
+Furthermore we can check if genres can be compatible (f.e. horror movies and family movies don't really seem to have much in common). We created a graph where each nodes represents a genre and is connected to multiple other nodes (genres), meaning that the genres can be compatible or in other words that a movie can represent both genres at the same time. Firstly the API checks if the movies have genres in common (if it does, we allow to post the request). Additionally it goes one level further by checking if there are any nodes to which both of the genres are directly connected. In this case we also allow the request to be posted. 
+#### 3. Checking IP
+If we would allow countless post request to each user, malicious users could take advantage of this by posting a request a lot of times and thus distort the true amount of people that promotes/downgrades a connection. Even more, these users could promote connections that may not be the most reasonable but still surpass the rules above. That is why we allow only 20 consecutive post requests with less than 30 minutes between them from the same IP. This means that the API also stores IPs for each request. 
+
+
+## Allowed HTTPs requests:
 <pre>
 POST    : Update or create connection of similar movies
 GET     : Get an ordered list of movie recommendations
 </pre>
 
-# Description Of Usual Server Responses:
+## Description Of Usual Server Responses:
 - 200 `OK` - the request was successful (some API calls may return 201 instead).
 - 201 `Created` - the request was successful and a resource was created.
 - 204 `No Content` - the request was successful but there is no representation to return (i.e. the response is empty).
@@ -21,7 +32,7 @@ GET     : Get an ordered list of movie recommendations
 - 405 `Method Not Allowed` - requested method is not supported for resource.
 
 
-# Group Graph: Movie recommendations 
+## Group Graph: Movie recommendations 
 Represents movies and connections between them. Each node represents a movie and each edge holds the number of requests of promoting similarity between the connected movies.
 
 All informations about movies will be acquired using [OMDb API](https://www.omdbapi.com/).
@@ -41,10 +52,10 @@ Properties:
 - promotions `(Number)` : Number of requests of promoting similarity between the connected movies. 
 
 
-## Http requests [/]
+### Http requests [/]
 
 
-### Retrieve movie recommendation list by IMDB ID [GET /id/{imdbId}]
+#### Retrieve movie recommendation list by IMDB ID [GET /id/{imdbId}]
 + Parameters
     + imdbId (Number) ... Unique IMDB movie identifier. 
 
@@ -67,7 +78,7 @@ Properties:
             "error": "error.not_found",
             "source": "Neo4j database"
         }
-### Retrieve movie recommendation list by movie title [GET /title/{title}/{year}]
+#### Retrieve movie recommendation list by movie title [GET /title/{title}/{year}]
 + Parameters
     + title (String) ... Movie title
     + year (Number) ... The year movie was made
@@ -92,7 +103,7 @@ Properties:
             "error": "error.not_found",
             "source": "Neo4j database"
         }
-### Update a movie recommendation by IMDB ID [POST /id]
+#### Update a movie recommendation by IMDB ID [POST /id]
 
 + Request (application/json)
 
@@ -109,7 +120,18 @@ Properties:
             "title2" : "Godfather"
             "promotions": 101,
         }
++ Response 400 (application/json)
 
+        {
+            errorCode: 400,
+            description: "Rules listed under key 'rules' are not considered in your request. Check your request!",
+            rules: {
+              1:"Plots shouldn't be too different from each other (checked with word embedding method and cosine similarity function)",
+              2:"Genres are connected to each other. Using these connections genres should be connected through at most 1 node (distance(node1, node2) <= 2).",
+              3:"Since we need some time to watch an actual movie and only after that we can promote/downgrade a connection, we will limit the number of consecutive API request with less than 30 minutes between each other."
+            }
+          }
+        
 + Response 404 (application/json)
 
         {
@@ -122,7 +144,7 @@ Properties:
             "error": "error.not_found",
             "source": "Neo4j database"
         }
-### Update a movie recommendation by title [POST /title]
+#### Update a movie recommendation by title [POST /title]
 
 + Request (application/json)
 
@@ -142,6 +164,18 @@ Properties:
             "promotions": 99,
         }
 
++ Response 400 (application/json)
+
+        {
+            errorCode: 400,
+            description: "Rules listed under key 'rules' are not considered in your request. Check your request!",
+            rules: {
+              1:"Plots shouldn't be too different from each other (checked with word embedding method and cosine similarity function)",
+              2:"Genres are connected to each other. Using these connections genres should be connected through at most 1 node (distance(node1, node2) <= 2).",
+              3:"Since we need some time to watch an actual movie and only after that we can promote/downgrade a connection, we will limit the number of consecutive API request with less than 30 minutes between each other."
+            }
+          }
+        
 + Response 404 (application/json)
 
         {
