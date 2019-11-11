@@ -111,6 +111,8 @@ describe('Post Endpoints - Check IP', () => {
           imdbId1: '123',
           imdbId2: '456',
           downgrade: false
+        }).end(() => {
+          done()
         })
     }
     const expectedJson = {
