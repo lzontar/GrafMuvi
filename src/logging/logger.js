@@ -6,7 +6,7 @@ const Sentry = require('@sentry/node')
 
 var appRoot = require('app-root-path')
 
-Sentry.init({ dsn: process.env.DSN })
+Sentry.init({ dsn: process.env.DNS })
 
 const logConfiguration = {
   transports: [
