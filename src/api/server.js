@@ -18,7 +18,7 @@ app.get('/', function (req, res) {
   res.status(200).json({
     status: 'OK',
     example: {
-      path: 'http://localhost:8080/api/title/The godfather/1972',
+      path: 'https://grafmuvi.herokuapp.com/api/title/The godfather/1972',
       returnValue: { 1: 'American gangster', 2: 'Black mass', 3: 'Training day' }
     }
   })
