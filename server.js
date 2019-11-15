@@ -1,10 +1,10 @@
 // Author: @lzontar
 const express = require('express')
-const database = require('./database')
+const database = require('./src/api/database')
 
-const logger = require('../logging/logger')
+const logger = require('./src/logging/logger')
 
-const GrafMuvi = require('../api.js')
+const GrafMuvi = require('./src/api.js')
 const api = new GrafMuvi()
 
 const app = express()
