@@ -1,10 +1,10 @@
 // Author: @lzontar
 
 import request from 'supertest'
-const app = require('../src/api/server').app
-const server = require('../src/api/server').server
+const app = require('../server').app
+const server = require('../server').server
 const database = require('../src/api/database')
-const neo4jConnection = require('../src/api/server').database
+const neo4jConnection = require('../server').database
 
 beforeAll(() => {
   jest.setTimeout(10000)
