@@ -7,15 +7,15 @@
     "test": "__test__"
   },
   "scripts": {
-    "dev": "pm2 start ./src/api/server.js --watch",
-    "build": "babel src --out-dir dist",
-    "start": "pm2 start ./src/api/server.js",
-    "stop": "pm2 stop server",
-    "restart": "pm2 restart server",
-    "status": "pm2 ls",
-    "pretest": "standard ./src",
-    "test": "jest --detectOpenHandles",
-    "fix": "standard --fix ./src"
+    "dev": "node ./node_modules/pm2/bin/pm2 start ./src/api/server.js --watch",
+    "build": "node ./node_modules/babel-cli/bin/babel src --out-dir dist",
+    "start": "node ./node_modules/pm2/bin/pm2 start ./src/api/server.js",
+    "stop": "node ./node_modules/pm2/bin/pm2 stop server",
+    "restart": "node ./node_modules/pm2/bin/pm2 restart server",
+    "status": "node ./node_modules/pm2/bin/pm2 ls",
+    "pretest": "node ./node_modules/.bin/standard ./src",
+    "test": "node ./node_modules/jest-cli/bin/jest --detectOpenHandles",
+    "fix": "node ./node_modules/.bin/standard --fix ./src"
   },
   "repository": {
     "type": "git",
@@ -37,18 +37,18 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
-    "gulp-cli": "^2.2.0",
     "gulp": "^4.0.2",
+    "gulp-cli": "^2.2.0",
     "gulp-jest": "^4.0.3",
     "gulp-standardjs": "^12.0.5",
+    "jest": "^24.9.0",
+    "jest-cli": "^24.9.0",
     "neo4j-driver": "^1.7.6",
     "omdbapi": "^3.0.0",
     "pm2": "^4.1.2",
-    "winston": "^3.0.0",
-    "jest": "^24.9.0",
-    "jest-cli": "^24.9.0",
     "standard": "^14.3.1",
-    "supertest": "^4.0.2"
+    "supertest": "^4.0.2",
+    "winston": "^3.0.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.6.2",
