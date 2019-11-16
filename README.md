@@ -14,6 +14,13 @@ Because the same person cannot finish watching a lot of movies in a short period
 Check out the [example](https://github.com/lzontar/GrafMuvi/blob/master/Example.pdf) of how service can be used.
 ## :page_with_curl: How can I use it?
 [Documentation of GrafMuvi web service](https://grafmuvi.docs.apiary.io/#) (developed using *Apiary*).
+### Toolset documentation
+- [Construction tools](https://github.com/lzontar/GrafMuvi/blob/master/docs/Construction_tools.md)
+- [CI/CD](https://github.com/lzontar/GrafMuvi/blob/master/docs/CI.md)
+- [Buildtool](https://github.com/lzontar/GrafMuvi/blob/master/docs/Buildtool.md)
+- [Test-driven development](https://github.com/lzontar/GrafMuvi/blob/master/docs/Test-driven_development.md)
+- [Deployment](https://github.com/lzontar/GrafMuvi/blob/master/docs/Deployment.md)
+
 ## :blue_book: What development techniques will be used?
 - RESTful API design
 - Test-driven development
