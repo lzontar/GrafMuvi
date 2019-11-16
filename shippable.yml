@@ -14,6 +14,8 @@ build:
   ci:
     - npm install
     - npm test
+  on_success:
+    - git push -f git@heroku.com:$grafmuvi.git master
 env:
   global:
     - APP_NAME=grafmuvi
