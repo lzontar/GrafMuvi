@@ -12,8 +12,8 @@
   },
   "scripts": {
     "dev": "pm2 start server.js --watch",
-    "build": "babel src --out-dir dist",
-    "start": "node server.js",
+    "build": "babel src --out-dir public",
+    "start": "node node_modules/gulp/bin/gulp start",
     "stop": "pm2 stop server",
     "restart": "pm2 restart server",
     "status": "pm2 ls",

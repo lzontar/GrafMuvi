@@ -19,7 +19,7 @@ gulp.task('start', () => {
 
     pm2.start({
       name: 'GrafMuvi',
-      script: './src/api/server.js',
+      script: './server.js',
       instances: 1
     }, function (err) {
       if (err) {
@@ -33,7 +33,7 @@ gulp.task('start', () => {
 
 //start in development mode
 gulp.task('dev', () => {
-  return exec('pm2 start ./src/api/server.js --watch', function (err, stdout, stderr) {
+  return exec('pm2 start ./server.js --watch', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
   });
@@ -56,7 +56,7 @@ gulp.task('restart', () => {
 
     pm2.restart({
       name: 'GrafMuvi',
-      script: './src/api/server.js',
+      script: './server.js',
       instances: 1
     }, function (err) {
       if (err) {
