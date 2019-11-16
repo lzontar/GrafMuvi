@@ -13,8 +13,6 @@ const ip = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0'
 
 app.use(express.json())
 
-const neoDriver = database.connectDB()
-const neoSession = neoDriver.session()
 app.get('/status', function (req, res) {
   res.status(200).json({ "status": "OK",
           "ejemplo": {
