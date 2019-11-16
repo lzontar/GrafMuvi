@@ -14,25 +14,7 @@ Furthermore we can check if genres can be compatible (f.e. horror movies and fam
 #### 3. Checking IP
 If we would allow countless post request to each user, malicious users could take advantage of this by posting a request a lot of times and thus distort the true amount of people that promotes/downgrades a connection. Even more, these users could promote connections that may not be the most reasonable but still surpass the rules above. That is why we allow only 20 consecutive post requests with less than 30 minutes between them from the same IP. This means that the API also stores IPs for each request. 
 
-
-## Allowed HTTPs requests:
-<pre>
-POST    : Update or create connection of similar movies
-GET     : Get an ordered list of movie recommendations
-</pre>
-
-## Description Of Usual Server Responses:
-- 200 `OK` - the request was successful (some API calls may return 201 instead).
-- 201 `Created` - the request was successful and a resource was created.
-- 204 `No Content` - the request was successful but there is no representation to return (i.e. the response is empty).
-- 400 `Bad Request` - the request could not be understood or was missing required parameters.
-- 401 `Unauthorized` - authentication failed or user doesn't have permissions for requested operation.
-- 403 `Forbidden` - access denied.
-- 404 `Not Found` - resource was not found.
-- 405 `Method Not Allowed` - requested method is not supported for resource.
-
-
-## Group Graph: Movie recommendations 
+#### Graph: Movie recommendations 
 Represents movies and connections between them. Each node represents a movie and each edge holds the number of requests of promoting similarity between the connected movies.
 
 All informations about movies will be acquired using [OMDb API](https://www.omdbapi.com/).
@@ -51,9 +33,26 @@ All informations about movies will be acquired using [OMDb API](https://www.omdb
 Properties:
 - promotions `(Number)` : Number of requests of promoting similarity between the connected movies. 
 
+## Group Development toolset and techniques
+All the information regarding the development techniques used and tools description can be found on GitHub:
+- [Construction tools](https://github.com/lzontar/GrafMuvi/blob/master/docs/Construction_tools.md)
+- [CI/CD](https://github.com/lzontar/GrafMuvi/blob/master/docs/CI.md)
+- [Buildtool](https://github.com/lzontar/GrafMuvi/blob/master/docs/Buildtool.md)
+- [Test-driven development](https://github.com/lzontar/GrafMuvi/blob/master/docs/Test-driven_development.md)
+- [Deployment](https://github.com/lzontar/GrafMuvi/blob/master/docs/Deployment.md)
 
-### Http requests [/]
+## Group HTTP Requests
 
+### Allowed HTTPs requests:
+<pre>
+POST    : Update or create connection of similar movies
+GET     : Get an ordered list of movie recommendations
+</pre>
+
+### Description Of Usual Server Responses:
+- 200 `OK` - the request was successful (some API calls may return 201 instead).
+- 400 `Bad Request` - the request could not be understood or was missing required parameters.
+- 404 `Not Found` - resource was not found.
 
 #### Retrieve movie recommendation list by IMDB ID [GET /id/{imdbId}]
 + Parameters
