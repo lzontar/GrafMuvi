@@ -13,7 +13,7 @@
   "scripts": {
     "dev": "pm2 start server.js --watch",
     "build": "babel src --out-dir public",
-    "start": "node server.js",
+    "start": "pm2 start server.js",
     "stop": "pm2 stop server",
     "restart": "pm2 restart server",
     "status": "pm2 ls",
