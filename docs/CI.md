@@ -69,4 +69,5 @@ Shippable configuration file consists of:
 - Installing dependencies and caching node_modules between processes
 - Running tests
 - Encrypted environmental variables
-- En
+- Encrypted Heroku API key
+- Continuous delivery using *Heroku*
