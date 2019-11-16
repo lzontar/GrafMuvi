@@ -8,8 +8,8 @@ const GrafMuvi = require('./src/api.js')
 const api = new GrafMuvi()
 
 const app = express()
-const port = process.env.PORT || 8080
-
+const port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080
+const ip = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
 app.use(express.json())
 
 const neoDriver = database.connectDB()
@@ -87,10 +87,9 @@ app.post('/api/post/title/year', (req, res) => {
   })
 })
 
-const server = app.listen(port, () => {
-  console.log('Listening at port ' + port + '...')
-}
-)
+app.listen(port, ip);
+console.log('Server running on http://%s:%s', ip, port);
+
 var exportObj = {
   app: app,
   server: server,
