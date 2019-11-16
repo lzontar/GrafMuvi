@@ -1,4 +1,5 @@
-# Heroku
+# :100: How is it deployed? 
+## Heroku
 [Heroku](https://www.heroku.com) is one of the cloud platform as a service (PaaS) that we will use in our project. It is one of the first cloud platforms and now supports several programming languages. *Heroku* works with application containers or *dynos* (as they call them). We will use *Heroku* as our primary PaaS because it is free, because of its simplicity and its high compatibility level with GitHub.
 ### How does deployment work?
 To put it short, source code of our application with necessary dependencies, language, framework and output of the build phase (e.g. compiled code) is firstly assembled into a slug. Before that a dyno (an isolated, virtualized Unix container which provides environment for our application) is booted and preloaded with prepared slug, specified config vars and add-ons. On created dyno our application is executed by running the default command of the language of our application or the command specified in *Procfile*. If our application becomes too complex for only one dyno, we can simply scale it by starting multiple dynos.
@@ -46,9 +47,16 @@ $ git push heroku master
 ```
 Additionally we can also configure our application to be automatically deployed after each commit to our GitHub repository. Our settings on Heroku Dashboard should look like this (connected to our GitHub repo and enabled automatic deploys):
 ![](./images/Heroku_GitHub_Auto_Deploy.png)
-Furthermore we can add heroku
-
-##
+Furthermore we can add continuous deployment to TravisCI by adding:
+```
+deploy:
+  provider: heroku
+  api_key:
+    secure: <HEROKU_API_KEY>
+  app: grafmuvi
+  on:
+    repo: lzontar/GrafMuvi
+```
 
 # Alternatives to Heroku
 If you don't want to use Heroku as PaaS there are also many other similar services. Below  you can find instructions on how to deploy your app with *Microsoft Azure* and *OpenShift*.
@@ -71,7 +79,7 @@ $ az webapp deployment user set --user-name <USERNAME> --password <PASSWORD>
 We have to create a resource group, which is basically a logical unit that represents a collection of assets:
 ```
 $ az group create --name GrafMuviResourceGroup --location westeurope
-```+
+```
 After a resource group has been successfully created we have to create a service plan. We will create a free service plan.
 ```
 $ az appservice plan create --name GrafMuviServicePlan --resource-group GrafMuviResourceGroup --sku FREE
