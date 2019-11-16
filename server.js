@@ -15,6 +15,16 @@ app.use(express.json())
 
 const neoDriver = database.connectDB()
 const neoSession = neoDriver.session()
+app.get('/status', function (req, res) {
+  res.status(200).json({ "status": "OK",
+          "ejemplo": {
+                  "ruta": "https://grafmuvi.herokuapp.com/api/title/The godfather/1972",
+                  "valor": "{JSON: { 1: 'American gangster', 2: 'Black mass', 3: 'Training day' }}"
+  }})
+})
+
+const neoDriver = database.connectDB()
+const neoSession = neoDriver.session()
 app.get('/', function (req, res) {
   res.status(200).json({
     status: 'OK',
