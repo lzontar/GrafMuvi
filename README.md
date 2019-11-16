@@ -31,7 +31,7 @@ Check out the [example](https://github.com/lzontar/GrafMuvi/blob/master/Example.
 
 ## Construction tool
 ```
-Buildtool: gulpfile.js
+buildtool: gulpfile.js
 ```
 ## Application deployment
 ```
