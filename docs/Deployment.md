@@ -1,4 +1,4 @@
-# :100: How is it deployed? 
+# :100: How is it deployed?
 ## Heroku
 [Heroku](https://www.heroku.com) is one of the cloud platform as a service (PaaS) that we will use in our project. It is one of the first cloud platforms and now supports several programming languages. *Heroku* works with application containers or *dynos* (as they call them). We will use *Heroku* as our primary PaaS because it is free, because of its simplicity and its high compatibility level with GitHub.
 ### How does deployment work?
@@ -46,7 +46,9 @@ After we successfully configure our Heroku application we can deploy our applica
 $ git push heroku master
 ```
 Additionally we can also configure our application to be automatically deployed after each commit to our GitHub repository. Our settings on Heroku Dashboard should look like this (connected to our GitHub repo and enabled automatic deploys):
+
 ![](./images/Heroku_GitHub_Auto_Deploy.png)
+
 Furthermore we can add continuous deployment to TravisCI by adding:
 ```
 deploy:
@@ -107,13 +109,21 @@ $ git push azure master
 Besides manual deployments Microsoft Azure also supports Continuous Integration & Deployment (CI/CD). After each GitHub commit to specified branch our code is built with Azure Pipeline cloud service.
 
 Firstly we have to go to our *GrafMuvi App Service* on Microsoft Azure Dashboard where we can find *Deployment Center*. There we have to select Continuous Deployment with GitHub as indicated on the picture below.
+
 ![](./images/Azure_1.png)
+
 Now we select Build provider. We choose [Azure Pipelines](https://azure.microsoft.com/en-us/services/devops/pipelines/) which is a Microsoft CI/CD tool.
+
 ![](./images/Azure_2.png)
+
 In the next step we have to define code and build configurations.
+
 ![](./images/Azure_3.png)
+
 In the end you should get a summary such as you see below.
+
 ![](./images/Azure_4.png)
+
 And it's all done. This process creates Azure DevOps organization and project (if you didn't already created them), where you can check your builds and releases.
 
 
@@ -126,7 +136,9 @@ And it's all done. This process creates Azure DevOps organization and project (i
 - Pods, which represent an instance of application
 
 Firstly we have to create a cluster. When creating *OpenShift Online* account, a sandbox cluster is automatically created. After downloading [oc CLI tool](https://docs.openshift.com/enterprise/3.2/cli_reference/get_started_cli.html) we first have to login into our cluster. To get our login credentials we have to click *?->Command Line Tools*. There you will find the exact command with which you can connect to your cluster.
+
 ![](./images/OpenShift_Login.png)
+
 It should look something like that:
 ```
 $ oc login --token=<token> --server=<server>
