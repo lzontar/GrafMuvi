@@ -87,7 +87,7 @@ app.post('/api/post/title/year', (req, res) => {
   })
 })
 
-app.listen(port, ip);
+const server = app.listen(port, ip);
 console.log('Server running on http://%s:%s', ip, port);
 
 var exportObj = {

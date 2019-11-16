@@ -2,7 +2,7 @@
   "name": "api",
   "version": "1.0.0",
   "description": "RESTful API for movie recommendations",
-  "main": "app.js",
+  "main": "server.js",
   "directories": {
     "test": "__test__"
   },
@@ -33,7 +33,7 @@
   "bugs": {
     "url": "https://github.com/lzontar/GrafMuvi/issues"
   },
-  "homepage": "https://github.com/lzontar/GrafMuvi#readme",
+  "homepage": "https://github.com/lzontar/GrafMuvi",
   "dependencies": {
     "@sentry/node": "^5.7.1",
     "@synapsestudios/winston-sentry": "^1.0.0",
