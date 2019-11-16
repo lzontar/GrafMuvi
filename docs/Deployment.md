@@ -124,7 +124,7 @@ In the end you should get a summary such as you see below.
 
 ![](./images/Azure_4.png)
 
-And it's all done. This process creates Azure DevOps organization and project (if you didn't already created them), where you can check your builds and releases.
+And it's all done. This process creates Azure DevOps organization and project (if you didn't already create them), where you can check your builds and releases.
 
 
 ## OpenShift
