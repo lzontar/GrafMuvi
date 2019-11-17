@@ -86,6 +86,7 @@ gulp.task('stop', () => {
 })
 
 gulp.task('test', () => {
+  pretest()
   return gulp.src('__test__').pipe(jest({
     detectOpenHandles: true,
     automock: false
@@ -109,11 +110,12 @@ gulp.task('fix-lint', () => {
 })
 
 //babel build
-gulp.task('fix-lint', () => {
-  return exec('babel src --out-dir dist', function (err, stdout, stderr) {
+gulp.task('build', () => {
+  return pretest()
+  .pipe(exec('babel src --out-dir dist', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
-  });
+  }));
 })
 
 gulp.task('pretest', pretest)
