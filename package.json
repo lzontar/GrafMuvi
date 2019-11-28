@@ -20,7 +20,7 @@
     "pretest": "standard ./src",
     "test": "jest --detectOpenHandles",
     "fix": "standard --fix ./src",
-    "coverage": "jest --coverage --coverageReporters=text-lcov | coveralls"
+    "coverage": "jest --coverage --detectOpenHandles --coverageReporters=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
