@@ -22,5 +22,7 @@ One of the most fundamental parts of our RESTful API is our database. [Neo4j](ht
 [pm2](https://pm2.keymetrics.io/) is an advanced, production daemon process manager for Node.js. It ensures to keep our application online and it can do it forever. It provides monitorization over all the processes that are open using *pm2* and easy reloading of applications in production phase.
 ### Heroku
 [Heroku](https://www.heroku.com/) is a cloud PaaS (platform as a service). PaaS is one of cloud computing services, that provides a platform, where customers can develop, run and manage applications. In our project we will use for deployment. Using [GrapheneDB](https://www.graphenedb.com/) Heroku Add-on we will also deploy our Neo4j database.
+### Docker
+Using *containers* can be very beneficial, because it can remove bugs, which may be created due to differences in environment. One of the tools to create, deploy and run applications using containers is [Docker](https://www.docker.com/). It's a set of Platform as a Service (PaaS) products, which rely on the use of OS-level containerization.
 ### Microsoft Azure
-We want this project to have a cloud infrastructure and we will use [Microsoft Azure](https://azure.microsoft.com/en-us/) to implement it. 
+We want this project to have a cloud infrastructure and we will use [Microsoft Azure](https://azure.microsoft.com/en-us/) to implement it.
