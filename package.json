@@ -20,7 +20,7 @@
     "pretest": "standard ./src",
     "test": "jest --detectOpenHandles",
     "fix": "standard --fix ./src",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage --coverageReporters=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
@@ -59,6 +59,7 @@
     "@babel/preset-env": "^7.6.2",
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
+    "coveralls": "^3.0.9",
     "npx": "^10.2.0"
   },
   "standard": {
