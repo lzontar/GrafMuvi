@@ -11,7 +11,7 @@
     "npm": ">=6.9.0"
   },
   "scripts": {
-    "dev": "pm2 start server.js --watch",
+    "dev": "pm2 start server.js --watch --ignore-watch ./data",
     "build": "babel src --out-dir public",
     "start": "pm2 start server.js",
     "stop": "pm2 stop server",
@@ -19,7 +19,8 @@
     "status": "pm2 ls",
     "pretest": "standard ./src",
     "test": "jest --detectOpenHandles",
-    "fix": "standard --fix ./src"
+    "fix": "standard --fix ./src",
+    "coverage": "jest --coverage"
   },
   "repository": {
     "type": "git",
