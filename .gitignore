@@ -99,5 +99,5 @@ public/
 dist/
 
 # ip.json
-ip.json
+data/ip.json
 # End of https://www.gitignore.io/api/node
