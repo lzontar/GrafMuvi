@@ -5,7 +5,7 @@ install:
 - npm install
 cache: npm
 script:
-- npm run coveralls
+- npm run coverage
 services:
 - neo4j
 env:
