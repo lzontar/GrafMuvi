@@ -127,7 +127,7 @@ class GrafMuvi {
       // get number of previous requests that were not more than 30 minutes apart
       let nOfRequests = ipList[ip].nOfRequests
       // get minutes passed from the last request
-      const minPassed = this.getTimePassed(ipList[ip].time) / 60000
+      const minPassed = this.getTimePassed(ipList[ip].time, new Date().getTime()) / 60000
 
       // if there was no request from that IP for over 30 minutes reset nOfRequests to 0
       if(minPassed > 30.0) {
@@ -149,11 +149,9 @@ class GrafMuvi {
     return result
   }
 
-  getTimePassed(time) {
-    const today = new Date();
-    const time2 = today.getTime()
+  getTimePassed(time1, time2) {
     //return milliseconds passed
-    return time2 - time
+    return time2 - time1
   }
 
   writeToJson(filePath, nOfRequests, time, ip, ipList) {
