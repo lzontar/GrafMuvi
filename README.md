@@ -21,6 +21,7 @@ Check out the [example](https://github.com/lzontar/GrafMuvi/blob/master/Example.
 - [Buildtool](https://github.com/lzontar/GrafMuvi/blob/master/docs/Buildtool.md)
 - [Test-driven development](https://github.com/lzontar/GrafMuvi/blob/master/docs/Test-driven_development.md)
 - [Deployment](https://github.com/lzontar/GrafMuvi/blob/master/docs/Deployment.md)
+- [Containerization](https://github.com/lzontar/GrafMuvi/blob/master/docs/Containerization.md)
 
 ## :blue_book: What development techniques will be used?
 - RESTful API design
@@ -38,7 +39,9 @@ buildtool: gulpfile.js
 ```
 Despliegue: https://grafmuvi.herokuapp.com
 ```
-
+```
+Contenedor: https://dirección.url
+```
 ## :sos: Wish to contribute?
 ### Environment setup
 1. Fork repository and pull the content
