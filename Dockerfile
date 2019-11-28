@@ -4,9 +4,14 @@ RUN mkdir -p /app
 
 WORKDIR /app
 
-COPY . ./
+
+COPY package.json /app
 
 RUN npm install
 RUN npm install -g gulp
 
+COPY . /app
+
 CMD ["gulp", "start"]
+
+EXPOSE 4000
