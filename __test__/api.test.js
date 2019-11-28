@@ -3,9 +3,48 @@ const GrafMuvi = require('../src/api')
 const examplePromotions = require('./test_files/examplePromotions')
 const exampleRecommendationList = require('./test_files/exampleRecommendationList')
 
+const fs = require('fs');
+var appRoot = require('app-root-path')
+
 const api = new GrafMuvi()
 
 // -------------------------------------UNIT TESTS -------------------------------------//
+
+describe('Auxiliary functions', () => {
+  test('Time difference', () => {
+    const timeDifference = api.getTimePassed(1,2)
+    expect(timeDifference).toStrictEqual(1)
+  })
+  test('Check ip - existing IP', () => {
+    const timeDifference = api.checkIP('::')
+    expect(timeDifference).toStrictEqual(true)
+    resetIPJson()
+  })
+  test('Check ip - new IP', () => {
+    const timeDifference = api.checkIP('test')
+    expect(timeDifference).toStrictEqual(true)
+    resetIPJson()
+  })
+  test('Check ip -  bad IP', () => {
+    setBadIP()
+    const timeDifference = api.checkIP('bad_ip')
+    expect(timeDifference).toStrictEqual(false)
+    resetIPJson()
+  })
+  test('Check ip - long time ago', () => {
+    setBadTime()
+    const timeDifference = api.checkIP('bad_time')
+    expect(timeDifference).toStrictEqual(true)
+    resetIPJson()
+  })
+  test('Check ip - less than 30 min and less than 20 requests', () => {
+    setGoodIP()
+    const timeDifference = api.checkIP('good_ip')
+    expect(timeDifference).toStrictEqual(true)
+    resetIPJson()
+  })
+})
+
 describe('Relationship promotion/downgrade', () => {
   test('Returns json, that conatains updated relationship, from data returned from database', () => {
     const sortedJson = {
@@ -104,3 +143,42 @@ describe('Check genre comparison', () => {
     expect(api.areGenresSimilar(json1, json2)).toBe(true)
   })
 })
+
+function resetIPJson() {
+  let ipList={}
+  ipList['::'] = {
+    time: 0,
+    nOfRequests: 0
+  }
+  fs.writeFileSync(`${appRoot}/data/ip.json`, JSON.stringify(ipList))
+}
+function setBadIP() {
+  const jsonString = fs.readFileSync(`${appRoot}/data/ip.json`)
+  let ipList = JSON.parse(jsonString)
+
+  ipList['bad_ip'] = {
+    time: new Date().getTime(),
+    nOfRequests: 40
+  }
+  fs.writeFileSync(`${appRoot}/data/ip.json`, JSON.stringify(ipList))
+}
+function setBadTime() {
+  const jsonString = fs.readFileSync(`${appRoot}/data/ip.json`)
+  let ipList = JSON.parse(jsonString)
+
+  ipList['bad_time'] = {
+    time: 1400000000000,
+    nOfRequests: 40
+  }
+  fs.writeFileSync(`${appRoot}/data/ip.json`, JSON.stringify(ipList))
+}
+function setGoodIP() {
+  const jsonString = fs.readFileSync(`${appRoot}/data/ip.json`)
+  let ipList = JSON.parse(jsonString)
+
+  ipList['good_ip'] = {
+    time: new Date().getTime(),
+    nOfRequests: 0
+  }
+  fs.writeFileSync(`${appRoot}/data/ip.json`, JSON.stringify(ipList))
+}

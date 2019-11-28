@@ -14,7 +14,7 @@ beforeAll(() => {
   driver = database.connectDB()
   session = driver.session()
 
-  database.initTestData(session)
+  initTestData(session)
 })
 
 describe('MATCH', () => {
@@ -156,6 +156,7 @@ describe('UPDATE', () => {
       logger.error(e)
     })
   })
+
   it('UPDATE movie recommendation promotions by title - FAIL because of unexisting movie', () => {
     const request = {
       body: {
@@ -175,9 +176,132 @@ describe('UPDATE', () => {
   })
 })
 
+it('UPDATE movie recommendation promotions by title - Bad 1st movie name OMDBAPI fails', () => {
+  const request = {
+    body: {
+      title1: 'This movie doesn\'t exist',
+      released1: 2200,
+      title2: 'Godfather',
+      released2: 1991,
+      downgrade: true
+    }
+  }
+  const expected = 100
+  return new Promise((resolve, reject) => {
+    database.postPromotionByTitle(session, request, api, (dbData, status) => {
+      resolve(dbData, status)
+    })
+  }).then((data, status) => {
+    const expectedJson = { error: 'error.not_found', source: 'OmdbAPI' }
+    database.postPromotionByTitle(session, request, api, (dbData, status) => {
+      expect(dbData).toStrictEqual(expectedJson)
+      // We shouldn't find the movie in OmdbAPI, because it doesn't exist
+      expect(status).toBe(404)
+    })
+  }).catch((e) => {
+    logger.error(e)
+  })
+})
+it('UPDATE movie recommendation promotions by title - Bad 2nd movie name OMDBAPI fails', () => {
+  const request = {
+    body: {
+      title1: 'Godfather',
+      released1: 1991,
+      title2: 'This movie doesn\'t exist',
+      released2: 2200,
+      downgrade: true
+    }
+  }
+  const expected = 100
+  return new Promise((resolve, reject) => {
+    database.postPromotionByTitle(session, request, api, (dbData, status) => {
+      resolve(dbData, status)
+    })
+  }).then((data, status) => {
+    const expectedJson = { error: 'error.not_found', source: 'OmdbAPI' }
+    database.postPromotionByTitle(session, request, api, (dbData, status) => {
+      expect(dbData).toStrictEqual(expectedJson)
+      // We shouldn't find the movie in OmdbAPI, because it doesn't exist
+      expect(status).toBe(404)
+    })
+  }).catch((e) => {
+    logger.error(e)
+  })
+})
+it('Database - Irreasonable promotion of horror movie(It) and animation family movie(Cars) by Title', () => {
+  const request = {
+    body: {
+      title1: 'It',
+      released1: 2017,
+      title2: 'Cars',
+      released2: 2006,
+      downgrade: false
+    }
+  }
+  const expectedJson = { error: 'error.bad_request', source: 'GrafMuviAPI' }
+  return new Promise((resolve, reject) => {
+    database.postPromotionByTitle(session, request, api, (dbData, status) => {
+      resolve(dbData, status)
+    })
+  }).then((data, status) => {
+    expect(dbData).toStrictEqual(expectedJson)
+    // We shouldn't find the movie in OmdbAPI, because it doesn't exist
+    expect(status).toBe(400)
+  }).catch((e) => {
+    logger.error(e)
+  })
+})
+it('Database - Irreasonable promotion of horror movie(It) and animation family movie(Cars) by ID', () => {
+  const request = {
+    body: {
+      imdbId1: "tt1396484",
+      imdbId2: "tt0317219",
+      downgrade: false
+    }
+  }
+  const expectedJson = { error: 'error.bad_request', source: 'GrafMuviAPI' }
+  return new Promise((resolve, reject) => {
+    database.postPromotionByTitle(session, request, api, (dbData, status) => {
+      resolve(dbData, status)
+    })
+  }).then((data, status) => {
+    expect(dbData).toStrictEqual(expectedJson)
+    // We shouldn't find the movie in OmdbAPI, because it doesn't exist
+    expect(status).toBe(400)
+  }).catch((e) => {
+    logger.error(e)
+  })
+})
 afterAll(async () => {
-  database.clearTestData(session, driver, (session, driver) => {
+  clearTestData(session, driver, (session, driver) => {
     session.close()
     driver.close()
   })
 })
+
+function initTestData(session) {
+  const cypher = 'MERGE (m1:Movie{title:\'test1\', released: 2019, imdbId: \'123\'}) MERGE (m2:Movie{title:\'test2\', released: 2019, imdbId: \'456\'}) MERGE (m3:Movie{title:\'test3\', released: 2019, imdbId: \'789\'}) MERGE (m4:Movie{title:\'test4\', released: 2019, imdbId: \'101112\'}) MERGE (m1)-[s1:SIMILAR]->(m2)-[s2:SIMILAR]->(m1) MERGE (m1)-[s3:SIMILAR]->(m3)-[s4:SIMILAR]->(m1) MERGE (m1)-[s5:SIMILAR]->(m4)-[s6:SIMILAR]->(m1) SET s1.promotions = 100, s2.promotions = 100, s3.promotions = 50, s4.promotions = 50, s5.promotions = 25, s6.promotions = 25'
+  session.run(cypher)
+    .then(result => {
+      // Log response
+      logger.info(JSON.stringify(result.records))
+    })
+    .catch(e => {
+      // Output the error
+      logger.error(e)
+    })
+}
+function clearTestData(session, driver, callback) {
+  const cypher = 'MATCH (x:Movie)-[s:SIMILAR]->(y:Movie) WHERE x.imdbId=\'123\' OR x.imdbId=\'456\' OR x.imdbId=\'789\' OR x.imdbId=\'101112\' DELETE s DELETE x'
+  session.run(cypher)
+    .then(result => {
+      // Log response
+      logger.info(JSON.stringify(result))
+      callback(session, driver)
+    })
+    .catch(e => {
+      // Output the error
+      logger.error(e)
+      callback(session, driver)
+    })
+}
