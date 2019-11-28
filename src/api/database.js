@@ -66,6 +66,7 @@ exports.postPromotionById = function (session, request, api, callback) {
         released1: parseInt(resId1.released.split(' ')[2]),
         released2: parseInt(resId2.released.split(' ')[2])
       }
+      const plotsAreSimilar = api.arePlotsSimilar(resId1.plot, resId2.plot)
 
       //Check if user can promote/downgrade this promotion (is it reasonable, are genres similar, are there too many requests from this IP)
       if(((plotsAreSimilar || (!plotsAreSimilar && request.body.downgrade)) && api.areGenresSimilar(resId1.genre, resId2.genre)) && api.checkIP(request.connection.remoteAddress)) {
@@ -152,31 +153,4 @@ exports.postPromotionByTitle = function (session, request, api, callback) {
     const error = { error: 'error.not_found', source: 'OmdbAPI' }
     callback(error, 404)
   })
-}
-
-exports.initTestData = function (session) {
-  const cypher = 'MERGE (m1:Movie{title:\'test1\', released: 2019, imdbId: \'123\'}) MERGE (m2:Movie{title:\'test2\', released: 2019, imdbId: \'456\'}) MERGE (m3:Movie{title:\'test3\', released: 2019, imdbId: \'789\'}) MERGE (m4:Movie{title:\'test4\', released: 2019, imdbId: \'101112\'}) MERGE (m1)-[s1:SIMILAR]->(m2)-[s2:SIMILAR]->(m1) MERGE (m1)-[s3:SIMILAR]->(m3)-[s4:SIMILAR]->(m1) MERGE (m1)-[s5:SIMILAR]->(m4)-[s6:SIMILAR]->(m1) SET s1.promotions = 100, s2.promotions = 100, s3.promotions = 50, s4.promotions = 50, s5.promotions = 25, s6.promotions = 25'
-  session.run(cypher)
-    .then(result => {
-      // Log response
-      logger.info(JSON.stringify(result.records))
-    })
-    .catch(e => {
-      // Output the error
-      logger.error(e)
-    })
-}
-exports.clearTestData = function (session, driver, callback) {
-  const cypher = 'MATCH (x:Movie)-[s:SIMILAR]->(y:Movie) WHERE x.imdbId=\'123\' OR x.imdbId=\'456\' OR x.imdbId=\'789\' OR x.imdbId=\'101112\' DELETE s DELETE x'
-  session.run(cypher)
-    .then(result => {
-      // Log response
-      logger.info(JSON.stringify(result))
-      callback(session, driver)
-    })
-    .catch(e => {
-      // Output the error
-      logger.error(e)
-      callback(session, driver)
-    })
 }
