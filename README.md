@@ -30,6 +30,7 @@ Check out the [example](https://github.com/lzontar/GrafMuvi/blob/master/Example.
 - Logging services
 - Storing data with NoSQL, graph database
 - Deployment using PaaS
+- Containerization
 
 ## Construction tool
 ```
