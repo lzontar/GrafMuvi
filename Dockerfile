@@ -12,6 +12,6 @@ RUN npm install -g gulp
 
 COPY . /app
 
-CMD ["gulp", "start"]
+EXPOSE 8080
 
-EXPOSE 4000
+CMD ["gulp", "start"]
