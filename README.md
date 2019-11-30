@@ -40,7 +40,11 @@ buildtool: gulpfile.js
 Despliegue: https://grafmuvi.herokuapp.com
 ```
 ```
-Contenedor: https://dirección.url
+Contenedor: https://grafmuvi-qf3i4ufevq-uc.a.run.app
+```
+It is also deployed with Heroku: https://grafmuvi.herokuapp.com
+```
+DockerHub image: https://hub.docker.com/r/lzontar/grafmuvi
 ```
 ## :sos: Wish to contribute?
 ### Environment setup

@@ -24,5 +24,5 @@ One of the most fundamental parts of our RESTful API is our database. [Neo4j](ht
 [Heroku](https://www.heroku.com/) is a cloud PaaS (platform as a service). PaaS is one of cloud computing services, that provides a platform, where customers can develop, run and manage applications. In our project we will use for deployment. Using [GrapheneDB](https://www.graphenedb.com/) Heroku Add-on we will also deploy our Neo4j database.
 ### Docker
 Using *containers* can be very beneficial, because it can remove bugs, which may be created due to differences in environment. One of the tools to create, deploy and run applications using containers is [Docker](https://www.docker.com/). It's a set of Platform as a Service (PaaS) products, which rely on the use of OS-level containerization.
-### Microsoft Azure
-We want this project to have a cloud infrastructure and we will use [Microsoft Azure](https://azure.microsoft.com/en-us/) to implement it.
+### Google Cloud
+We want this project to have a cloud infrastructure and we will use [Google](https://cloud.google.com/) to implement it. We will publish our Docker image to *Google Cloud Container Registry* and deploy it with *Cloud Run*.

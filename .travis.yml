@@ -23,5 +23,3 @@ deploy:
   app: grafmuvi
   on:
     repo: lzontar/GrafMuvi
-after_success:
-- ./gcloud.deploy.sh

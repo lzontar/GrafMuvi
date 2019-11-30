@@ -66,4 +66,52 @@ We can also automate image builds with GitHub so that on each Git commit, our im
 ![](./images/Docker_CI-CD.png)
 
 ### Container deployment with Heroku
-### Container deployment with x
+Deploying a Docker image with Heroku is quite simple. Firstly we have to login into our Heroku account.
+```
+heroku login
+```
+Once we are logged in we have to create a Heroku configuration file **heroku.yml**, where we indicate that we will be building a Docker image using our Dockerfile. Thus we have to add the following code to heroku.yml (the image finds Dockerfile and runs its CMD):
+```
+build:
+  docker:
+    web: Dockerfile
+```
+Now we have to add the configuration file to our Git repository:
+```
+git add heroku.yml
+git commit -m "Add heroku.yml"
+```
+The most important thing is to set the stack of our app to ```container```:
+```
+heroku stack:set container
+```
+Now there remains only the push to remote Heroku repository:
+```
+git push heroku master
+```
+### Container deployment with Google Cloud
+Another way to deploy our container is using Google Cloud (one of the few big IaaS service providers). After downloading and installing Google SDK we have to run ```gcloud init```. Google Cloud hosts container images on ```gcr.io```, which is why we have to deploy our Docker image in a slightly different way. Firstly, we have to login into our Google Cloud account by runnning:
+```
+gcloud auth login
+```
+Then we have to build an image named **gcr.io/[PROJECT-ID]/[IMAGE-ID]**, where **[PROJECT-ID]** is our Google Cloud project ID and **[IMAGE-ID]** is arbitrary name of our image.
+```
+docker build -t gcr.io/grafmuvi/web:latest
+```
+Now we have to push the newly built Docker image to the Google Cloud Container Registry:
+```
+docker push gcr.io/grafmuvi/web
+```
+Google Cloud also provides and alternative solution to building an image and pushing it with one command. The command below both builds an image and pushes the built image to the Google Cloud Container Registry.
+```
+gcloud builds submit --tag gcr.io/grafmuvi/latest
+```
+Once our Docker image has been built and successfully pushed, we can deploy it. In the deployment procedure we have to set memory and environment variables. We deploy the image with the command below, where **[LIST_OF_ENV_VARS]** is a list of **KEY=VALUE** pairs, seperated with comma (**,**). In the deployment configuration process we choose:
+1. [1] Cloud Run (fully managed) - **1** -> choose a target platform
+2. [2] europe-west1 - **2** -> specify our region
+3. grafmuvi -> set a service name
+4. y -> allow unauthenticated invocations to our service, with which we make our API public accessible
+```
+gcloud beta run deploy --image gcr.io/grafmuvi/latest --memory=1Gi --set-env-vars=[LIST_OF_ENV_VARS]
+```
+It can also be deployed by running the script ```gcloud.deploy.sh```.
