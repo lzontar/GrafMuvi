@@ -1,8 +1,28 @@
 # Node.js dependencies
-node_modules
+node_modules/
 
 # Coverage folder
-coverage
-
+coverage/
 # Logs
-logs
+logs/
+
+# Openshift deployment template
+openshift/
+
+# Documentation files
+docs/
+
+# Other files
+Procfile
+LICENSE
+.env
+apiary.apib
+gcloud.deploy.sh
+
+# Tests
+__tests_/
+
+# Provisioning
+Vagrantfile
+.vagrant
+provisioning

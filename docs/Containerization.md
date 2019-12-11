@@ -66,10 +66,8 @@ We can also automate image builds with GitHub so that on each Git commit, our im
 ![](./images/Docker_CI-CD.png)
 
 ### Container deployment with Heroku
-Deploying a Docker image with Heroku is quite simple. Firstly we have to login into our Heroku account.
-```
-heroku login
-```
+Deploying a Docker image with Heroku is quite simple.
+
 Once we are logged in we have to create a Heroku configuration file **heroku.yml**, where we indicate that we will be building a Docker image using our Dockerfile. Thus we have to add the following code to heroku.yml (the image finds Dockerfile and runs its CMD):
 ```
 build:

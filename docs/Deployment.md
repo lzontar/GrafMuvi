@@ -100,7 +100,7 @@ $ git remote add azure https://<USERNAME>@grafmuvi.scm.azurewebsites.net/GrafMuv
 ```
 We can also define the default resource group and application name:
 ```
-$ az webapp config set --resource-group GrafMuviResourceGroup --name GrafMuvi"
+$ az webapp config set --resource-group GrafMuviResourceGroup --name "GrafMuvi"
 ```
 We still have to define our environmental variables which we can do by going to our App Service *GrafMuvi->Configuration*. To actually deploy our application we have to push to git remote *azure*:
 ```
