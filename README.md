@@ -47,6 +47,9 @@ It is also deployed with Heroku: https://grafmuvi.herokuapp.com
 ```
 DockerHub image: https://hub.docker.com/r/lzontar/grafmuvi
 ```
+```
+provision: chef/cookbook/api/recipes/grafmuvi.rb
+```
 ## :sos: Wish to contribute?
 ### Environment setup
 1. Fork repository and pull the content
