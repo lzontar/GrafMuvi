@@ -28,7 +28,7 @@ gulp.task('start', () => {
       logger.info('Starting GrafMuvi server.')
     })
   })
-  pm2.disconnect()
+  return pm2.disconnect()
 })
 
 //start in development mode
@@ -119,3 +119,19 @@ gulp.task('build', () => {
 })
 
 gulp.task('pretest', pretest)
+
+//start in development mode
+gulp.task('vm', () => {
+  return exec('vagrant up --no-provision', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+  });
+})
+
+//start in development mode
+gulp.task('provision', () => {
+  return exec('vagrant provision', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+  });
+})
