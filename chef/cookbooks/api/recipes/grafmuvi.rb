@@ -10,10 +10,10 @@ package 'git'
 # Include cookbook nodejs
 include_recipe "nodejs"
 
-# Adding ssh user luka
+# Adding recipe for ssh user luka from same cookbook
 include_recipe "::ssh_user"
 
-# Create directory for API
+# Create directory for API owned by user luka
 directory 'GrafMuvi' do
   owner 'luka'
   mode '0755'
@@ -28,7 +28,7 @@ git 'GrafMuvi' do
   action :checkout
 end
 
-# Install npm dependencies
+# Install npm dependencies (with root privileges)
 npm_package 'package.json modules' do
   path 'GrafMuvi' # The root path to your project, containing a package.json file
   json true
