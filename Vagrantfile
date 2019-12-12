@@ -2,14 +2,14 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  # Set name of VM
+  # Set name of VM to GrafMuvi
   config.vm.define "GrafMuvi"
 
-  # Choose OS of VM
+  # Set OS of VM to Ubuntu 16.04 LTS (Xenial Xerus)
   config.vm.box = "ubuntu/xenial64"
   config.vm.box_url = "https://vagrantcloud.com/ubuntu/xenial64"
 
-  # Forwarding ports from guest to host
+  # Forwarding ports from guest (8080) to host (8082)
   config.vm.network "forwarded_port", guest: 8080, host: 8082
 
   # Setting VM provides and VM settings
@@ -22,8 +22,9 @@ Vagrant.configure("2") do |config|
   # Declare where chef repository path
   chef_repo_path = "./chef"
 
-  # Provisioning
+  # Provisioning Chef-Zero
   config.vm.provision :chef_zero do |chef|
+    # Added necessary chef attributes
     chef.cookbooks_path = 'chef/cookbooks'
     chef.nodes_path = 'chef/cookbooks'
 
