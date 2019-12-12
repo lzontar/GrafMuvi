@@ -22,6 +22,7 @@ Check out the [example](https://github.com/lzontar/GrafMuvi/blob/master/Example.
 - [Test-driven development](https://github.com/lzontar/GrafMuvi/blob/master/docs/Test-driven_development.md)
 - [Deployment](https://github.com/lzontar/GrafMuvi/blob/master/docs/Deployment.md)
 - [Containerization](https://github.com/lzontar/GrafMuvi/blob/master/docs/Containerization.md)
+- [Provisioning](https://github.com/lzontar/GrafMuvi/blob/master/docs/Provisioning.md)
 
 ## :blue_book: What development techniques will be used?
 - RESTful API design
@@ -31,6 +32,7 @@ Check out the [example](https://github.com/lzontar/GrafMuvi/blob/master/Example.
 - Storing data with NoSQL, graph database
 - Deployment using PaaS
 - Containerization
+- Provisioning
 
 ## Construction tool
 ```
