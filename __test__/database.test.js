@@ -80,6 +80,7 @@ describe('MATCH', () => {
       expect(promotions1).toStrictEqual(100)
       expect(promotions2).toStrictEqual(50)
       expect(promotions3).toStrictEqual(25)
+
       expect(status).toBe(200)
     })
   })
@@ -94,6 +95,15 @@ describe('MATCH', () => {
       expect(title3).toStrictEqual('test4')
 
       expect(status).toBe(200)
+    })
+  })
+})
+
+describe('CYPHER error', () => {
+  it('Neo4j Error', () => {
+    database.runNeo4jQuery(session, 'Cypher query with wrong syntax', {}, (json, status) => {
+      expect(json).toStrictEqual({ error: 'error.not_found', source: 'Neo4j database' })
+      expect(status).toBe(404)
     })
   })
 })
@@ -117,8 +127,8 @@ describe('UPDATE', () => {
   it('UPDATE movie recommendation promotions by id', () => {
     const request = {
       body: {
-        id1: 'tt0765429',
-        id2: 'tt0353496',
+        id1: 'tt0068646',
+        id2: 'tt1355683',
         downgrade: false
       }
     }
@@ -137,10 +147,10 @@ describe('UPDATE', () => {
   it('UPDATE movie recommendation promotions by title', () => {
     const request = {
       body: {
-        title1: 'American gangster',
-        released1: 2007,
-        title2: 'Godfather',
-        released2: 1991,
+        title1: 'The godfather',
+        year1: 1972,
+        title2: 'Black mass',
+        year2: 2015,
         downgrade: true
       }
     }
@@ -181,12 +191,11 @@ it('UPDATE movie recommendation promotions by title - Bad 1st movie name OMDBAPI
     body: {
       title1: 'This movie doesn\'t exist',
       released1: 2200,
-      title2: 'Godfather',
-      released2: 1991,
+      title2: 'The godfather',
+      released2: 1972,
       downgrade: true
     }
   }
-  const expected = 100
   return new Promise((resolve, reject) => {
     database.postPromotionByTitle(session, request, api, (dbData, status) => {
       resolve(dbData, status)
@@ -205,14 +214,13 @@ it('UPDATE movie recommendation promotions by title - Bad 1st movie name OMDBAPI
 it('UPDATE movie recommendation promotions by title - Bad 2nd movie name OMDBAPI fails', () => {
   const request = {
     body: {
-      title1: 'Godfather',
-      released1: 1991,
+      title1: 'The godfather',
+      released1: 1972,
       title2: 'This movie doesn\'t exist',
       released2: 2200,
       downgrade: true
     }
   }
-  const expected = 100
   return new Promise((resolve, reject) => {
     database.postPromotionByTitle(session, request, api, (dbData, status) => {
       resolve(dbData, status)
@@ -272,6 +280,7 @@ it('Database - Irreasonable promotion of horror movie(It) and animation family m
     logger.error(e)
   })
 })
+
 afterAll(async () => {
   clearTestData(session, driver, (session, driver) => {
     session.close()
@@ -284,7 +293,7 @@ function initTestData(session) {
   session.run(cypher)
     .then(result => {
       // Log response
-      logger.info(JSON.stringify(result.records))
+      // logger.info(JSON.stringify(result.records))
     })
     .catch(e => {
       // Output the error
@@ -296,7 +305,7 @@ function clearTestData(session, driver, callback) {
   session.run(cypher)
     .then(result => {
       // Log response
-      logger.info(JSON.stringify(result))
+      // logger.info(JSON.stringify(result))
       callback(session, driver)
     })
     .catch(e => {

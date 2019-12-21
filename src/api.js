@@ -6,9 +6,10 @@ var appRoot = require('app-root-path')
 
 const logger = require('./logging/logger')
 
-
 class GrafMuvi {
   constructor () {
+    this.port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080
+    this.ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0'
     this.generateGenreGraph()
     this.meanVectorLength = 300;
     this.WordVectors = JSON.parse(fs.readFileSync(`${appRoot}/data/model.json`))
@@ -128,14 +129,13 @@ class GrafMuvi {
       let nOfRequests = ipList[ip].nOfRequests
       // get minutes passed from the last request
       const minPassed = this.getTimePassed(ipList[ip].time, new Date().getTime()) / 60000
-
       // if there was no request from that IP for over 30 minutes reset nOfRequests to 0
       if(minPassed > 30.0) {
         nOfRequests = 0
         this.writeToJson(`${appRoot}/data/ip.json`, nOfRequests, time, ip, ipList)
       }
       //if there was more than 20 requests that were not more than 30 minutes apart don't allow the request
-      else if(minPassed <= 30.0 && nOfRequests > 20) {
+      else if(minPassed <= 30.0 && nOfRequests >= 20) {
         result = false
       } else {
         nOfRequests += 1;
@@ -161,6 +161,15 @@ class GrafMuvi {
     }
 
     fs.writeFileSync(filePath, JSON.stringify(ipList))
+  }
+
+  resetIPJson() {
+    let ipList={}
+    ipList['::'] = {
+      time: 0,
+      nOfRequests: 0
+    }
+    fs.writeFileSync(`${appRoot}/data/ip.json`, JSON.stringify(ipList))
   }
 
   toRelationship (json) {

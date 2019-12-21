@@ -9,7 +9,13 @@ var appRoot = require('app-root-path')
 const api = new GrafMuvi()
 
 // -------------------------------------UNIT TESTS -------------------------------------//
-
+describe('GrafMuvi constructor', () => {
+  test('Time difference', () => {
+    const instance = new GrafMuvi()
+    expect(instance.port).toBe("4000")
+    expect(instance.ip).toBe('0.0.0.0')
+  })
+})
 describe('Auxiliary functions', () => {
   test('Time difference', () => {
     const timeDifference = api.getTimePassed(1,2)
@@ -18,30 +24,31 @@ describe('Auxiliary functions', () => {
   test('Check ip - existing IP', () => {
     const timeDifference = api.checkIP('::')
     expect(timeDifference).toStrictEqual(true)
-    resetIPJson()
+    api.resetIPJson()
   })
   test('Check ip - new IP', () => {
     const timeDifference = api.checkIP('test')
     expect(timeDifference).toStrictEqual(true)
-    resetIPJson()
+    api.resetIPJson()
   })
   test('Check ip -  bad IP', () => {
     setBadIP()
     const timeDifference = api.checkIP('bad_ip')
     expect(timeDifference).toStrictEqual(false)
-    resetIPJson()
+    api.resetIPJson()
   })
+
   test('Check ip - long time ago', () => {
     setBadTime()
     const timeDifference = api.checkIP('bad_time')
     expect(timeDifference).toStrictEqual(true)
-    resetIPJson()
+    api.resetIPJson()
   })
   test('Check ip - less than 30 min and less than 20 requests', () => {
     setGoodIP()
     const timeDifference = api.checkIP('good_ip')
     expect(timeDifference).toStrictEqual(true)
-    resetIPJson()
+    api.resetIPJson()
   })
 })
 
@@ -144,14 +151,6 @@ describe('Check genre comparison', () => {
   })
 })
 
-function resetIPJson() {
-  let ipList={}
-  ipList['::'] = {
-    time: 0,
-    nOfRequests: 0
-  }
-  fs.writeFileSync(`${appRoot}/data/ip.json`, JSON.stringify(ipList))
-}
 function setBadIP() {
   const jsonString = fs.readFileSync(`${appRoot}/data/ip.json`)
   let ipList = JSON.parse(jsonString)
