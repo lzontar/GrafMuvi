@@ -1,4 +1,4 @@
-# InSpec test for recipe api::npm_dependencies
+# InSpec test for recipe api::ssh_user
 
 # The InSpec reference, with examples and extensive documentation, can be
 # found at https://www.inspec.io/docs/reference/resources/

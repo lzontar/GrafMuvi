@@ -1,8 +1,8 @@
 name 'api'
-maintainer 'Luka Zontar'
-maintainer_email 'zontarluka98@gmail.com'
+maintainer 'The Authors'
+maintainer_email 'you@example.com'
 license 'All Rights Reserved'
-description 'Installs/Configures GrafMuvi'
+description 'Installs/Configures api'
 version '0.1.0'
 chef_version '>= 14.0'
 
@@ -18,5 +18,6 @@ chef_version '>= 14.0'
 #
 # source_url 'https://github.com/<insert_org_here>/api'
 
-depends 'nodejs'
 depends 'ssh_authorized_keys'
+depends 'nodejs'
+depends 'pm2'

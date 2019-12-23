@@ -1,12 +1,12 @@
 #
 # Cookbook:: api
-# Spec:: npm_dependencies
+# Spec:: ssh_user
 #
 # Copyright:: 2019, The Authors, All Rights Reserved.
 
 require 'spec_helper'
 
-describe 'api::npm_dependencies' do
+describe 'api::ssh_user' do
   context 'When all attributes are default, on Ubuntu 18.04' do
     # for a complete list of available platforms and versions see:
     # https://github.com/chefspec/fauxhai/blob/master/PLATFORMS.md

@@ -14,6 +14,7 @@ user 'luka' do
   comment 'GrafMuvi user'
   shell '/bin/bash'
   home '/home/luka'
+  password '$1$Yh.RZEcI$9xZaWejW6QatNsNnYMouI/'
 end
 
 # Authorize ssh key for user luka
