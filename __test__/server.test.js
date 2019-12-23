@@ -116,9 +116,9 @@ describe('Post Endpoints', () => {
       .post('/api/post/title/year')
       .send({
       	title1: 'It',
-      	released1: 2017,
+      	year1: 2017,
       	title2: 'Cars',
-      	released2: 2006,
+      	year2: 2006,
       	downgrade: false
       })
       .expect(400, expectedJson, done)

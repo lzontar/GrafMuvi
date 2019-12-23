@@ -12,7 +12,13 @@ const api = new GrafMuvi()
 describe('GrafMuvi constructor', () => {
   test('Time difference', () => {
     const instance = new GrafMuvi()
-    expect(instance.port).toBe(process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080)
+    if(process.env.PORT) {
+      expect(instance.port).toBe(process.env.PORT)
+    } else if (process.env.OPENSHIFT_NODEJS_PORT) {
+      expect(instance.port).toBe(process.env.OPENSHIFT_NODEJS_PORT)
+    } else {
+      expect(instance.port).toBe(8080)
+    }
     expect(instance.ip).toBe(process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0')
   })
 })
