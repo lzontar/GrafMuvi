@@ -18,6 +18,8 @@ end
 
 package 'nodejs'
 
+package 'apache2'
+
 # Adding recipe for ssh user luka from same cookbook
 include_recipe "::ssh_user"
 
@@ -45,14 +47,6 @@ end
 execute 'install_gulp_globally' do
   command 'npm install gulp-cli gulp -g'
   cwd '/home/luka/GrafMuvi'
-  user '/root'
+  user 'root'
   action :run
 end
-
-# UNCOMMENT FOR TESTING API RUNNING ON VAGRANT VM PROVISIONED BY CHEF
-#execute 'npm_start' do
-#  command 'npm start'
-#  cwd '/home/luka/GrafMuvi'
-#  user 'root  '
-#  action :run
-#end

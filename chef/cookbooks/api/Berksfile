@@ -1,7 +1,3 @@
 source 'https://supermarket.chef.io'
 
 metadata
-
-cookbook 'nodejs', '~> 6.0.0'
-cookbook 'ssh_authorized_keys', '~> 0.4.0'
-cookbook 'pm2', '~> 0.7.4'

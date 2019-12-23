@@ -1,6 +1,6 @@
 name 'api'
-maintainer 'The Authors'
-maintainer_email 'you@example.com'
+maintainer 'Luka Zontar'
+maintainer_email 'zontarluka90@gmail.com'
 license 'All Rights Reserved'
 description 'Installs/Configures api'
 version '0.1.0'
@@ -17,7 +17,3 @@ chef_version '>= 14.0'
 # a Supermarket.
 #
 # source_url 'https://github.com/<insert_org_here>/api'
-
-depends 'ssh_authorized_keys'
-depends 'nodejs'
-depends 'pm2'
