@@ -21,15 +21,12 @@ gulp.task('start', done => {
             done()
         });
         done()
-<<<<<<< HEAD
-    });
-    done()
-=======
-        process.exit(1)
     });
     done()
     process.exit(1)
->>>>>>> 9958961447955ef86bbae4585d84a4ffb37e0ed0
+    });
+    done()
+    process.exit(1)
 })
 
 //start in development mode
