@@ -40,13 +40,8 @@ describe('/ and /status endpoints', () => {
   it('Get /status endpoint', (done) => {
     request(app)
       .get('/status')
-      .expect(200, {
-        status: 'OK',
-        ejemplo: {
-          ruta: 'https://grafmuvi.herokuapp.com/api/title/The godfather/1972',
-          valor: "{JSON: { 1: 'American gangster', 2: 'Black mass', 3: 'Training day' }}"
-        }
-      }, done)
+      .expect(200, {status: 'OK'}
+      , done)
   })
 })
 describe('Get Endpoints', () => {
