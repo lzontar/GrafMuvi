@@ -12,7 +12,7 @@ class GrafMuvi {
     this.ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0'
     this.generateGenreGraph()
     this.meanVectorLength = 300;
-    this.WordVectors = JSON.parse(fs.readFileSync(`${appRoot}/appappData/model.json`))
+    this.WordVectors = JSON.parse(fs.readFileSync(`${appRoot}/appData/model.json`))
   }
 
   removeStopWordsAndPunctuations (plot) {
