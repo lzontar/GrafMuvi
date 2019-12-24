@@ -13,6 +13,9 @@ Additionally when posting a promotion it checks:
 Because the same person cannot finish watching a lot of movies in a short period of time (like 30 minutes) and since associations are best if memory of a movie plot is still fresh we do not allow the same IP remote address more than 20 consecutive requests with less than 30 minutes between each other.
 
 Check out the [example](https://github.com/lzontar/GrafMuvi/blob/master/Example.pdf) of how service can be used.
+
+[**Project presentation**](https://prezi.com/view/9WhXBqsVde1Dl0HGYy89/) developed with [Prezi](https://prezi.com/).
+
 ## :page_with_curl: How can I use it?
 [Documentation of GrafMuvi web service](https://grafmuvi.docs.apiary.io/#) (developed using *Apiary*).
 ### Toolset documentation
@@ -23,6 +26,7 @@ Check out the [example](https://github.com/lzontar/GrafMuvi/blob/master/Example.
 - [Deployment](https://github.com/lzontar/GrafMuvi/blob/master/docs/Deployment.md)
 - [Containerization](https://github.com/lzontar/GrafMuvi/blob/master/docs/Containerization.md)
 - [Provisioning](https://github.com/lzontar/GrafMuvi/blob/master/docs/Provisioning.md)
+- [Deployment from 0](https://github.com/lzontar/GrafMuvi/blob/master/docs/Deployment_From_Zero.md)
 
 ## :blue_book: What development techniques will be used?
 - RESTful API design
@@ -39,19 +43,27 @@ Check out the [example](https://github.com/lzontar/GrafMuvi/blob/master/Example.
 buildtool: gulpfile.js
 ```
 ## Application deployment
+#### Deployment to PaaS
 ```
 Despliegue: https://grafmuvi.herokuapp.com
 ```
+#### Container deployment
 ```
 Contenedor: https://grafmuvi-qf3i4ufevq-uc.a.run.app
 ```
-It is also deployed with Heroku: https://grafmuvi.herokuapp.com
+It is also deployed with Heroku: ```https://grafmuvi.herokuapp.com```
 ```
 DockerHub image: https://hub.docker.com/r/lzontar/grafmuvi
 ```
+#### Provisioning
 ```
 provision: chef/cookbook/api/recipes/grafmuvi.rb
 ```
+#### Production deployment
+```
+Despliegue final: grafmuvi.westeurope.cloudapp.azure.com
+```
+
 ## :sos: Wish to contribute?
 ### Environment setup
 1. Fork repository and pull the content
