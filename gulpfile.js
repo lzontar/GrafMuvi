@@ -21,8 +21,10 @@ gulp.task('start', done => {
             done()
         });
         done()
+        process.exit(1)
     });
     done()
+    process.exit(1)
 })
 
 //start in development mode
