@@ -1,6 +1,6 @@
 #
 # Cookbook:: api
-# Recipe:: ssh_user<
+# Recipe:: ssh_user
 #
 # Copyright:: 2019, The Authors, All Rights Reserved.
 

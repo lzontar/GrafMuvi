@@ -7,8 +7,10 @@
 # Install git
 package 'git'
 
+# Update packages
 apt_update 'update'
 
+# Update Node.js repository
 execute 'update_nodejs_repo' do
   command 'sudo curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -'
   cwd '/home/luka'
@@ -16,15 +18,20 @@ execute 'update_nodejs_repo' do
   action :run
 end
 
+# Install Node.js
 package 'nodejs'
-
-package 'apache2'
 
 # Adding recipe for ssh user luka from same cookbook
 include_recipe "::ssh_user"
 
 # Create directory for API owned by user luka
 directory '/home/luka/GrafMuvi' do
+  owner 'luka'
+  mode '0755'
+end
+
+# Create directory for production deployment
+directory '/home/luka/Apps' do
   owner 'luka'
   mode '0755'
 end
@@ -37,6 +44,7 @@ git 'GrafMuvi' do
   action :checkout
 end
 
+# Install NPM dependecies
 execute 'npm_install' do
   command 'npm install'
   cwd '/home/luka/GrafMuvi'
@@ -44,6 +52,7 @@ execute 'npm_install' do
   action :run
 end
 
+# Install gulp globally
 execute 'install_gulp_globally' do
   command 'npm install gulp-cli gulp -g'
   cwd '/home/luka/GrafMuvi'
