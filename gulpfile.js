@@ -11,24 +11,11 @@ var standard = require('gulp-standardjs')
 const pm2 = require('pm2')
 
 gulp.task('start', () => {
-  pm2.connect(false, function (err) {
-    if (err) {
-      logger.error(err)
-      process.exit(2)
-    }
-
-    pm2.start({
-      name: 'GrafMuvi',
-      script: './server.js',
-      instances: 1
-    }, function (err) {
-      if (err) {
-        throw err
-      }
-      logger.info('Starting GrafMuvi server.')
-    })
-  })
-  return pm2.disconnect()
+  return exec('pm2 start ./server.js', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    process.exit(1)
+  });
 })
 
 //start in development mode
@@ -36,12 +23,13 @@ gulp.task('dev', () => {
   return exec('pm2 start ./server.js --watch', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
+    process.exit(1)
   });
 })
 
 //pm2 Status
 gulp.task('status', () => {
-  return exec('pm2 status', function (err, stdout, stderr) {
+  return exec('pm2 ls', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
   });
@@ -122,7 +110,7 @@ gulp.task('pretest', pretest)
 
 //start in development mode
 gulp.task('vm', () => {
-  return exec('vagrant up --no-provision', function (err, stdout, stderr) {
+  return exec('vagrant up --provider azure --no-provision', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
   });
@@ -135,3 +123,10 @@ gulp.task('provision', () => {
     console.log(stderr);
   });
 })
+
+// gulp.task('production-deploy', ['vm', 'provision'],  () => {
+//   return exec('cap production deploy', function (err, stdout, stderr) {
+//     console.log(stdout);
+//     console.log(stderr);
+//   });
+// })
