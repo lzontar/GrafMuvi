@@ -158,32 +158,32 @@ describe('Check genre comparison', () => {
 })
 
 function setBadIP() {
-  const jsonString = fs.readFileSync(`${appRoot}/data/ip.json`)
+  const jsonString = fs.readFileSync(`${appRoot}/appData/ip.json`)
   let ipList = JSON.parse(jsonString)
 
   ipList['bad_ip'] = {
     time: new Date().getTime(),
     nOfRequests: 40
   }
-  fs.writeFileSync(`${appRoot}/data/ip.json`, JSON.stringify(ipList))
+  fs.writeFileSync(`${appRoot}/appData/ip.json`, JSON.stringify(ipList))
 }
 function setBadTime() {
-  const jsonString = fs.readFileSync(`${appRoot}/data/ip.json`)
+  const jsonString = fs.readFileSync(`${appRoot}/appData/ip.json`)
   let ipList = JSON.parse(jsonString)
 
   ipList['bad_time'] = {
     time: 1400000000000,
     nOfRequests: 40
   }
-  fs.writeFileSync(`${appRoot}/data/ip.json`, JSON.stringify(ipList))
+  fs.writeFileSync(`${appRoot}/appData/ip.json`, JSON.stringify(ipList))
 }
 function setGoodIP() {
-  const jsonString = fs.readFileSync(`${appRoot}/data/ip.json`)
+  const jsonString = fs.readFileSync(`${appRoot}/appData/ip.json`)
   let ipList = JSON.parse(jsonString)
 
   ipList['good_ip'] = {
     time: new Date().getTime(),
     nOfRequests: 0
   }
-  fs.writeFileSync(`${appRoot}/data/ip.json`, JSON.stringify(ipList))
+  fs.writeFileSync(`${appRoot}/appData/ip.json`, JSON.stringify(ipList))
 }

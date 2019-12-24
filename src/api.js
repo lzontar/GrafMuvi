@@ -12,7 +12,7 @@ class GrafMuvi {
     this.ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0'
     this.generateGenreGraph()
     this.meanVectorLength = 300;
-    this.WordVectors = JSON.parse(fs.readFileSync(`${appRoot}/data/model.json`))
+    this.WordVectors = JSON.parse(fs.readFileSync(`${appRoot}/appappData/model.json`))
   }
 
   removeStopWordsAndPunctuations (plot) {
@@ -118,7 +118,7 @@ class GrafMuvi {
   checkIP(ip) {
     let result = true
     const fs = require('fs')
-    const jsonString = fs.readFileSync(`${appRoot}/data/ip.json`)
+    const jsonString = fs.readFileSync(`${appRoot}/appData/ip.json`)
 
     const ipList = JSON.parse(jsonString)
     const time = new Date().getTime()
@@ -132,19 +132,19 @@ class GrafMuvi {
       // if there was no request from that IP for over 30 minutes reset nOfRequests to 0
       if(minPassed > 30.0) {
         nOfRequests = 0
-        this.writeToJson(`${appRoot}/data/ip.json`, nOfRequests, time, ip, ipList)
+        this.writeToJson(`${appRoot}/appData/ip.json`, nOfRequests, time, ip, ipList)
       }
       //if there was more than 20 requests that were not more than 30 minutes apart don't allow the request
       else if(minPassed <= 30.0 && nOfRequests >= 20) {
         result = false
       } else {
         nOfRequests += 1;
-        this.writeToJson(`${appRoot}/data/ip.json`, nOfRequests, time, ip, ipList)
+        this.writeToJson(`${appRoot}/appData/ip.json`, nOfRequests, time, ip, ipList)
       }
     }
     // otherwise just add to json file new ip with number of request 1 and current time.
     else {
-      this.writeToJson(`${appRoot}/data/ip.json`, 1, time, ip, ipList)
+      this.writeToJson(`${appRoot}/appData/ip.json`, 1, time, ip, ipList)
     }
     return result
   }
@@ -169,7 +169,7 @@ class GrafMuvi {
       time: 0,
       nOfRequests: 0
     }
-    fs.writeFileSync(`${appRoot}/data/ip.json`, JSON.stringify(ipList))
+    fs.writeFileSync(`${appRoot}/appData/ip.json`, JSON.stringify(ipList))
   }
 
   toRelationship (json) {
