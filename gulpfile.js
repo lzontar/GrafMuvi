@@ -21,8 +21,15 @@ gulp.task('start', done => {
             done()
         });
         done()
+<<<<<<< HEAD
     });
     done()
+=======
+        process.exit(1)
+    });
+    done()
+    process.exit(1)
+>>>>>>> 9958961447955ef86bbae4585d84a4ffb37e0ed0
 })
 
 //start in development mode
@@ -130,14 +137,14 @@ gulp.task('provision', () => {
   });
 })
 
-gulp.task('production-deploy',  () => {
+gulp.task('production-deploy', () => {
   return exec('cap production deploy', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
   });
 })
 
-gulp.task('deploy-from-zero',  () => {
+gulp.task('deploy-from-zero', () => {
   return exec('vagrant up --no-provision && vagrant provision && cap production deploy', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);

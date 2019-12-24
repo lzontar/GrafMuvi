@@ -1,7 +1,7 @@
 ## :sunrise_over_mountains: How do we ensure stable environment?
 Provisioning is one of the key elements of continuous delivery process. Lots of bugs and errors do not originate from the code we provide, but are in fact a consequence of the differences in environments. *Docker* ensures stable environment by installing dependencies and libraries. Provisioning goes one step further and thus ensures the same OS, tools that are required to run the project, dependencies and libraries.
 
-We will be using [Vagrant](https://www.vagrantup.com/) to create our VM, which we will use for provisioning with [Chef](https://www.chef.io/). Both tools are open-source and are supported in Windows. For the operating system of our VM we chose Ubuntu 16.04 LTS (Xenial Xerus), which was chosen because it is the latest stable version of Ubuntu, which supports nodejs cookbook from chef (in the latest version Ubuntu 18.04 LTS (Bionic Beaver) it doesn't work).
+We will be using [Vagrant](https://www.vagrantup.com/) to create our VM, which we will use for provisioning with [Chef](https://www.chef.io/). Both tools are open-source and are supported in Windows. For the operating system of our VM we chose Ubuntu 18.04 LTS (Bionic Beaver), which was chosen because it is the latest stable version of Ubuntu.
 
 ### Vagrant
 Creating VM with Vagrant and using it for provisioning is defined in *Vagrantfile*:
@@ -14,8 +14,8 @@ Vagrant.configure("2") do |config|
   config.vm.define "GrafMuvi"
 
   # Choose OS of VM
-  config.vm.box = "ubuntu/xenial64"
-  config.vm.box_url = "https://vagrantcloud.com/ubuntu/xenial64"
+  config.vm.box = "ubuntu/bionic64"
+  config.vm.box_url = "https://vagrantcloud.com/ubuntu/bionic64"
 
   # Forwarding ports from guest to host
   config.vm.network "forwarded_port", guest: 8080, host: 8082
@@ -177,3 +177,8 @@ $ vagrant package --output GrafMuvi.box
 Now we have to upload our VM image to *VagrantCloud*.
 
 Our VM image is deployed to VagrantCloud: *[lukaz/grafmuvi-VM](https://app.vagrantup.com/lukaz/boxes/grafmuvi)*
+
+### Performance measuring
+Now that we have our VM provisioned, it would be very informative to learn how fast our RESTful API respond and how does it respond when multiple users are trying to communicate with it, where each user is trying to make multiple requests. To do that we will use load-testing with [Locust](https://locust.io/), which is an open-source load-testing tool that allows you to write your tests in pure Python. It's an event-based system that uses coroutines to provide the ability to simulate thousands of users simultaneously.
+
+Documentation of performance measuring: [Virtual Machine Performance](https://github.com/lzontar/GrafMuvi/blob/master/docs/VM_Performance.md)
