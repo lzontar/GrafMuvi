@@ -21,7 +21,7 @@ Vagrant.configure("2") do |config|
 
     azure.vm_name = 'grafmuvi' # Set VM name
     azure.vm_size = 'Standard_A1_v2' # Set VM size
-    azure.vm_image_urn = 'Canonical:UbuntuServer:16.04.0-LTS:latest' # Set VM image URN
+    azure.vm_image_urn = 'Canonical:UbuntuServer:18.04-LTS:latest' # Set VM image URN
     azure.resource_group_name = 'grafmuvi' # Set resource group name
     azure.dns_name = 'grafmuvi' # Set DNS name
     azure.location = 'westeurope' # Set location

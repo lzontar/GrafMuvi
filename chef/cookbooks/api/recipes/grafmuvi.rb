@@ -59,3 +59,29 @@ execute 'install_gulp_globally' do
   user 'root'
   action :run
 end
+
+# Install package nginx
+package 'nginx'
+
+execute 'listen_port_80' do
+  command 'sudo printf "server {
+  listen 80;
+  server_name grafmuvi.westeurope.cloudapp.azure.com;
+  location / {
+    proxy_pass http://localhost:4000;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade \$http_upgrade;
+    proxy_set_header Connection \'upgrade\';
+    proxy_set_header Host \$host;
+    proxy_cache_bypass \$http_upgrade;
+   }
+}" > /etc/nginx/conf.d/grafmuvi.conf'
+  user 'root'
+  action :run
+end
+
+execute 'restart_nginx' do
+  command 'sudo service nginx restart'
+  user 'root'
+  action :run
+end
