@@ -131,6 +131,13 @@ gulp.task('provision', () => {
 })
 
 gulp.task('production-deploy',  () => {
+  return exec('cap production deploy', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+  });
+})
+
+gulp.task('deploy-from-zero',  () => {
   return exec('vagrant up --no-provision && vagrant provision && cap production deploy', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
