@@ -12,13 +12,7 @@ const app = express()
 app.use(express.json())
 
 app.get('/status', function (req, res) {
-  res.status(200).json({
-    status: 'OK',
-    ejemplo: {
-      ruta: 'https://grafmuvi.herokuapp.com/api/title/The godfather/1972',
-      valor: "{JSON: { 1: 'American gangster', 2: 'Black mass', 3: 'Training day' }}"
-    }
-  })
+  res.status(200).json({status: 'OK' })
 })
 
 const neoDriver = database.connectDB()
