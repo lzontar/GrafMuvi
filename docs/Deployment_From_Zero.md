@@ -355,7 +355,7 @@ To install all the necessary gems we have to run:
 ```
 $ bundle install
 ```
-Now that we have our Capistrano files configured and the necessary gems installed, we can deploy our API with Capistrano. We do that by executing:
+Now that we have our Capistrano files configured and the necessary gems installed, we can deploy our API with Capistrano. We do that by executing (in folder *despliegue*):
 ```
 $ cap production deploy
 ```
@@ -363,10 +363,10 @@ $ cap production deploy
 ```
 $ gulp deploy-from-zero
 ```
-It executes: ```vagrant up --no-provision && vagrant provision && cap production deploy```
+It executes: ```vagrant up --no-provision && vagrant provision && cd despliegue && cap production deploy```
 
 **Production deployment with task manager**: Furthermore we will include production deployment with *Capistrano* into task manager. Using *Gulp* you can easily make a production deployment by execution:
 ```
-$ gulp production-deploy
+$ cd despliegue && gulp production-deploy
 ```
 It executes: ```cap production deploy```
