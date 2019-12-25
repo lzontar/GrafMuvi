@@ -27,14 +27,14 @@ Check out the [example](https://github.com/lzontar/GrafMuvi/blob/master/Example.
 
 ### Toolset documentation
 
-* [Construction tools](https://github.com/lzontar/GrafMuvi/blob/master/docs/Construction_tools.md)
-* [CI/CD](https://github.com/lzontar/GrafMuvi/blob/master/docs/CI.md)
-* [Buildtool](https://github.com/lzontar/GrafMuvi/blob/master/docs/Buildtool.md)
-* [Test-driven development](https://github.com/lzontar/GrafMuvi/blob/master/docs/Test-driven_development.md)
-* [Deployment](https://github.com/lzontar/GrafMuvi/blob/master/docs/Deployment.md)
-* [Containerization](https://github.com/lzontar/GrafMuvi/blob/master/docs/Containerization.md)
-* [Provisioning](https://github.com/lzontar/GrafMuvi/blob/master/docs/Provisioning.md)
-* [Deployment from 0](https://github.com/lzontar/GrafMuvi/blob/master/docs/Deployment_From_Zero.md)
+* [Construction tools](https://lukaz.gitbook.io/grafmuvi/docs/construction_tools)
+* [CI/CD](https://lukaz.gitbook.io/grafmuvi/docs/ci)
+* [Buildtool](https://lukaz.gitbook.io/grafmuvi/docs/buildtool)
+* [Test-driven development](https://lukaz.gitbook.io/grafmuvi/docs/test-driven_development)
+* [Deployment](https://lukaz.gitbook.io/grafmuvi/docs/deployment)
+* [Containerization](https://lukaz.gitbook.io/grafmuvi/docs/containerization)
+* [Provisioning](https://lukaz.gitbook.io/grafmuvi/docs/provisioning)
+* [Deployment from 0](https://lukaz.gitbook.io/grafmuvi/docs/deployment_from_zero)
 
 ## 📖 What development techniques will be used?
 
@@ -115,4 +115,3 @@ Despliegue final: grafmuvi.westeurope.cloudapp.azure.com
    **:link: Check out my other projects**
 
    Check out my other projects at my GitHub Pages website [lzontar.github.io](https://lzontar.github.io):star:.
-
