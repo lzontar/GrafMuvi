@@ -42,7 +42,13 @@ Vagrant.configure("2") do |config|
     azure.location = 'westeurope' # Set location
   end
 
-  config.vm.provision "shell", inline: "printf 'OMDB_KEY=\"" + ENV['OMDB_KEY'] + "\"\nGRAPHENEDB_URL=\"" + ENV['GRAPHENEDB_URL'] + "\"\nGRAPHENEDB_USER=\"" + ENV['GRAPHENEDB_USER'] + "\"\nGRAPHENEDB_PASSWD=\"" + ENV['GRAPHENEDB_PASSWD'] + "\"\nDNS=\"" + ENV['DNS'] + "\"\nPORT=" + ENV['PORT'] + "\nIP=\"" + ENV['IP'] + "\"' > /.env"
+  # Copy environmental variables from local to guest server
+  config.vm.provision "shell", inline: "printf 'OMDB_KEY=\"" + ENV['OMDB_KEY'] + "\"\n
+  GRAPHENEDB_URL=\"" + ENV['GRAPHENEDB_URL'] + "\"\n
+  GRAPHENEDB_USER=\"" + ENV['GRAPHENEDB_USER'] + "\"\n
+  GRAPHENEDB_PASSWD=\"" + ENV['GRAPHENEDB_PASSWD'] + "\"\nDNS=\"" + ENV['DNS'] + "\"\n
+  PORT=" + ENV['PORT'] + "\n
+  IP=\"" + ENV['IP'] + "\"' > /.env"
 
   # Declare where chef repository path
   chef_repo_path = "./chef"
@@ -72,7 +78,9 @@ In the Vagrantfile, which is defined by the code above, we can see that we could
   - Define TCP port
   - Set VM name: *grafmuvi*
   - Set VM size: *Standard_A1_v2* (1 CPU, 2GB RAM)
-  - Set VM image URN (which defines OS): *Canonical:UbuntuServer:16.04.0-LTS:latest* (UbuntuServer 16.04-LTS)
+    - VM size was aimed to be as small as possible. 2GB of RAM that are more than minimum, were chosen due to failures with less RAM.
+  - Set VM image URN (which defines OS): *Canonical:UbuntuServer:18.04-LTS:latest* (UbuntuServer 18.04-LTS)
+    - OS chosen is Ubuntu Server 18.04-LTS, which is the latest stable version of Ubuntu Server
   - Set resource group which will provide VM in Azure: *grafmuvi*
   - Set Azure DNS name: *grafmuvi*
   - Set location of Azure's VM: *West Europe*
@@ -81,6 +89,7 @@ In the Vagrantfile, which is defined by the code above, we can see that we could
   - Define paths for cookbooks and nodes
   - Add recipes that will be executed on created VM
   - Add Chef license
+  - Because we can't run our API without environmental variables, we copy them from local environment to guest server using *shell* for provisioning
 
 ### Chef
 Provisioning with Chef is already defined in [docs/Provision.md](https://github.com/lzontar/GrafMuvi/blob/master/docs/Provision.md) but few changes have been made due to version inconsistencies and unnecessary code. Nevertheless, we still keep both of our recipes *ssh_user.rb* and *grafmuvi.rb*.
@@ -139,14 +148,6 @@ execute 'npm_install' do
   action :run
 end
 
-# Install gulp globally
-execute 'install_gulp_globally' do
-  command 'npm install gulp-cli gulp -g'
-  cwd '/home/luka/GrafMuvi'
-  user 'root'
-  action :run
-end
-
 # Install package nginx
 package 'nginx'
 
@@ -155,7 +156,7 @@ execute 'listen_port_80' do
   listen 80;
   server_name grafmuvi.westeurope.cloudapp.azure.com;
   location / {
-    proxy_pass http://localhost:4000;
+    proxy_pass http://localhost:8080;
     proxy_http_version 1.1;
     proxy_set_header Upgrade \$http_upgrade;
     proxy_set_header Connection \'upgrade\';
@@ -181,8 +182,7 @@ In recipe *grafmuvi.rb* we do the following:
 - Create directories /home/luka/GrafMuvi (where we will checkout our repo) and /home/luka/Apps (where we will have our production deployments)
 - Clone GrafMuvi repository
 - Install NPM dependencies
-- Install gulp globally
-- Lastly we install Nginx proxy so that our API (running on port 4000 by default) will be accessible globally without needing to specify ports (listening at port 80)
+- Lastly we install Nginx proxy so that our API (running on port 8080 by default) will be accessible globally without needing to specify ports (listening at port 80)
 
 ```
 # Create home dir for new user
@@ -208,7 +208,7 @@ end
 ```
 In recipe *ssh_user.rb* we do the following:
 - Create home directory for user *luka*
-- Create user *luka*
+- Create user *luka* (password hash generated with *openssl*)
 - Add user *luka* to sudoers group
 
 ### Capistrano
@@ -225,6 +225,7 @@ After running the command above, we have created multiple files:
 |    `-- deploy.rb
 ` -- Capfile
 ```
+One of the files created is *config/deploy/staging.rb*, but because we will not be using the staging phase, the file is deleted in our repository.
 #### Capfile
 ```
 # Load NPM for Capistrano
@@ -261,20 +262,20 @@ lock "~> 3.11.2"
 require 'capistrano-gulp'
 
 # Stages
-set :stages, ["staging", "production"]
+set :stages, ["production"]
 set :default_stage, "production"
 
 # GitHub repo
 set :application, "GrafMuvi"
 set :repo_url, "git@github.com:lzontar/GrafMuvi.git"
+set :branch, "master"
 
-#
+# Folder where our API will be deployed to
 set :deploy_to, "/home/luka/Apps/#{fetch :application}"
 
 # Shared folders
 set :linked_dirs, %w(
   node_modules
-  appData
 )
 
 set :linked_dirs, fetch(:linked_dirs) + %w{data}
@@ -298,7 +299,7 @@ namespace :deploy do
   task :copy_env_vars_and_data do
     on roles(:app) do
       within release_path do
-        execute "cp /.env #{deploy_to}/current && cp /home/luka/GrafMuvi/appData/* #{deploy_to}/shared/appData"
+        execute "cp /.env #{deploy_to}/current && cp -r #{deploy_to}/current/appData #{deploy_to}/shared/"
       end
     end
   end
@@ -308,7 +309,7 @@ namespace :deploy do
     on roles(:app) do
       within release_path do
         as 'root' do
-          execute "cd #{deploy_to}/current && npm install gulp && gulp start &"
+          execute "cd #{deploy_to}/current && sudo npm install -g gulp && sudo npm -g install pm2 && gulp start"
         end
       end
     end
@@ -323,15 +324,21 @@ In *deploy.rb* we configure the main settings of our deployment:
 - Set application name and the corresponding GitHub repository
 - Set deployment directory and user
 - Choose directories that will be shared between releases
-- During deploy: install node modules, copy .env, appData folders and start the server
+- After deploy: install node modules (pm2 and gulp globally), copy .env, appData folders and start the server
 
 #### production.rb
 ```
-role :app, %w{grafmuvi.westeurope.cloudapp.azure.com}
+role :app, %w{luka@grafmuvi.westeurope.cloudapp.azure.com}
+
+# Role db is not used because our database on production and deployment is currently still the same
+# Role db will support migrating between releases
+# role :db, %w{database.com}
 
 server "grafmuvi.westeurope.cloudapp.azure.com", user: "luka", roles: %w{app}
+
 ```
-Here we set role and server for production deployment. Roles can be useful, because we could specify tasks for roles, where each role can be configuring different servers.
+Here we set the role and server for production deployment. Roles can be useful, because we could specify tasks for roles, where each role can be configuring different servers. We should also have a role for managing our database, but this feature is currently unavailable.
+
 #### Deployment with Capistrano
 Because Capistrano needs several other Ruby gems, we will also create a *Gemfile*:
 ```
