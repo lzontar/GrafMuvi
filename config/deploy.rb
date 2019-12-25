@@ -4,20 +4,20 @@ lock "~> 3.11.2"
 require 'capistrano-gulp'
 
 # Stages
-set :stages, ["staging", "production"]
+set :stages, ["production"]
 set :default_stage, "production"
 
 # GitHub repo
 set :application, "GrafMuvi"
 set :repo_url, "git@github.com:lzontar/GrafMuvi.git"
+set :branch, "master"
 
-#
+# Folder where our API will be deployed to
 set :deploy_to, "/home/luka/Apps/#{fetch :application}"
 
 # Shared folders
 set :linked_dirs, %w(
   node_modules
-  appData
 )
 
 set :linked_dirs, fetch(:linked_dirs) + %w{data}
@@ -41,7 +41,7 @@ namespace :deploy do
   task :copy_env_vars_and_data do
     on roles(:app) do
       within release_path do
-        execute "cp /.env #{deploy_to}/current && cp /home/luka/GrafMuvi/appData/* #{deploy_to}/shared/appData"
+        execute "cp /.env #{deploy_to}/current && cp -r #{deploy_to}/current/appData #{deploy_to}/shared/"
       end
     end
   end
@@ -51,7 +51,7 @@ namespace :deploy do
     on roles(:app) do
       within release_path do
         as 'root' do
-          execute "cd #{deploy_to}/current && npm install gulp && gulp start &"
+          execute "cd #{deploy_to}/current && sudo npm install -g gulp && sudo npm -g install pm2 && gulp start"
         end
       end
     end
