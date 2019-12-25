@@ -27,14 +27,16 @@ Check out the [example](https://github.com/lzontar/GrafMuvi/blob/master/Example.
 
 ### Toolset documentation
 
-* [Construction tools](https://github.com/lzontar/GrafMuvi/blob/master/docs/Construction_tools.md)
-* [CI/CD](https://github.com/lzontar/GrafMuvi/blob/master/docs/CI.md)
-* [Buildtool](https://github.com/lzontar/GrafMuvi/blob/master/docs/Buildtool.md)
-* [Test-driven development](https://github.com/lzontar/GrafMuvi/blob/master/docs/Test-driven_development.md)
-* [Deployment](https://github.com/lzontar/GrafMuvi/blob/master/docs/Deployment.md)
-* [Containerization](https://github.com/lzontar/GrafMuvi/blob/master/docs/Containerization.md)
-* [Provisioning](https://github.com/lzontar/GrafMuvi/blob/master/docs/Provisioning.md)
-* [Deployment from 0](https://github.com/lzontar/GrafMuvi/blob/master/docs/Deployment_From_Zero.md)
+1. [What tools will be used for development?](docs/construction_tools.md)
+2. [How is Continuous integration technique used?](docs/ci.md)
+3. [How is our code tested?](docs/test-driven_development/)
+   1. [Test coverage improvement to GymManager](docs/test-driven_development/test_coverage.md)
+4. [What buildtool is used?](docs/buildtool.md)
+5. [How is it deployed?](docs/deployment.md)
+6. [How is containerization used?](docs/containerization.md)
+7. [How do we ensure stable environment?](docs/provisioning/)
+   1. [Performance measuring with Locust](docs/provisioning/vm_performance.md)
+8. [How is our application deployed to production from zero?](docs/deployment_from_zero.md)
 
 ## 📖 What development techniques will be used?
 
@@ -53,7 +55,7 @@ Check out the [example](https://github.com/lzontar/GrafMuvi/blob/master/Example.
 buildtool: gulpfile.js
 ```
 
-## 🆘 Application deployment
+## 💯 Application deployment
 
 #### Deployment to PaaS
 
@@ -112,7 +114,9 @@ Despliegue final: grafmuvi.westeurope.cloudapp.azure.com
 6. After testing, commit to your forked repository
 7. Create a Pull Request to branch **contributions**
 
-   **:link: Check out my other projects**
+   🔗 **Check out my other projects**
 
-   Check out my other projects at my GitHub Pages website [lzontar.github.io](https://lzontar.github.io):star:.
+   Check out my other projects at my GitHub Pages website [lzontar.github.io](https://lzontar.github.io)⭐ .
+
+
 
