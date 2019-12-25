@@ -6,9 +6,9 @@
 * Shippable: [![Run Status](https://api.shippable.com/projects/5d950376945f6b00077d2707/badge?branch=master)](https://app.shippable.com/github/lzontar/GrafMuvi/dashboard)
 * Coverage: [![Coverage Status](https://coveralls.io/repos/github/lzontar/GrafMuvi/badge.svg?branch=master)](https://coveralls.io/github/lzontar/GrafMuvi?branch=master)
 
-  **:bulb: What's the idea?**
+  💡 **What's the idea?**
 
-  With more and more movies available the answer to "What movie should I watch :interrobang:" isn't getting any simpler. That is why I decided to develop **GrafMuvi**, a web service or more precisely a movie recommendation _RESTful API_, which will support creating, posting, deleting and retrieving movie recommendations. But where will we get the data? Service will store data about movie recommendations using graph structures, because the recommendation system will be based on associations. _GrafMuvi_ will support the ability to create and post a promotion of a connection between two movies and store the number of these promotions. The main objective is retrieving a list of similar movies to the one we already watched, which will be ordered from the most possible candidate to the least possible. Sort will be based on the distance between two nodes in our graph database and the number of associations/promotions. Service will also support downgrading and eventually deleting a connection between movies if enough requests of downgrading will be made.
+  With more and more movies available the answer to "What movie should I watch⁉" isn't getting any simpler. That is why I decided to develop **GrafMuvi**, a web service or more precisely a movie recommendation _RESTful API_, which will support creating, posting, deleting and retrieving movie recommendations. But where will we get the data? Service will store data about movie recommendations using graph structures, because the recommendation system will be based on associations. _GrafMuvi_ will support the ability to create and post a promotion of a connection between two movies and store the number of these promotions. The main objective is retrieving a list of similar movies to the one we already watched, which will be ordered from the most possible candidate to the least possible. Sort will be based on the distance between two nodes in our graph database and the number of associations/promotions. Service will also support downgrading and eventually deleting a connection between movies if enough requests of downgrading will be made.
 
   Additionally when posting a promotion it checks:
 
@@ -21,7 +21,7 @@ Check out the [example](https://github.com/lzontar/GrafMuvi/blob/master/Example.
 
 [**Project presentation**](https://prezi.com/view/9WhXBqsVde1Dl0HGYy89/) developed with [Prezi](https://prezi.com/).
 
-## :page\_with\_curl: How can I use it?
+## 📃 How can I use it?
 
 [Documentation of GrafMuvi web service](https://grafmuvi.docs.apiary.io/#) \(developed using _Apiary_\).
 
@@ -36,7 +36,7 @@ Check out the [example](https://github.com/lzontar/GrafMuvi/blob/master/Example.
 * [Provisioning](https://github.com/lzontar/GrafMuvi/blob/master/docs/Provisioning.md)
 * [Deployment from 0](https://github.com/lzontar/GrafMuvi/blob/master/docs/Deployment_From_Zero.md)
 
-## :blue\_book: What development techniques will be used?
+## 📖 What development techniques will be used?
 
 * RESTful API design
 * Test-driven development
@@ -47,13 +47,13 @@ Check out the [example](https://github.com/lzontar/GrafMuvi/blob/master/Example.
 * Containerization
 * Provisioning
 
-## Construction tool
+## 🛠 Construction tool
 
 ```text
 buildtool: gulpfile.js
 ```
 
-## Application deployment
+## 🆘 Application deployment
 
 #### Deployment to PaaS
 
@@ -85,7 +85,7 @@ provision: chef/cookbook/api/recipes/grafmuvi.rb
 Despliegue final: grafmuvi.westeurope.cloudapp.azure.com
 ```
 
-## :sos: Wish to contribute?
+## 🆘 Wish to contribute?
 
 ### Environment setup
 
