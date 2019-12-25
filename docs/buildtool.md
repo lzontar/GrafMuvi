@@ -70,43 +70,49 @@ There are plenty other operations we can do on our servers:
 
 ## Creation of VM
 
-
+For production one of the most important things is to create the server on which we want our production release to be running. In our case, the server will be running on a VM and thus we decided to automate the task of creating VM.
 
 ```text
 $ gulp vm
 ```
 
-
+Executing the command above makes Gulp execute: `$ vagrant up --no-provision`, which creates a VM using Microsoft Azure as provider.
 
 ## Provisioning
 
-
+Once we have our VM created, it is very useful that we can provision it using Gulp. 
 
 ```text
 $ gulp provision
 ```
 
-
+Executing the command above executes the provisioning part in our Vagrantfile \(provisioning with Chef\). In the background `$ vagrant provision` is executed.
 
 ## Production deployment
 
-
+After our VM is created and provisioned, we can make a production deployment. For this we will use Capistrano.
 
 ```text
 $ gulp production-deploy
 ```
 
-
+Executing the command above executes: `$ cd despliegue && cap production deploy`. Because our Capistrano files are in folder despliegue we first have to change directory.
 
 ## Deployment from zero
 
+To sum up the full deployment from zero, we automated three tasks:
 
+* `$ gulp vm`
+* `$ gulp provision`
+* `$ gulp production-deploy`
 
 ```text
 $ gulp deploy-from-zero
 ```
 
+The command above executes: 
 
+`$ vagrant up --no-provision && vagrant provision && cd despliegue && cap production deploy`
 
 
 

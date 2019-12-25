@@ -1,23 +1,18 @@
-# How is our application deployed to production from zero?
-
+## :ok_hand: Deployment from zero
 In this section we will explain how to deploy our API from zero, i.e. we will complete the following steps to deploy our application to production stage:
+- Firstly, we will create a virtual machine using [Vagrant](https://www.vagrantup.com/), which will be provided by [Azure](https://azure.microsoft.com/en-us/),
+- After our VM will be created, we will provision it with [Chef](https://www.chef.io/) and thus install all the necessary services to deploy our API
+- Lastly, we will deploy our service using [Capistrano](https://capistranorb.com/) and run it on our VM machine so that it will be publicly accessible
 
-* Firstly, we will create a virtual machine using [Vagrant](https://www.vagrantup.com/), which will be provided by [Azure](https://azure.microsoft.com/en-us/),
-* After our VM will be created, we will provision it with [Chef](https://www.chef.io/) and thus install all the necessary services to deploy our API
-* Lastly, we will deploy our service using [Capistrano](https://capistranorb.com/) and run it on our VM machine so that it will be publicly accessible
-
-## Vagrant
-
-Here we will see the configuration of _Vagrantfile_, which defines the creation of virtual machine and its provision. Before we jump into _Vagrantfile_, we have to first install Vagrant plugin for Azure and add a dummy box.
-
-```text
+### Vagrant
+Here we will see the configuration of *Vagrantfile*, which defines the creation of virtual machine and its provision. Before we jump into *Vagrantfile*, we have to first install Vagrant plugin for Azure and add a dummy box.
+```
 $ vagrant plugin install vagrant-azure
 $ vagrant box add azure https://github.com/azure/vagrant-azure/raw/v2.0/dummy.box --provider azure
 ```
+After that we execute: ```vagrant up --provider azure```
 
-After that we execute: `vagrant up --provider azure`
-
-```text
+```
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -78,31 +73,27 @@ Vagrant.configure("2") do |config|
   end
 end
 ```
+In the Vagrantfile, which is defined by the code above, we can see that we could separate it to two parts (if we exclude SSH settings and setting VM box):
+- **Creating VM** - here we can see the settings of our VM provided by Azure
+  - Define TCP port
+  - Set VM name: *grafmuvi*
+  - Set VM size: *Standard_A1_v2* (1 CPU, 2GB RAM)
+    - VM size was aimed to be as small as possible. 2GB of RAM that are more than minimum, were chosen due to failures with less RAM.
+  - Set VM image URN (which defines OS): *Canonical:UbuntuServer:18.04-LTS:latest* (UbuntuServer 18.04-LTS)
+    - OS chosen is Ubuntu Server 18.04-LTS, which is the latest stable version of Ubuntu Server
+  - Set resource group which will provide VM in Azure: *grafmuvi*
+  - Set Azure DNS name: *grafmuvi*
+  - Set location of Azure's VM: *West Europe*
+- **Provisioning VM** - in this part we set Chef for provisioning and define how shall it be provisioned
+  - Set Chef repository path
+  - Define paths for cookbooks and nodes
+  - Add recipes that will be executed on created VM
+  - Add Chef license
+  - Because we can't run our API without environmental variables, we copy them from local environment to guest server using *shell* for provisioning
 
-In the Vagrantfile, which is defined by the code above, we can see that we could separate it to two parts \(if we exclude SSH settings and setting VM box\):
-
-* **Creating VM** - here we can see the settings of our VM provided by Azure
-  * Define TCP port
-  * Set VM name: _grafmuvi_
-  * Set VM size: _Standard\_A1\_v2_ \(1 CPU, 2GB RAM\)
-    * VM size was aimed to be as small as possible. 2GB of RAM that are more than minimum, were chosen due to failures with less RAM.
-  * Set VM image URN \(which defines OS\): _Canonical:UbuntuServer:18.04-LTS:latest_ \(UbuntuServer 18.04-LTS\)
-    * OS chosen is Ubuntu Server 18.04-LTS, which is the latest stable version of Ubuntu Server
-  * Set resource group which will provide VM in Azure: _grafmuvi_
-  * Set Azure DNS name: _grafmuvi_
-  * Set location of Azure's VM: _West Europe_
-* **Provisioning VM** - in this part we set Chef for provisioning and define how shall it be provisioned
-  * Set Chef repository path
-  * Define paths for cookbooks and nodes
-  * Add recipes that will be executed on created VM
-  * Add Chef license
-  * Because we can't run our API without environmental variables, we copy them from local environment to guest server using _shell_ for provisioning
-
-## Chef
-
-Provisioning with Chef is already defined in [docs/Provision.md](https://github.com/lzontar/GrafMuvi/blob/master/docs/Provision.md) but few changes have been made due to version inconsistencies and unnecessary code. Nevertheless, we still keep both of our recipes _ssh\_user.rb_ and _grafmuvi.rb_.
-
-```text
+### Chef
+Provisioning with Chef is already defined in [docs/Provision.md](https://github.com/lzontar/GrafMuvi/blob/master/docs/Provision.md) but few changes have been made due to version inconsistencies and unnecessary code. Nevertheless, we still keep both of our recipes *ssh_user.rb* and *grafmuvi.rb*.
+```
 #
 # Cookbook:: api
 # Recipe:: grafmuvi
@@ -183,19 +174,17 @@ execute 'restart_nginx' do
   action :run
 end
 ```
+In recipe *grafmuvi.rb* we do the following:
+- Install git
+- Update packages
+- Update Node.js repository and install Node.js
+- Include recipe *ssh_user.rb*
+- Create directories /home/luka/GrafMuvi (where we will checkout our repo) and /home/luka/Apps (where we will have our production deployments)
+- Clone GrafMuvi repository
+- Install NPM dependencies
+- Lastly we install Nginx proxy so that our API (running on port 8080 by default) will be accessible globally without needing to specify ports (listening at port 80)
 
-In recipe _grafmuvi.rb_ we do the following:
-
-* Install git
-* Update packages
-* Update Node.js repository and install Node.js
-* Include recipe _ssh\_user.rb_
-* Create directories /home/luka/GrafMuvi \(where we will checkout our repo\) and /home/luka/Apps \(where we will have our production deployments\)
-* Clone GrafMuvi repository
-* Install NPM dependencies
-* Lastly we install Nginx proxy so that our API \(running on port 8080 by default\) will be accessible globally without needing to specify ports \(listening at port 80\)
-
-```text
+```
 # Create home dir for new user
 directory '/home/luka' do
   action :create
@@ -217,24 +206,18 @@ group "create luka sudo" do
   append true
 end
 ```
+In recipe *ssh_user.rb* we do the following:
+- Create home directory for user *luka*
+- Create user *luka* (password hash generated with *openssl*)
+- Add user *luka* to sudoers group
 
-In recipe _ssh\_user.rb_ we do the following:
-
-* Create home directory for user _luka_
-* Create user _luka_ \(password hash generated with _openssl_\)
-* Add user _luka_ to sudoers group
-
-## Capistrano
-
-_Capistrano_ is a remote server automation tool, meaning that it can be used to reliably deploy web application to any number of remote servers simultaneously. Even though it is written in Ruby, it can deploy application written in other programming languages. To add Capistrano to our project we have to run:
-
-```text
+### Capistrano
+*Capistrano* is a remote server automation tool, meaning that it can be used to reliably deploy web application to any number of remote servers simultaneously. Even though it is written in Ruby, it can deploy application written in other programming languages. To add Capistrano to our project we have to run:
+```
 $ cap install
 ```
-
 After running the command above, we have created multiple files:
-
-```text
+```
 | -- config
 |    | -- deploy
 |    |    | -- production.rb
@@ -242,12 +225,9 @@ After running the command above, we have created multiple files:
 |    `-- deploy.rb
 ` -- Capfile
 ```
-
-One of the files created is _config/deploy/staging.rb_, but because we will not be using the staging phase, the file is deleted in our repository.
-
-### Capfile
-
-```text
+One of the files created is *config/deploy/staging.rb*, but because we will not be using the staging phase, the file is deleted in our repository.
+#### Capfile
+```
 # Load NPM for Capistrano
 require 'capistrano-npm'
 
@@ -272,12 +252,10 @@ install_plugin Capistrano::SCM::Git
 # Load custom tasks from `lib/capistrano/tasks` if you have any defined
 Dir.glob("lib/capistrano/tasks/*.rake").each { |r| import r }
 ```
+In *Capfile* we only define requirements of our deployment (gems that we are using). Besides the default ones, we have to require *capistrano-npm*.
 
-In _Capfile_ we only define requirements of our deployment \(gems that we are using\). Besides the default ones, we have to require _capistrano-npm_.
-
-### deploy.rb
-
-```text
+#### deploy.rb
+```
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.11.2"
 
@@ -341,18 +319,15 @@ namespace :deploy do
   after :copy_env_vars_and_data, :gulp_start
 end
 ```
+In *deploy.rb* we configure the main settings of our deployment:
+- Set stages (production and staging, the latter is not used and will thus not be discussed)
+- Set application name and the corresponding GitHub repository
+- Set deployment directory and user
+- Choose directories that will be shared between releases
+- After deploy: install node modules (pm2 and gulp globally), copy .env, appData folders and start the server
 
-In _deploy.rb_ we configure the main settings of our deployment:
-
-* Set stages \(production and staging, the latter is not used and will thus not be discussed\)
-* Set application name and the corresponding GitHub repository
-* Set deployment directory and user
-* Choose directories that will be shared between releases
-* After deploy: install node modules \(pm2 and gulp globally\), copy .env, appData folders and start the server
-
-### production.rb
-
-```text
+#### production.rb
+```
 role :app, %w{luka@grafmuvi.westeurope.cloudapp.azure.com}
 
 # Role db is not used because our database on production and deployment is currently still the same
@@ -360,15 +335,13 @@ role :app, %w{luka@grafmuvi.westeurope.cloudapp.azure.com}
 # role :db, %w{database.com}
 
 server "grafmuvi.westeurope.cloudapp.azure.com", user: "luka", roles: %w{app}
-```
 
+```
 Here we set the role and server for production deployment. Roles can be useful, because we could specify tasks for roles, where each role can be configuring different servers. We should also have a role for managing our database, but this feature is currently unavailable.
 
-### Deployment with Capistrano
-
-Because Capistrano needs several other Ruby gems, we will also create a _Gemfile_:
-
-```text
+#### Deployment with Capistrano
+Because Capistrano needs several other Ruby gems, we will also create a *Gemfile*:
+```
 source "https://rubygems.org"
 
 git_source(:github) {|repo_name| "https://github.
@@ -378,32 +351,22 @@ gem 'capistrano', '~> 3.1.0'
 gem 'capistrano-npm'
 gem 'capistrano-gulp'
 ```
-
 To install all the necessary gems we have to run:
-
-```text
+```
 $ bundle install
 ```
-
-Now that we have our Capistrano files configured and the necessary gems installed, we can deploy our API with Capistrano. We do that by executing \(in folder _despliegue_\):
-
-```text
+Now that we have our Capistrano files configured and the necessary gems installed, we can deploy our API with Capistrano. We do that by executing (in folder *despliegue*):
+```
 $ cap production deploy
 ```
-
-**Deployment from zero with task manager**: Because deployment from zero can be a time-consuming task, we want to automate it as much as possible. This is why it is also included in automation with task manager. Using _Gulp_ you can easily deploy GrafMuvi API by executing:
-
-```text
+**Deployment from zero with task manager**: Because deployment from zero can be a time-consuming task, we want to automate it as much as possible. This is why it is also included in automation with task manager. Using *Gulp* you can easily deploy GrafMuvi API by executing:
+```
 $ gulp deploy-from-zero
 ```
+It executes: ```vagrant up --no-provision && vagrant provision && cd despliegue && cap production deploy```
 
-It executes: `vagrant up --no-provision && vagrant provision && cd despliegue && cap production deploy`
-
-**Production deployment with task manager**: Furthermore we will include production deployment with _Capistrano_ into task manager. Using _Gulp_ you can easily make a production deployment by execution:
-
-```text
+**Production deployment with task manager**: Furthermore we will include production deployment with *Capistrano* into task manager. Using *Gulp* you can easily make a production deployment by execution:
+```
 $ cd despliegue && gulp production-deploy
 ```
-
-It executes: `cap production deploy`
-
+It executes: ```cap production deploy```
