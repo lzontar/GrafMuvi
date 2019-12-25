@@ -1,4 +1,4 @@
-# :repeat: How is Continuous integration technique used?
+# How is Continuous integration technique used?
 
 [Continuous integration](https://en.wikipedia.org/wiki/Continuous_integration)\(CI\) is a development practice that is based on a frequent integration of code into a shared repository. Each commit to this repository is checked by an automated build. We will use [Travis CI](https://travis-ci.com/) and [Shippable](https://app.shippable.com/) as our continuous integration systems. _Travis CI_ is a continuous integration service which provides easy GitHub integration using YAML configuration file. We will also use _Shippable_ because of its fast build executions and easy integration of _Docker Containers_. It is also defined with YAML configuration file just as _Travis CI_. Both systems also execute build after each commit and support connection with _Neo4j_ database which we are using.
 

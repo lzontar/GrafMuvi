@@ -1,4 +1,4 @@
-# :whale: How is containerization used?
+# How is containerization used?
 
 Because of the fact that code in different environment might work differently, may be even buggy in other environments, we will implement containerization in our RESTful API. This is why we should use _containers_ in software development. _Containerization_ involves bundling the application with all its configuration files, libraries, dependencies and thus provides a consistent environment. Our RESTful API will use [Docker](https://www.docker.com/) as the containerization tool. It's a set of Platform as a Service \(PaaS\) products, which rely on the use of OS-level containerization.
 

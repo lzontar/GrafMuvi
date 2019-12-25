@@ -1,4 +1,4 @@
-# :ballot\_box\_with\_check: How is code tested?
+# How is our code tested?
 
 ## API testing
 

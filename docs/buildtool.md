@@ -1,4 +1,4 @@
-# :wrench: What buildtool is used?
+# What buildtool is used?
 
 For repetitive tasks like testing, building and starting a server we can define scripts to automate these tasks. _Gulp_ uses `gulfile.js` to recognize and run the scripts. As it seems appropriate to automate the development process as much as possible, we will include some scripts in our project as well. Each task has a symbol "&" at the end of it, soo that the command is ran in background and the terminal doesn't get blocked.
 

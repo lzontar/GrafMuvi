@@ -1,4 +1,4 @@
-# :ok\_hand: Deployment from zero
+# Deployment from zero
 
 In this section we will explain how to deploy our API from zero, i.e. we will complete the following steps to deploy our application to production stage:
 

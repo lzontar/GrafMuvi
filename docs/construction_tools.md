@@ -1,4 +1,4 @@
-# :hammer\_and\_wrench: What tools will be used for development?
+# What tools will be used for development?
 
 ## JavaScript
 

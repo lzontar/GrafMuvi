@@ -1,6 +1,4 @@
-# Deployment
-
-## :100: How is it deployed?
+# How is it deployed?
 
 ### Heroku
 

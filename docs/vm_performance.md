@@ -1,4 +1,4 @@
-# :collision: Performance measuring with Locust
+# Performance measuring with Locust
 
 To understand better how our API is behaving under pressure or in other words, how does our API perform when it's used by larger number of users at the same time. Load-testing is a type of non-functional testing which is conducted to understand the behavior of the application under some kind of pressure \(such as certain amount of users making certain amount of requests\). We will use [Locust](https://locust.io/) for to load-test our API. It allows you to write tests in pure Python and simulate users making requests.
 

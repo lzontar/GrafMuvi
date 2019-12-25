@@ -1,4 +1,4 @@
-# :sunrise\_over\_mountains: How do we ensure stable environment?
+# How do we ensure stable environment?
 
 Provisioning is one of the key elements of continuous delivery process. Lots of bugs and errors do not originate from the code we provide, but are in fact a consequence of the differences in environments. _Docker_ ensures stable environment by installing dependencies and libraries. Provisioning goes one step further and thus ensures the same OS, tools that are required to run the project, dependencies and libraries.
 
