@@ -26,7 +26,8 @@ Vagrant.configure("2") do |config|
     azure.dns_name = 'grafmuvi' # Set DNS name
     azure.location = 'westeurope' # Set location
   end
-
+  
+  # Copy environmental variables from local to guest server
   config.vm.provision "shell", inline: "printf 'OMDB_KEY=\"" + ENV['OMDB_KEY'] + "\"\n
   GRAPHENEDB_URL=\"" + ENV['GRAPHENEDB_URL'] + "\"\n
   GRAPHENEDB_USER=\"" + ENV['GRAPHENEDB_USER'] + "\"\n
