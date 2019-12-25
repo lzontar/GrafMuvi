@@ -11,19 +11,10 @@ var standard = require('gulp-standardjs')
 const pm2 = require('pm2')
 
 gulp.task('start', done => {
-    return pm2.connect(true, function () {
-        return pm2.start({
-            name: 'GrafMuvi',
-            script: 'server.js',
-        }, function () {
-            console.log('Started server...');
-            pm2.disconnect();
-            done()
-        });
-        done()
-    });
-    done()
-    process.exit(1)
+  return exec('pm2 start ./server.js', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+  });
 })
 
 //start in development mode
@@ -43,41 +34,17 @@ gulp.task('status', () => {
 })
 
 gulp.task('restart', () => {
-  pm2.connect(false, function (err) {
-    if (err) {
-      logger.error(err)
-      process.exit(2)
-    }
-
-    pm2.restart({
-      name: 'GrafMuvi',
-      script: './server.js',
-      instances: 1
-    }, function (err) {
-      if (err) {
-        throw err
-      }
-      logger.info('Restarting GrafMuvi server.')
-    })
-  })
-  pm2.disconnect()
+  return exec('pm2 restart server', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+  });
 })
 
 gulp.task('stop', () => {
-  pm2.connect(false, function (err) {
-    if (err) {
-      logger.error(err)
-      process.exit(2)
-    }
-
-    pm2.stop('GrafMuvi', function (err) {
-      if (err) {
-        throw err
-      }
-      logger.info('Stopping GrafMuvi server.')
-    })
-  })
-  pm2.disconnect()
+  return exec('pm2 stop server', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+  });
 })
 
 gulp.task('test', () => {
