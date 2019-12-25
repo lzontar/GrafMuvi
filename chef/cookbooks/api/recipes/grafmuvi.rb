@@ -52,14 +52,6 @@ execute 'npm_install' do
   action :run
 end
 
-# Install gulp globally
-execute 'install_gulp_globally' do
-  command 'npm install gulp-cli gulp -g'
-  cwd '/home/luka/GrafMuvi'
-  user 'root'
-  action :run
-end
-
 # Install package nginx
 package 'nginx'
 
@@ -68,7 +60,7 @@ execute 'listen_port_80' do
   listen 80;
   server_name grafmuvi.westeurope.cloudapp.azure.com;
   location / {
-    proxy_pass http://localhost:4000;
+    proxy_pass http://localhost:8080;
     proxy_http_version 1.1;
     proxy_set_header Upgrade \$http_upgrade;
     proxy_set_header Connection \'upgrade\';

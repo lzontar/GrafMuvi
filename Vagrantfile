@@ -27,7 +27,12 @@ Vagrant.configure("2") do |config|
     azure.location = 'westeurope' # Set location
   end
 
-  config.vm.provision "shell", inline: "printf 'OMDB_KEY=\"" + ENV['OMDB_KEY'] + "\"\nGRAPHENEDB_URL=\"" + ENV['GRAPHENEDB_URL'] + "\"\nGRAPHENEDB_USER=\"" + ENV['GRAPHENEDB_USER'] + "\"\nGRAPHENEDB_PASSWD=\"" + ENV['GRAPHENEDB_PASSWD'] + "\"\nDNS=\"" + ENV['DNS'] + "\"\nPORT=" + ENV['PORT'] + "\nIP=\"" + ENV['IP'] + "\"' > /.env"
+  config.vm.provision "shell", inline: "printf 'OMDB_KEY=\"" + ENV['OMDB_KEY'] + "\"\n
+  GRAPHENEDB_URL=\"" + ENV['GRAPHENEDB_URL'] + "\"\n
+  GRAPHENEDB_USER=\"" + ENV['GRAPHENEDB_USER'] + "\"\n
+  GRAPHENEDB_PASSWD=\"" + ENV['GRAPHENEDB_PASSWD'] + "\"\nDNS=\"" + ENV['DNS'] + "\"\n
+  PORT=" + ENV['PORT'] + "\n
+  IP=\"" + ENV['IP'] + "\"' > /.env"
 
   # Declare where chef repository path
   chef_repo_path = "./chef"
