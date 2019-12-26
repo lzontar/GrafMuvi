@@ -78,8 +78,6 @@ Despliegue final: grafmuvi.westeurope.cloudapp.azure.com
    ```
    $ npm install -g gulp
    ```
-<<<<<<< HEAD
-
    **Make changes**
 
 4. Pull the latest version of repository
@@ -93,15 +91,3 @@ Despliegue final: grafmuvi.westeurope.cloudapp.azure.com
    **:link: Check out my other projects**
 
    Check out my other projects at my GitHub Pages website [lzontar.github.io](https://lzontar.github.io):star:.
-=======
-### Make changes
-1. Pull the latest version of repository
-2. Make changes:
-   - Use test-driven development
-   - Use scripts that are described below
-   - Test code manually
-3. After testing, commit to your forked repository
-4. Create a Pull Request to branch **contributions**
-### :link: Check out my other projects
-Check out my other projects at my GitHub Pages website [lzontar.github.io](https://lzontar.github.io):star:.
->>>>>>> 9aded0948fee8d85ee5297f9fcaeb9caafcc273b

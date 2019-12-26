@@ -225,7 +225,7 @@ After running the command above, we have created multiple files:
 |    `-- deploy.rb
 ` -- Capfile
 ```
-One of the files created is *config/deploy/staging.rb*, but because we will not be using the staging phase, the file is deleted in our repository.
+One of the files created is *config/deploy/staging.rb*, but because we will not be using the staging phase, the file is deleted in our repository. Moreover, all the Capistrano files are moved from root to folder *despliegue/* and consequently we have to move to that folder to execute Capistrano deploy.
 #### Capfile
 ```
 # Load NPM for Capistrano
@@ -370,3 +370,5 @@ It executes: ```vagrant up --no-provision && vagrant provision && cd despliegue 
 $ cd despliegue && gulp production-deploy
 ```
 It executes: ```cap production deploy```
+
+Once our application is deployed it is accessible on: grafmuvi.westeurope.cloudapp.azure.com.
